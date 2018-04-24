@@ -610,9 +610,9 @@ public static boolean isNetworkConnected(Context context) {
       <category term="Twitter" scheme="http://picksomething.cn/categories/Twitter/"/>
     
     
-      <category term="杭州" scheme="http://picksomething.cn/tags/%E6%9D%AD%E5%B7%9E/"/>
-    
       <category term="半年" scheme="http://picksomething.cn/tags/%E5%8D%8A%E5%B9%B4/"/>
+    
+      <category term="杭州" scheme="http://picksomething.cn/tags/%E6%9D%AD%E5%B7%9E/"/>
     
   </entry>
   
