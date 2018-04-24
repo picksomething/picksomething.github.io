@@ -81,17 +81,17 @@
 
 
 
-<meta name="description" content="因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。 问题 大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，将启">
+<meta name="description" content="因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。 遇到的问题大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS不显示LaunchScreen上的图片">
 <meta property="og:url" content="http://picksomething.cn/2018/03/06/iOS不显示LaunchScreen上的图片/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。 问题 大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，将启">
+<meta property="og:description" content="因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。 遇到的问题大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta property="og:updated_time" content="2018-04-24T14:51:19.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS不显示LaunchScreen上的图片">
-<meta name="twitter:description" content="因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。 问题 大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，将启">
+<meta name="twitter:description" content="因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。 遇到的问题大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，">
 
 
 
@@ -354,12 +354,8 @@
 
       
         <p>因为并没有学习过iOS开发，现在用的react native开发的app，iOS和Android App上的启动屏都是原生代码实现的，现在新版启动屏ui图片有变化，然后技术主管又休假了，只能自己研究研究了。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
-<p>大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，将启动屏需要的图片资源添加到Images.scassets里面的splash文件夹里面，每个图片位置按照设计稿调整了一下，看效果图感觉差不多了，就开始跑一下试试，结果启动屏除了设置的背景颜色，上面的图片都没有显示。这就奇怪了，预览图上都有，怎么会不显示。。</p>
-</blockquote>
-<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><blockquote>
-<p>于是开始google，看来也有很多人遇到这种问题，有的说卸载重新安装就好了，试了没用；有的说把配置里面的Launch Screen File置空，试了还是没用；还有的说是因为Images.xcassets里面的图片应用启动的时候还没有以引用，把图片放到项目根目录就好了，我差点就信这个准备试试了，但是一想之前的图片都在这里面放着都是可以的，肯定不是这个问题，思来想去决定卸载重启试试，重启之后再安装启动，神奇般地显示启动屏上的图片了。。果然是重启大法好啊</p>
-</blockquote>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>大概网上搜索学习了解了一下iOS的项目结构和程序入口，知道了LaunchScreen.storyboard是iOS的启动屏，AppDelegate是程序入口，于是就开始比着葫芦画瓢，将启动屏需要的图片资源添加到Images.scassets里面的splash文件夹里面，每个图片位置按照设计稿调整了一下，看效果图感觉差不多了，就开始跑一下试试，结果启动屏除了设置的背景颜色，上面的图片都没有显示。这就奇怪了，预览图上都有，怎么会不显示。。</p>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><p>于是开始google，看来也有很多人遇到这种问题，有的说卸载重新安装就好了，试了没用；有的说把配置里面的Launch Screen File置空，试了还是没用；还有的说是因为Images.xcassets里面的图片应用启动的时候还没有以引用，把图片放到项目根目录就好了，我差点就信这个准备试试了，但是一想之前的图片都在这里面放着都是可以的，肯定不是这个问题，思来想去决定卸载重启试试，重启之后再安装启动，神奇般地显示启动屏上的图片了。。果然是重启大法好啊</p>
 
       
     </div>
@@ -394,7 +390,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/24/新世界/" rel="prev" title="终于折腾好了">
+              <a href="/2018/04/24/终于折腾好了/" rel="prev" title="终于折腾好了">
                 终于折腾好了 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -539,7 +535,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number">1.</span> <span class="nav-text">遇到的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何解决"><span class="nav-number">2.</span> <span class="nav-text">如何解决</span></a></li></ol></div>
             
 
           </div>
