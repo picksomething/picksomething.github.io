@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://picksomething.cn/"/>
-  <updated>2018-04-24T07:46:37.427Z</updated>
+  <updated>2018-04-24T11:38:29.392Z</updated>
   <id>http://picksomething.cn/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>新世界</title>
+    <link href="http://picksomething.cn/2018/04/24/%E6%96%B0%E4%B8%96%E7%95%8C/"/>
+    <id>http://picksomething.cn/2018/04/24/新世界/</id>
+    <published>2018-04-24T11:34:20.000Z</published>
+    <updated>2018-04-24T11:38:29.392Z</updated>
+    
+    <content type="html"><![CDATA[<p>终于将博客换成hexo+github page了，真的是不折腾会死。。。我发誓再也不折腾了<br><img src="p7ohyql3p.bkt.clouddn.com/static/images/testimg.jpg"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;终于将博客换成hexo+github page了，真的是不折腾会死。。。我发誓再也不折腾了&lt;br&gt;&lt;img src=&quot;p7ohyql3p.bkt.clouddn.com/static/images/testimg.jpg&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Twitter" scheme="http://picksomething.cn/categories/Twitter/"/>
+    
+    
+      <category term="博客" scheme="http://picksomething.cn/tags/%E5%8D%9A%E5%AE%A2/"/>
+    
+      <category term="Hexo" scheme="http://picksomething.cn/tags/Hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>iOS不显示LaunchScreen上的图片</title>
@@ -642,32 +670,6 @@ public static boolean isNetworkConnected(Context context) {
       <category term="Android" scheme="http://picksomething.cn/tags/Android/"/>
     
       <category term="View" scheme="http://picksomething.cn/tags/View/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android activity切换动画一致性</title>
-    <link href="http://picksomething.cn/2015/07/09/Android%20activity%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E4%B8%80%E8%87%B4%E6%80%A7/"/>
-    <id>http://picksomething.cn/2015/07/09/Android activity切换动画一致性/</id>
-    <published>2015-07-08T18:41:04.000Z</published>
-    <updated>2018-04-24T07:46:37.426Z</updated>
-    
-    <content type="html"><![CDATA[<p>今天把开发好的产品拿给设计师看，设计师说打开设置菜单的动画在不同的手机上表现不同，有的手机上是从中间展开的，有的手机是从右边出来的，有的手机上压根没有动画，说让最好统一成从右边出来的，那么既然启动设置activity的时候从右边出来，退出设置的时候应该也是从右边消失，这样才能保证动画的一致性。<br>都知道activity切换动画是通过overridePendingTransition(int enterAnim, int exitAnim)来实现的，重写这个方法然后传递进入和退出动画就可以实现activity启动时候的切换动画了。那假如我们现在是要在activity1启动activity2的时候加入切换动画，要求activity2从右边出现，那么就是在activity1调用startactivity之后和activity2调用finish之后分别调用overridePendingTransition然后传入两个进出动画就好了，如下图所示：<br><a id="more"></a><br><a href="http://www.picksomething.cn/wp-content/uploads/2015/07/Activity切换-1.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/07/Activity切换-1-744x883.png" alt="Activity切换 (1)"></a><br>enterAnim和exitAnim分别如下所示<br>slide_in.xml<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-3@2x.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-3@2x-744x187.png" alt="QQ20150709-3@2x"></a><br>slide_out.xml<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-4@2x.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-4@2x-744x181.png" alt="QQ20150709-4@2x"></a><br>也就是要在activity1启动activity2的地方这样写：</p><pre><code>startActivity(intent)overridePendingTransition(R.anim.slide_in, R.anim.slide_out);`&lt;/pre&gt;activity2的finish方法改成这样：&lt;pre&gt;`finish();overridePendingTransition(R.anim.slide_in, R.anim.slide_out);`&lt;/pre&gt;这样似乎就ok了，测试发现activity2确实是从右边出来那么问题来了，你会发现你在activity2返回activity1的时候，按照道理activity2应该回到右边，然后activity1从左边出来，但是事实是从activity2返回的时候，activity1也是从右边出来。为什么会这样的，搞清楚这个问题之前我们需要先搞清overridePendingTransition(enterAnim,exitAnim)方法的两个参数的对应关系。当我们使用activity1启动activity2的时候如下图所示：[![对应关系](http://www.picksomething.cn/wp-content/uploads/2015/07/对应关系.png)](http://www.picksomething.cn/wp-content/uploads/2015/07/对应关系.png)**此时目标activity是activity2，对应于activity2的动画是enterAnim也就是上面的slide_in，对应于activity1的动画是exitAnim也就是上面的slide_out，所以顺利成章地activity2是从右边出来(X轴从100%p到0%p)，activity1是从左边消失(X轴从0%p到100%p)。**当我们从activity2调用finish返回activity1的时候，见下图：[![对应关系 (1)](http://www.picksomething.cn/wp-content/uploads/2015/07/对应关系-1.png)](http://www.picksomething.cn/wp-content/uploads/2015/07/对应关系-1.png)**此时activity2是当前activity，activity1是目标activity，所以activity2使用的是exitAnim，activity1使用的是enterAnim，activity2从左边退出，activity1又从右边出现。**那么上面的进入和退出activity2的动画就都一样了，都是从右边出现。&lt;span style=&quot;color: #ff0000;&quot;&gt;**简单来说就是目标activity(将要出现的activity)用的是进入动画也就是overridePendingTransition的第一个参数，当前activity(将要消失的activity)用的是退出动画，也就是overridePendingTransition的第二个参数。**&lt;/span&gt;那么为了解决退出activity2的时候希望activity1从左边出来，只需要再加一组动画参数区别于启动activity2的那组动画参数就可以了。下面是我实现返回的时候activity1从左边出来加的一组动画代码，很好理解：&lt;pre&gt;`finish();overridePendingTransition(R.anim.slide_in_back, R.anim.slide_out_back);</code></pre><p>slide_in_back.xml<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-2@2x.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-2@2x-744x185.png" alt="QQ20150709-2@2x"></a><br>slide_out_back.xml<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-1@2x.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150709-1@2x-744x187.png" alt="QQ20150709-1@2x"></a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;今天把开发好的产品拿给设计师看，设计师说打开设置菜单的动画在不同的手机上表现不同，有的手机上是从中间展开的，有的手机是从右边出来的，有的手机上压根没有动画，说让最好统一成从右边出来的，那么既然启动设置activity的时候从右边出来，退出设置的时候应该也是从右边消失，这样才能保证动画的一致性。&lt;br&gt;都知道activity切换动画是通过overridePendingTransition(int enterAnim, int exitAnim)来实现的，重写这个方法然后传递进入和退出动画就可以实现activity启动时候的切换动画了。那假如我们现在是要在activity1启动activity2的时候加入切换动画，要求activity2从右边出现，那么就是在activity1调用startactivity之后和activity2调用finish之后分别调用overridePendingTransition然后传入两个进出动画就好了，如下图所示：&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Android" scheme="http://picksomething.cn/categories/Android/"/>
-    
-    
-      <category term="Android" scheme="http://picksomething.cn/tags/Android/"/>
-    
-      <category term="activity" scheme="http://picksomething.cn/tags/activity/"/>
-    
-      <category term="overridePendingTransition" scheme="http://picksomething.cn/tags/overridePendingTransition/"/>
     
   </entry>
   
