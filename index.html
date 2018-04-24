@@ -642,16 +642,9 @@
 
       
         
-          <h2 id="絮叨"><a href="#絮叨" class="headerlink" title="絮叨"></a>絮叨</h2><p>习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：</p>
-<ul>
-<li><p>函数是<code>JavaScript</code>中的”一等公民”<code>(Function is first-class citizen)</code></p>
-<p>当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一等公民”，js中的函数恰好就满足这些条件，所以js中的函数被称为是”一等公民”</p>
-<p>好了，不管js中函数是几等公民了，直接上代码来解决疑惑吧，假设我们页面中有一个按钮，点击的时候调用函数打印<code>Hello World</code>，函数代码如下：</p>
-<pre><code>function hello(){
-document.write(&apos;Hello World&apos;);
-</code></pre><p>}<br><code>&lt;/pre&gt;
-看起来这段代码规规矩矩，没有什么问题，然后我们希望在一个组件被按压的时候调用这个函数，通常习惯了Java中函数调用的，可能顺手就是：</code>onPress = hello();`<br>这对于习惯了java的人来说，可能觉得再普通不过了，但是对于js来说是有问题的。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别</p>
+<h2 id="js中的函数"><a href="#js中的函数" class="headerlink" title="js中的函数"></a>js中的函数</h2><p>要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：函数是<code>JavaScript</code>中的「一等公民」<code>(Function is first-class citizen)</code>。<br>当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一等公民”，js中的函数恰好就满足这些条件，所以js中的函数被称为是”一等公民”。<br>好了，不管js中函数是几等公民了，直接上代码来解决疑惑吧，假设我们页面中有一个按钮，点击的时候调用函数打印<code>Hello World</code>，函数代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">document</span>.write(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看起来这段代码规规矩矩，没有什么问题，然后我们希望在一个组件被按压的时候调用这个函数，通常习惯了Java中函数调用的，可能顺手就是：<code>onPress = hello();</code>这对于习惯了java的人来说，可能觉得再普通不过了，但是对于js来说是有问题的。<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/28/js函数调用的一些困惑/#more" rel="contents">
@@ -974,17 +967,10 @@ document.write(&apos;Hello World&apos;);
         
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习了一周React native之后，感觉还挺有意思的，今天来说说通过React native调用Android平台的一些本地方法(API)，以我目前的水平，感觉这个功能可能平时用的不会太多，但我感觉通过React native开发Android应用的过程中肯定会有用到的时候，本文以调用Android平台的Toast为例来讲讲如何通过React native调用Android<br>原生的一些方法(API)。</p>
 <h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>下面开始项目从创建到运行成功的全过程</p>
-<ul>
-<li>创建项目</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init CallNativeToast</span><br></pre></td></tr></table></figure>
-<ul>
-<li>创建一个NativeModule</li>
-</ul>
-<p>本地模块一般是继承ReactContextBaseJavaModule的Java类，然后实现React native(js)调用Android本地API所需的功能，我们这次目标是通过js调用Android来展示一个Toast，代码如下：</p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init CallNativeToast</span><br></pre></td></tr></table></figure>
+<h2 id="创建一个NativeModule"><a href="#创建一个NativeModule" class="headerlink" title="创建一个NativeModule"></a>创建一个NativeModule</h2><p>本地模块一般是继承ReactContextBaseJavaModule的Java类，然后实现React native(js)调用Android本地API所需的功能，我们这次目标是通过js调用Android来展示一个Toast，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToastModule</span> <span class="keyword">extends</span> <span class="title">ReactContextBaseJavaModule</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DURATION_SHORT_KEY = <span class="string">"SHORT"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DURATION_LONG_KEY = <span class="string">"LONG"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ToastModule</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(reactContext);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"ToastExample"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getConstants</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Map&lt;String, Object&gt; constants = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        constants.put(DURATION_SHORT_KEY, Toast.LENGTH_SHORT);</span><br><span class="line">        constants.put(DURATION_LONG_KEY, Toast.LENGTH_LONG);</span><br><span class="line">        <span class="keyword">return</span> constants;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(String message, <span class="keyword">int</span> duration)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(getReactApplicationContext(), message, duration).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>有几点需要说明：</p>
-<ul>
+<h3 id="有几点需要说明："><a href="#有几点需要说明：" class="headerlink" title="有几点需要说明："></a>有几点需要说明：</h3><ul>
 <li><p>getName返回的NativeModule名字，在后面JaveScript代码中是用来表示此类的，在js中我们可以通过NativeModule.ToastExample来访问此类</p>
 </li>
 <li><p>为了能够在js中调用Android的本地方法，需要被调用的方法必须加上<code>@ReactMethod</code>注释，作为js和java中的桥梁方法，该方法返回类型需要是void，访问权限为public</p>

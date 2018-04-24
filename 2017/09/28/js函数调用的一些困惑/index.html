@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="絮叨习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别 正文要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：  函数是JavaScript中的”一等公民”(Function is first-class citizen) 当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一">
+<meta name="description" content="前言习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别 js中的函数要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：函数是JavaScript中的「一等公民」(Function is first-class citizen)。当你能够传递，返回和分配某个类型的时，那这个类型就被称为">
 <meta name="keywords" content="js,funtion,对象">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js函数调用的一些困惑">
 <meta property="og:url" content="http://picksomething.cn/2017/09/28/js函数调用的一些困惑/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="絮叨习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别 正文要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：  函数是JavaScript中的”一等公民”(Function is first-class citizen) 当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一">
+<meta property="og:description" content="前言习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别 js中的函数要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：函数是JavaScript中的「一等公民」(Function is first-class citizen)。当你能够传递，返回和分配某个类型的时，那这个类型就被称为">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta property="og:updated_time" content="2018-04-24T15:29:15.324Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js函数调用的一些困惑">
-<meta name="twitter:description" content="絮叨习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别 正文要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：  函数是JavaScript中的”一等公民”(Function is first-class citizen) 当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一">
+<meta name="twitter:description" content="前言习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别 js中的函数要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：函数是JavaScript中的「一等公民」(Function is first-class citizen)。当你能够传递，返回和分配某个类型的时，那这个类型就被称为">
 
 
 
@@ -354,31 +354,15 @@
       
 
       
-        <h2 id="絮叨"><a href="#絮叨" class="headerlink" title="絮叨"></a>絮叨</h2><p>习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：</p>
-<ul>
-<li><p>函数是<code>JavaScript</code>中的”一等公民”<code>(Function is first-class citizen)</code></p>
-<p>当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一等公民”，js中的函数恰好就满足这些条件，所以js中的函数被称为是”一等公民”</p>
-<p>好了，不管js中函数是几等公民了，直接上代码来解决疑惑吧，假设我们页面中有一个按钮，点击的时候调用函数打印<code>Hello World</code>，函数代码如下：</p>
-<pre><code>function hello(){
-document.write(&apos;Hello World&apos;);
-</code></pre><p>}<br><code>&lt;/pre&gt;
-看起来这段代码规规矩矩，没有什么问题，然后我们希望在一个组件被按压的时候调用这个函数，通常习惯了Java中函数调用的，可能顺手就是：</code>onPress = hello();`<br>这对于习惯了java的人来说，可能觉得再普通不过了，但是对于js来说是有问题的。</p>
-<a id="more"></a>
-<blockquote>
-<p><strong>如果我们希望组件在按压的时候输出这句话，很显然上面的调用方式是做不到的，因为上面这种写法，会在组件被渲染或者被加载的时候就会调用<code>hello</code>这个方法从而输出<code>Hello World</code>，也就是说如果带括号就表示该函数会被立即调用执行，并将返回值赋给<code>onPress</code>，而且当你再按压组件的时候也并不会再继续调用了(你可以试试)，这显然并不是你想要的结果</strong><br>那么如何达到想要的结果呢？这样写就可以了<br><code>onPress = hello</code><br><strong>这看起来是将函数赋值给<code>onPress</code>啊，是的，确切地说js中函数也是对象，这里就是将改函数对象的引用或者说是入口地址赋值给<code>onPress</code>，然后在我们按压组件触发onPress动作的时候，就会真正地调用<code>hello</code>函数，打印出<code>Hello World</code></strong><br>第二种做法等同于下面这样：</p>
-</blockquote>
-<p><pre>`var hi = funtion hello(){</pre></p>
-<pre><code>document.write(&apos;Hello World&apos;);
-</code></pre><p>}<br>onPress = hi;<br>通过hi();这种也是相当于直接调用hello函数<br><code>&lt;/pre&gt;
-这样看起来可能更直观一些，也就是先将函数赋值给一个变量，然后把该变量(指向函数的一个引用变量)赋值给</code>onPress<code>函数，因为</code>onPress<code>也是一个普通的函数，可以给它赋一个值，也可以给它赋一个函数，所以如果直接是第一种做法的话，就相当于把</code>hello<code>函数的返回值(虽然这里并没有显式的返回值)赋值给</code>onPress<code>了，自然达不到你想要按压组件调用函数输出</code>Hello World<code>的效果了
-当然再延伸一点就到ES6引进的箭头函数了(这里就不多说了)：
-&lt;pre&gt;</code>hi = () =&gt; {</p>
-<pre><code>document.write(&apos;Hello World&apos;);
-</code></pre><p>}<br>onPress = hi;</p>
-</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>js还真是风骚啊。。。</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>习惯了写java代码，然后开始学习js的时候，一开始总是会被js函数调用搞得有点晕乎，觉得有必要搞清楚js中函数调用不同的写法的一些含义和区别</p>
+<h2 id="js中的函数"><a href="#js中的函数" class="headerlink" title="js中的函数"></a>js中的函数</h2><p>要搞清楚js中函数调用为什么会这样，首先需要明白js中的一个概念，那就是：函数是<code>JavaScript</code>中的「一等公民」<code>(Function is first-class citizen)</code>。<br>当你能够传递，返回和分配某个类型的时，那这个类型就被称为”一等公民”，js中的函数恰好就满足这些条件，所以js中的函数被称为是”一等公民”。<br>好了，不管js中函数是几等公民了，直接上代码来解决疑惑吧，假设我们页面中有一个按钮，点击的时候调用函数打印<code>Hello World</code>，函数代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">document</span>.write(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看起来这段代码规规矩矩，没有什么问题，然后我们希望在一个组件被按压的时候调用这个函数，通常习惯了Java中函数调用的，可能顺手就是：<code>onPress = hello();</code>这对于习惯了java的人来说，可能觉得再普通不过了，但是对于js来说是有问题的。<br><a id="more"></a><br>如果我们希望组件在按压的时候输出这句话，很显然上面的调用方式是做不到的，因为上面这种写法，会在组件被渲染或者被加载的时候就会调用<code>hello</code>这个方法从而输出<code>Hello World</code>，也就是说如果带括号就表示该函数会被立即调用执行，并将返回值赋给<code>onPress</code>，而且当你再按压组件的时候也并不会再继续调用了(你可以试试)，这显然并不是你想要的结果，那么如何达到想要的结果呢？有两种办法：</p>
+<h3 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onPress = hello</span><br></pre></td></tr></table></figure>
+<p>这看起来是将函数赋值给<code>onPress</code>啊，是的，确切地说js中函数也是对象，这里就是将改函数对象的引用或者说是入口地址赋值给<code>onPress</code>，然后在我们按压组件触发onPress动作的时候，就会真正地调用<code>hello</code>函数，打印出<code>Hello World</code>。</p>
+<h3 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var hi = funtion hello()&#123;</span><br><span class="line">  document.write(&apos;Hello World&apos;);</span><br><span class="line">&#125;</span><br><span class="line">onPress = hi;</span><br><span class="line">通过hi();这种也是相当于直接调用hello函数</span><br></pre></td></tr></table></figure>
+<p>这样看起来可能更直观一些，也就是先将函数赋值给一个变量，然后把该变量(指向函数的一个引用变量)赋值给<code>onPress</code>函数，因为<code>onPress</code>也是一个普通的函数，可以给它赋一个值，也可以给它赋一个函数，所以如果直接是第一种做法的话，就相当于把<code>hello</code>函数的返回值(虽然这里并没有显式的返回值)赋值给<code>onPress</code>了，自然达不到你想要按压组件调用函数输出<code>Hello World</code>的效果了。</p>
+<p>再延伸一点就到ES6引进的箭头函数了(这里就不多说了)：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hi = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">document</span>.write(<span class="string">'Hello World'</span>);</span><br><span class="line">&#125;</span><br><span class="line">onPress = hi;</span><br></pre></td></tr></table></figure></p>
+<p>js还真是风骚啊。。。</p>
 
       
     </div>
@@ -568,7 +552,7 @@ document.write(&apos;Hello World&apos;);
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#絮叨"><span class="nav-number">1.</span> <span class="nav-text">絮叨</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#js中的函数"><span class="nav-number">2.</span> <span class="nav-text">js中的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种"><span class="nav-number">2.1.</span> <span class="nav-text">第一种</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二种"><span class="nav-number">2.2.</span> <span class="nav-text">第二种</span></a></li></ol></li></ol></div>
             
 
           </div>
