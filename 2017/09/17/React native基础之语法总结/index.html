@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="js,React native,const,function,let,语法," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="絮叨最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意哈 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goo">
+<meta name="keywords" content="js,React native,const,function,let,语法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React native基础之语法总结">
+<meta property="og:url" content="http://yoursite.com/2017/09/17/React native基础之语法总结/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="絮叨最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意哈 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React native基础之语法总结">
+<meta name="twitter:description" content="絮叨最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意哈 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goo">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/17/React native基础之语法总结/"/>
+
+
+
+
+
+  <title>React native基础之语法总结 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/17/React native基础之语法总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React native基础之语法总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T00:01:20+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-native/" itemprop="url" rel="index">
+                    <span itemprop="name">React native</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="絮叨"><a href="#絮叨" class="headerlink" title="絮叨"></a>絮叨</h1><p>最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：</p>
+<ol>
+<li>React native语法感觉好随意哈</li>
+<li>代码看起来好乱啊</li>
+</ol>
+<p>不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Google搜索，大概整理了一些React native中容易忽略的基础东西(本文基于最新的ES6语法)</p>
+<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>变量感觉React native和Java或者Python还是有挺多不一样的地方的，作为弱类型语言，React native里面竟然有三个定义变量的关键字：var,let和const<br><a id="more"></a></p>
+<ul>
+<li><p>var</p>
+<p>这个学过js的应该都清除，没记错的话js最早一直都是用这个来定义变量</p><p></p>
+</li>
+<li><p>let</p>
+<p>之前学习swift的时候，好像swift语法里面也有let这个定义变量的关键字，在React native中，let和var的主要区别是作用域不同，var的作用域是函数内，也就是在一个函数内的任何地方都可以访问或者修改var定义的变量，而使用let定义的变量，只在定义该变量的代码区块内可用</p>
+</li>
+<li><p>const</p>
+<p>这个和let的作用域相同，都在定义改变量的代码块内可用，它和let不同的是，const定义的变量是不可以改变的，类似java中带final的关键字变量，声明的时候需要赋值</p>
+</li>
+</ul>
+<h1 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h1><ul>
+<li><p></p><p>=&gt;(Arrow functions)</p>
+<p>在看React native文档的时候，经常可以看到=&gt;这个符号，比如下面这段代码：</p>
+<pre><code>function getMoviesFromApiAsync() {
+</code></pre><p>  return fetch(‘<a href="https://facebook.github.io/react-native/movies.json&#39;" target="_blank" rel="noopener">https://facebook.github.io/react-native/movies.json&#39;</a>)</p>
+<pre><code>.then((response) =&amp;gt; response.json())
+.then((responseJson) =&amp;gt; {
+  return responseJson.movies;
+</code></pre><p>  })<br>  .catch((error) =&gt; {</p>
+<pre><code>console.error(error);
+</code></pre><p>  });<br>}<br><code>&lt;/pre&gt;
+在函数getMoviesFromApiAsync函数里面，两次看到=&gt;这个符号，这个符号官方定义是叫做箭头函数(Arrow functions)，它语法简洁，和java 8中的lambda蛮像的，基本语法如下：
+&lt;pre&gt;</code>(param1, param2, …, paramN) =&gt; { statements }<br>(param1, param2, …, paramN) =&gt; expression<br>// equivalent to: (param1, param2, …, paramN) =&gt; { return expression; }<br>// Parentheses are optional when there’s only one parameter name:<br>(singleParam) =&gt; { statements }<br>singleParam =&gt; { statements }<br>// A function with no parameters should be written with a pair of parentheses.<br>() =&gt; { statements }<br>`<br>看完基本语法你就会明白上面的例子中(response) =&gt; response.json和(responseJson) =&gt; {return responseJson.movies;}的含义了：=&gt;前面小括号里面的相当于参数，=&gt;后面相当于函数返回值或者函数表达式<br>有几点需要注意的就是：</p>
+<pre><code>*   如果没有参数需要传入，直接写()，切记不可省略
+</code></pre><ul>
+<li>如果只有一个参数，()是可写可不写的</li>
+<li>两个以上的参数，()是必须要写的</li>
+</ul>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>在java中假设你定义了一个String类型的变量name=”World”，然后需要输出Hello,World!的时候，一般都是printf(“Hello,” + name + “!”)，现在在React native里面这种拼接也是允许的，但还有一种拼接方式如下：</p>
+<p><pre>`”Hello, ${name}!”</pre></p>
+</li>
+</ul>
+<p>这个和Android中字符串format是有点类似的</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次就遇到了大概这些不明白的，然后学习总结了一下，后面遇到新的不明白的再继续总结，其实习惯了，感觉写React native也挺好的！<br>一个Hello World的React native项目：<a href="https://github.com/picksomething/ReactAndroidApp" target="_blank" rel="noopener">点击这里!</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/React-native/" rel="tag"># React native</a>
+          
+            <a href="/tags/const/" rel="tag"># const</a>
+          
+            <a href="/tags/function/" rel="tag"># function</a>
+          
+            <a href="/tags/let/" rel="tag"># let</a>
+          
+            <a href="/tags/语法/" rel="tag"># 语法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/29/Android上传Library到JCenter可能遇到的问题/" rel="next" title="Android上传Library到JCenter可能遇到的问题">
+                <i class="fa fa-chevron-left"></i> Android上传Library到JCenter可能遇到的问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/18/React native基础之调用Android本地方法/" rel="prev" title="React native基础之调用Android本地方法">
+                React native基础之调用Android本地方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#絮叨"><span class="nav-number">1.</span> <span class="nav-text">絮叨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数调用"><span class="nav-number">3.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">4.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

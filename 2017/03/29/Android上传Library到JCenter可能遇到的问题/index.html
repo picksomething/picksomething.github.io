@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,Gradle,JCenter,Library," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言这并不是一篇教你如何step by step上传Android Library到JCenter，因为你随便搜一下，都会发现很多那样的文章，而且几乎都大同小异(互相抄)。正式因为抄来抄去，可能很多人并不会深究这个教程有什么问题，自己按照这个教程能够达到目的吗，可能会遇到了什么问题？本文的主要目的就是结合自己完成的过程告诉你按照网上的大部分教程你可能会遇到什么问题，当你因为参考网上大多数教程而又一">
+<meta name="keywords" content="Android,Gradle,JCenter,Library">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android上传Library到JCenter可能遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2017/03/29/Android上传Library到JCenter可能遇到的问题/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="前言这并不是一篇教你如何step by step上传Android Library到JCenter，因为你随便搜一下，都会发现很多那样的文章，而且几乎都大同小异(互相抄)。正式因为抄来抄去，可能很多人并不会深究这个教程有什么问题，自己按照这个教程能够达到目的吗，可能会遇到了什么问题？本文的主要目的就是结合自己完成的过程告诉你按照网上的大部分教程你可能会遇到什么问题，当你因为参考网上大多数教程而又一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2017/03/bintray-744x465.png">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android上传Library到JCenter可能遇到的问题">
+<meta name="twitter:description" content="前言这并不是一篇教你如何step by step上传Android Library到JCenter，因为你随便搜一下，都会发现很多那样的文章，而且几乎都大同小异(互相抄)。正式因为抄来抄去，可能很多人并不会深究这个教程有什么问题，自己按照这个教程能够达到目的吗，可能会遇到了什么问题？本文的主要目的就是结合自己完成的过程告诉你按照网上的大部分教程你可能会遇到什么问题，当你因为参考网上大多数教程而又一">
+<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2017/03/bintray-744x465.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/29/Android上传Library到JCenter可能遇到的问题/"/>
+
+
+
+
+
+  <title>Android上传Library到JCenter可能遇到的问题 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/29/Android上传Library到JCenter可能遇到的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android上传Library到JCenter可能遇到的问题</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T18:25:30+08:00">
+                2017-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这并不是一篇教你如何step by step上传Android Library到JCenter，因为你随便搜一下，都会发现很多那样的文章，而且几乎都大同小异(互相抄)。正式因为抄来抄去，可能很多人并不会深究这个教程有什么问题，自己按照这个教程能够达到目的吗，可能会遇到了什么问题？本文的主要目的就是结合自己完成的过程告诉你按照网上的大部分教程你可能会遇到什么问题，当你因为参考网上大多数教程而又一直失败正在抓狂的时候，看看本文也许有帮助。</p>
+<h4 id="问题一：在bintray-com上注册自己的账号"><a href="#问题一：在bintray-com上注册自己的账号" class="headerlink" title="问题一：在bintray.com上注册自己的账号"></a>问题一：在<code>bintray.com</code>上注册自己的账号</h4><p>大部分教程都是告诉你打开<code>https://bintray.com/</code>然后注册一个账号，然而随着bintray的更新，你现在打开该网站看到的是这样的(截止2017年03月29)：<br><a id="more"></a><br><a href="http://www.picksomething.cn/wp-content/uploads/2017/03/bintray.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2017/03/bintray-744x465.png" alt=""></a><br>你可能有点懵，为什么注册账号看起来还要钱，当你点击<strong>START YOUR FREE TRIAL</strong>去注册的时候，你其实已经进入了团队账号注册，类似于企业账号，所以你会发现会让你填写Company Name和Organization ID，除此之外和注册个人账号都一样了，如果你是这样注册的， 等你按照网上大多数的教程step by step往下走的时候，你会发现到最后执行上传命令的时候，一直出现这样的错误：</p>
+<pre><code>HTTP/1.1 401 Unauthorized [message:This resource requires authentication]
+`&lt;/pre&gt;
+
+按照网上的教程你以为是用户名或者apikey填错了，但是你会发现你怎么改都没用。
+
+正确的个人账号注册方法是点击**START YOUR FREE TRIAL**下方的**For Open Source Distribution Sign Up Here**来Sign Up，细心的你可能会发现，二者的注册地址是不一样的，企业的注册地址是`https://bintray.com/signup`，个人账号的注册地址是`https://bintray.com/signup/oss`。
+
+这个坑浪费了我很多时间，当然也不是说如果按照企业账号注册最后就不能完成上传，一样可以，但是网上的教程几乎都是针对个人账号而言，如果你注册的是企业账号按照网上的教程是一定不能成功的，因为企业账号需要配置组织名称。
+
+#### 问题二：artifactId要和Library module的名字一样
+
+当你到最后上传Library到JCenter的时候，你可能会遇到这样的错误：
+
+&lt;pre&gt;`HTTP/1.1 400 Bad Request [
+message:Unable to upload files: Maven group, artifact or version defined in the pom file do not match the file path...]
+</code></pre><p>网上大多数可能会说是要artifactId要和libraryName保持一致，其实是artifactId要和你要上传的Library module的名字保持一致</p>
+<p>这是我按照网上的大多数教程上传的时候遇到的两个比较坑的问题，其他如果还有什么问题，那应该就是个例了，google一下，应该都好解决。</p>
+<p>当然，针对网上大多数的教程，我还有一些建议：</p>
+<ul>
+<li>配置bintrayRepo的时候，并没有所谓的默认就是maven这一说，不要以为新建仓库的时候仓库类型选择是maven，默认名字就应该是maven，这个可以随便写，而且建议新建康库的时候最好不要叫maven，要么结合自己的用户名新建，要么结合功能用处新建，比如Android-xx等。</li>
+<li>配置bintrayName的时候，网上的教程基本上也是所谓的要和你在仓库里面新建的package保持一致，保持一致这句话没毛病，然而其实你没必要在仓库里面先新建一个package，只要你有仓库，其他信息都配置正确，上传的时候会自动按照你配置的<code>bintrayName</code>在你的仓库里面创建的。</li>
+</ul>
+<h4 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h4><p>自己在github上放了上传到JCenter过程中简化gradle文件配置的模板文件，README里面也写清楚了如何使用，有需要的可以去参考一下：<a href="https://github.com/picksomething/jcenter-configuration" target="_blank" rel="noopener">github配置文件</a></p>
+<p>同时自己也放上自己第一次上传的一个Library，需要的可以去查看：<a href="https://github.com/picksomething/sliding-tab-indicator" target="_blank" rel="noopener">slidingtabindicator</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Gradle/" rel="tag"># Gradle</a>
+          
+            <a href="/tags/JCenter/" rel="tag"># JCenter</a>
+          
+            <a href="/tags/Library/" rel="tag"># Library</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/21/Android isConnected在网络连接正常的情况下依然返回false？/" rel="next" title="Android isConnected在网络连接正常的情况下依然返回false？">
+                <i class="fa fa-chevron-left"></i> Android isConnected在网络连接正常的情况下依然返回false？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/17/React native基础之语法总结/" rel="prev" title="React native基础之语法总结">
+                React native基础之语法总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题一：在bintray-com上注册自己的账号"><span class="nav-number">1.0.1.</span> <span class="nav-text">问题一：在bintray.com上注册自己的账号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写在最后"><span class="nav-number">1.0.2.</span> <span class="nav-text">写在最后</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

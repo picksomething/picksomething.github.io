@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,Activiy,加载模式," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
+<meta name="keywords" content="Android,Activiy,加载模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中Activity的四种加载模式">
+<meta property="og:url" content="http://yoursite.com/2013/09/17/Android中Activity的四种加载模式/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中Activity的四种加载模式">
+<meta name="twitter:description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/09/17/Android中Activity的四种加载模式/"/>
+
+
+
+
+
+  <title>Android中Activity的四种加载模式 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/17/Android中Activity的四种加载模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android中Activity的四种加载模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-09-17T12:25:00+08:00">
+                2013-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式<code>android:launchMode</code>属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的时候再过来看看。<br>配置Activity的时候可以为其指定加载模式，Activity有四种加载模式：</p>
+<ul>
+<li><p>standard：标准模式，这是默认的加载模式。</p>
+</li>
+<li><p>singleTop：Task顶单例模式。</p>
+</li>
+<li><p>singleTask：Task内单例模式。</p>
+</li>
+<li><p>singleInstance：全局单例模式。<br>介绍加载模式之前先介绍Android对Activity的管理：Android采用Task来管理多个Activity，当我们启动一个应用时，Android就会为之创建一个Task，然后启动这个应用的入口Activity。</p>
+<a id="more"></a>
+<p>Task是一个有点复杂的概念，并不是真实存在的类或者接口，我们无法真正去访问它，但是可以调用Activity的getTaskId()方法来获取它所在的Task的ID。我们可以把Task理解成Activity栈，Task以栈的形式来管理Activity：先启动的Activity被放在Task栈底，后启动的Activity被放在Task栈顶。<br>加载模式就复杂管理实例化，加载Activity的方式，并可以控制Activity与Task之间的加载关系。言归正传，介绍四种加载模式<br><strong>standard模式</strong><br>每次通过这种模式来启动目标Activity时，Android总会为目标Activity创建一个新的实例，并将该Activity添加到当前的Task栈中——这种模式不会启动新的Task，新Activity将被添加到原来的Task中。<br>看下面的代码片段：</p>
+<p>Intent intent = new Intent(StandardTest.this, StandardTest.class);<br>startActivity(intent);</p>
+</li>
+</ul>
+<p>这个代码片段就是通过点击按钮让其再次启动自身这个<code>Activity</code>，程序将会不断启动新的StandardTest实例，(因为不同的Activity实例其hashCode是不同的)，但它们所在的TaskID总是相同的，这表明这种加载模式不会使用全新的Task。<br>当用户单击手机的返回键的时候，系统会逐一从Activity栈顶删除Activity实例。<br><strong>singlTop模式</strong><br>这种模式与standar模式基本相似，不同点是：当将要被启动的Activity已经位于Task栈顶时，系统就不会重新创建目标Activity的实例，而是直接复用已有的Activity实例。<br>如果将上面实例中的StandardTest Activity的加载模式改成standard加载模式，无论用户点击多少次按钮，界面上的程序将不会有任何变化。<br>如果将要被启动的目标Activity没有位于Task栈顶，此时系统会重新创建目标Activity的实例，并将它加载到Task的栈顶。<br><strong>singleTask模式</strong><br>采用这种加载模式的Activity在同一个Task内只有一个实例，当系统采用singleTask模式启动目标Activity是，可分为以下三种情况</p>
+<ol>
+<li><p>将要启动的Activity不存在，系统将会创建目标Activity的实例，并将它加入Task栈顶。</p>
+</li>
+<li><p>如果将要启动的Activity已经位于Task栈顶，此时与singleTop模式的行为相同。</p>
+</li>
+<li><p>如果将要启动的Activity已经存在，但没有位于Task栈顶，系统将会把位于该Activity上面的所有Activity移出Task栈，从而使目标Activity转入栈顶。<br><strong>singleInstance模式</strong><br>在这种加载模式下，系统保证无论从哪个Task中启动目标Activity，只会创建一个目标Activity实例，并会使用一个全新的Task栈来装载该Activity实例。<br>当系统采用该模式启动Activity时，可分为以下两种情况：</p>
+</li>
+</ol>
+<ul>
+<li><p>如果将要启动的目标Activity不存在，系统会先创建一个全新的Task，再创建一个目标Activity的实例，并将它加载到新的Task的栈顶。</p>
+</li>
+<li><p>如果目标Activity已经存在，无论它在哪个应用程序中，无论它位于哪个Task中，系统将会把该Activity所在的Task转到前台，从而使该Activity显示出来。<br>需要指出的是，采用<code>singleInstance</code>模式加载Activity总是位于Task栈顶，采用singleInstance模式加载Activity所在的Task只包含该Activity。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Activiy/" rel="tag"># Activiy</a>
+          
+            <a href="/tags/加载模式/" rel="tag"># 加载模式</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/09/02/对于Java中正则表达式的一点理解/" rel="next" title="对于Java中正则表达式的一点理解">
+                <i class="fa fa-chevron-left"></i> 对于Java中正则表达式的一点理解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/10/18/onTextChanged参数解释及实现EditText字数监听/" rel="prev" title="onTextChanged参数解释及实现EditText字数监听">
+                onTextChanged参数解释及实现EditText字数监听 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,KONKA,智能电视," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="上一篇简单分析了Android原生的待机流程，这一篇分析一下我们康佳智能电视的STR待机流程。智能电视的待机流程和Android原生的还是有一些差别的。STR是Suspend to RAM的缩写，顾名思义就是挂起到内存。所以我们官方给STR待机起的名字叫做快速待机，也就是待机时间快，待机起来之后还会会到待机前的状态。 OK，言归正传，同样我们先把大致的流程图贴出来智能电视是通过遥控器上的待机键来使">
+<meta name="keywords" content="Android,KONKA,智能电视">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android智能电视待机流程分析">
+<meta property="og:url" content="http://yoursite.com/2014/05/03/Android智能电视待机流程分析/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="上一篇简单分析了Android原生的待机流程，这一篇分析一下我们康佳智能电视的STR待机流程。智能电视的待机流程和Android原生的还是有一些差别的。STR是Suspend to RAM的缩写，顾名思义就是挂起到内存。所以我们官方给STR待机起的名字叫做快速待机，也就是待机时间快，待机起来之后还会会到待机前的状态。 OK，言归正传，同样我们先把大致的流程图贴出来智能电视是通过遥控器上的待机键来使">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/11-300x268.png">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android智能电视待机流程分析">
+<meta name="twitter:description" content="上一篇简单分析了Android原生的待机流程，这一篇分析一下我们康佳智能电视的STR待机流程。智能电视的待机流程和Android原生的还是有一些差别的。STR是Suspend to RAM的缩写，顾名思义就是挂起到内存。所以我们官方给STR待机起的名字叫做快速待机，也就是待机时间快，待机起来之后还会会到待机前的状态。 OK，言归正传，同样我们先把大致的流程图贴出来智能电视是通过遥控器上的待机键来使">
+<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/11-300x268.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2014/05/03/Android智能电视待机流程分析/"/>
+
+
+
+
+
+  <title>Android智能电视待机流程分析 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/05/03/Android智能电视待机流程分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android智能电视待机流程分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-05-03T15:59:02+08:00">
+                2014-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇简单分析了Android原生的待机流程，这一篇分析一下我们康佳智能电视的STR待机流程。智能电视的待机流程和Android原生的还是有一些差别的。STR是Suspend to RAM的缩写，顾名思义就是挂起到内存。所以我们官方给STR待机起的名字叫做快速待机，也就是待机时间快，待机起来之后还会会到待机前的状态。</p>
+<p>OK，言归正传，同样我们先把大致的流程图贴出来<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/11.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/11-300x268.png" alt="1"></a><br>智能电视是通过遥控器上的待机键来使电视待机的，当用户按下Power key的时候，会在interceptKeyBeforeQueueing中拦截判断，代码片段如下所示：</p>
+<pre><code>    int keyCode = event.getKeyCode();
+&lt;!--more--&gt;
+    if (enable_str == true) {
+        if (&quot;1&quot;.equals(SystemProperties.get(&quot;mstar.str.suspending&quot;))) {
+            Log.d(TAG, &quot;STR forbid keyCode=&quot; + keyCode + &quot;,down=&quot; +down);
+            return 0;
+        }
+        if (&quot;2&quot;.equals(SystemProperties.get(&quot;mstar.str.suspending&quot;))) {
+            //Fake key for STR power on
+            if (keyCode == KeyEvent.KEYCODE_TV_POWER) {
+                Log.d(TAG, &quot;STR dc on down=&quot; + down);
+                keyCode = KeyEvent.KEYCODE_POWER;
+                if (down == false) {
+                    if (mPowerKeyHandled == false) {
+                        Log.d(TAG, &quot;STR power key down is missing !!!&quot;);
+                        return 0;
+                    } else {
+                        Log.d(TAG, &quot;STR dc on mstar.str.suspending = 1&quot;);
+                        SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;);
+                    }
+               }
+            } else {
+                Log.d(TAG, &quot;STR dc on forbid keyCode=&quot; + keyCode);
+           return 0;
+        }
+    }
+}
+`&lt;/pre&gt;
+我们可以看到在这个方法中有一句`SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;)`;也就是当Power key第一次被按下的时候会执行该动作，将`mstar.str.suspending`变量的值置为1，然后如果这个过程中用户再次按下任意一个按键的时候就会进入第一个判断语句，然后被return掉不处理，这就是挡key机制。
+
+补充一下挡key机制：为了防止待机时乱按key导致问题，会加入一套挡key机制：一旦待机，任何key(包括Power key)都会被挡掉。知道SRT待机回来才会放开，具体实现是这样的：
+
+1.收到Power key(value == 26)之后,会在其key down时，把`mstar.str.suspending`置为1，此时会挡掉所有的key。
+
+2.SRT开机后，SuperNova(MStar的芯片系统，类似C++库)那边会把`mstar.str.suspending`置为2，并发一个假的Power key (value == 117) (之所以不用原来的Power key，是因为第1步中把所有的key都挡掉了，原来的Power key没作用了)，来触发开机。但是，此时Android还没有ready好，仍然不能响应任何key，所以再一次把mstar.str.suspending置为1。给人感觉好像是啥都没做，值从1-2-1，但是通过这一步，我们获得了开机的事件，就可以继续跑Android的开机流程了。
+
+3.最后，等到Android那边ready，也就是`ActivityManagerService.java`中的`comOutOfSleepIfNeededLocked`里面把mstar.str.suspending置为0。到此SRT就结束了，开始响应所有的key。
+
+上面插播了一段挡key机制，我们继续之前的话题。用户第一次按下Power key之后，mstar.str.suspending被置为1.同时通过如下代码还会将mSystemSuspend(str早期的标志位)置为true。
+&lt;pre&gt;`case KeyEvent.KEYCODE_POWER: {
+    // KONKA Patch Start (+caobin 2014-01-03)
+    if (down) {
+        if (!mSystemSuspend) {
+            result = ACTION_PASS_TO_USER;
+            mSystemSuspend = true;
+            Log.d(TAG, &quot;make mSystemSuspend = true, result = &quot; + result);
+        } else {
+            result &amp;amp;= ~ACTION_PASS_TO_USER;
+            mSystemSuspend = false;
+            Log.d(TAG, &quot;STR resume, make mSystemSuspend false, result = &quot; + result);
+        }
+        if (isScreenOn &amp;amp;&amp;amp; !mPowerKeyTriggered
+                &amp;amp;&amp;amp; (event.getFlags() &amp;amp; KeyEvent.FLAG_FALLBACK) == 0) {
+            mPowerKeyTriggered = true;
+            mPowerKeyTime = event.getDownTime();
+            interceptScreenshotChord();
+        }
+
+        ITelephony telephonyService = getTelephonyService();
+        boolean hungUp = false;
+        if (telephonyService != null) {
+            try {
+                if (telephonyService.isRinging()) {
+                    // Pressing Power while there&apos;s a ringing incoming
+                    // call should silence the ringer.
+                    telephonyService.silenceRinger();
+                } else if ((mIncallPowerBehavior
+                     &amp;amp; Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_HANGUP) != 0
+                     &amp;amp;&amp;amp; telephonyService.isOffhook()) {
+                    // Otherwise, if &quot;Power button ends call&quot; is enabled,
+                    // the Power button will hang up any current active call.
+                    hungUp = telephonyService.endCall();
+                }
+            } catch (RemoteException ex) {
+                Log.w(TAG, &quot;ITelephony threw RemoteException&quot;, ex);
+            }
+        }
+        interceptPowerKeyDown(!isScreenOn || hungUp
+               || mVolumeDownKeyTriggered || mVolumeUpKeyTriggered);
+        Log.d(TAG, &quot;str power key down.before Queeing POWER_KEY down, 
+            result = &quot; + result);
+        } 
+        else {
+            Log.d(TAG, &quot;str power key up&quot;);
+            // MStar Android Patch Begin
+            // normal dc off
+            if (enable_str == true) {
+                mPowerKeyTriggered = false;
+                cancelPendingScreenshotChordAction();
+                if (interceptPowerKeyUp(canceled || mPendingPowerKeyUpCanceled)) {
+                    result = (result &amp;amp; ~ACTION_WAKE_UP) | ACTION_GO_TO_SLEEP;
+                }
+            mPendingPowerKeyUpCanceled = false;
+            Log.d(TAG, &quot;mSystemSuspend = &quot; + mSystemSuspend + &quot;, result = &quot; + result);
+            if (mSystemSuspend) {
+                Log.d(TAG, &quot;we need wait shutdown logo finish&quot;);
+                SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;); 
+                int alreadyWait = 0;
+                while (!isStandbyLogoFinish) {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    alreadyWait += 200;
+                    if (alreadyWait &amp;gt;= STANDBY_LOGO_WAIT_TIME_OUT) {
+                        Log.d(TAG, &quot;!!!!!! WRONG !!!! STADNBY WAIT TOO LONG !!!!!&quot;);
+                        break;
+                    }
+                }
+                isStandbyLogoFinish = false;
+            }
+            Log.d(TAG, &quot;enter str = &quot; + System.currentTimeMillis());
+        }
+        // MStar Android Patch End
+        Log.d(TAG, &quot;before Queeing POWER_KEY up, result = &quot; + result);
+    }
+//KONKA Patch End
+`&lt;/pre&gt;
+然后会在`interceptKeyBeforeDispatching`方法中拦截Powerkey down事件
+&lt;pre&gt;`// KONKA Patch Start (+caobin 2014-01-03)
+else if (keyCode == KeyEvent.KEYCODE_POWER) {
+    if (STANDBY_WANT_EXIT == mInVeryQuickStandby) {
+        Log.d(TAG, &quot;before dispatching POWER_KEY, STANDBY_WANT_EXIT&quot;);
+        if (!down) {
+            Log.d(TAG, &quot;powerkey up, exitVeryQuickStandby&quot;);
+            exitVeryQuickStandby();
+        } else {
+            Log.d(TAG, &quot;powerkey down, throw key&quot;);
+            return -1;
+        }
+    } else {
+        if (down &amp;amp;&amp;amp; (0 == repeatCount)) {
+            if (isStandbyHintNeeded()) {
+                Log.d(TAG, &quot;before dispatching POWER_KEY, STR, powerkey down&quot;);
+                isStandbyLogoFinish = false;
+                mHandler.post(rStandbyDialogConfirmCallback);
+                // killCNTVBeforeStandby();
+                // setSleepModeToDongle();
+                return -1;
+            }
+        }
+    }
+}
+// KONKA Patch End
+`&lt;/pre&gt;
+此时会走else中的流程，因为`int mInVeryQuickStandby = STANDBY_NORMAL`可以看出`mInVeryQuickStandby` 初始值不是`STANDBY_WANT_EXIT`。到这里会首先将`isStandbyLogoFinish`置为false就是说提示框还没有消失，同时会调用`rStandbyDialogConfirmCallback`线程来绘制提示框。我们看一下这个线程的代码：
+&lt;pre&gt;`final Runnable rStandbyDialogConfirmCallback = new Runnable() {
+    @Override 
+    public void run() {
+        Log.d(TAG, &quot;standbyDialog, in confirm callback -- modify by caobin&quot;);
+        if (null == standbyHintDialog) {
+            standbyHintDialog = StandbyHintDialog.create(mContext, mHandler);
+        }
+        Log.d(TAG, &quot;standby logo shown = &quot; + System.currentTimeMillis());
+        closeDoubleWhenStandy();
+        ((AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE)).
+             setMasterMute(true, -10);
+        standbyHintDialog.setHintEndCallback(rStandbyHintEndCallback);
+        standbyHintDialog.setBeforDismissCallback(rDisableBacklight);
+        standbyHintDialog.show();
+        Intent intent = new Intent(&quot;com.konka.tv.hotkey.service.UNMUTE&quot;);
+        mContext.sendBroadcastAsUser(intent, UserHandle.CURRENT);
+        if (!isNeedVeryQuickStandby()) {
+            mContext.sendBroadcastAsUser(new Intent(Intent.ACTION_SCREEN_OFF), 
+              UserHandle.CURRENT);
+        }
+    }
+};
+`&lt;/pre&gt;
+该方法中首先会调用`StandbyHintDialog`类中的create创建对话框，然后会执行一些其他动作，比如关闭双通道之类的，接下来的两句
+&lt;pre&gt;`standbyHintDialog.setHintEndCallback(rStandbyHintEndCallback);
+standbyHintDialog.setBeforDismissCallback(rDisableBacklight);
+`&lt;/pre&gt;
+我们从`StandbyHintDialog.java`这个类中找到这两个方法如下：
+&lt;pre&gt;`public void setHintEndCallback(Runnable callback) {
+    mCallbackRef = new WeakReference&amp;lt;Runnable&amp;gt;(callback);
+}
+public void setBeforDismissCallback(Runnable callback) {
+    mBeforDismiss = new WeakReference&amp;lt;Runnable&amp;gt;(callback);
+}
+`&lt;/pre&gt;
+其实就是设置回调线程而已，找出回调的线程，源码如下，这个是rStandbyHintEndCallback线程源码：
+&lt;pre&gt;`final Runnable rStandbyHintEndCallback = new Runnable() {
+    @Override 
+    public void run() {
+        Log.d(TAG, &quot;standbyHintDialog, in hint end callback -- modify by caobin&quot;);
+        if (null != standbyHintDialog) {
+            standbyHintDialog = null;
+        }
+        if (null != standbyDialog) {
+            standbyDialog = null;
+        }
+        if (isNeedVeryQuickStandby()) {
+            if (!keyguardOn()) {
+                try {
+                    Intent fakeStandby = new Intent();
+                    fakeStandby.setClassName(&quot;com.konka.fakestandby&quot;, 
+                                    &quot;com.konka.fakestandby.MainActivity&quot;);
+                    fakeStandby.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                    mContext.startActivityAsUser(fakeStandby, UserHandle.CURRENT);
+                } catch (ActivityNotFoundException e) {}
+                }
+                enterVeryQuickStandby();
+            } else {}
+        isStandbyLogoFinish = true;
+    }
+};
+`&lt;/pre&gt;
+这个是`rDisableBacklight`线程源码：
+&lt;pre&gt;`final Runnable rDisableBacklight = new Runnable() {
+    @Override 
+    public void run() {
+        if (mSystemSuspend) {
+            if (isNeedVeryQuickStandby()) {
+                Log.d(TAG, &quot;entering fakeStandby, we can close backlight&quot;);
+            } else {
+                Log.d(TAG, &quot;entering STR, we can close backlight&quot;);
+            }
+            try {
+                if (null != TvManager.getInstance()) {
+                    TvManager.getInstance().getPictureManager().disableBacklight();
+                }
+            } catch (TvCommonException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+};
+</code></pre><p><code>rStandbyHintEndCallback</code>线程是在对话框显示结束之后，<strong><span style="color: #ff0000;">启动一个Activity，其实这是一个假的Activity，其目的就是起一个Activity从而使电视待机前的Activity调用onstop方法，免得用户在玩游戏的时候，等待机起来发现游戏已经Game over了多不好啊</span>。</strong>然后将isStandbyLogoFinish置为true，这个变量在STR线程中要读，一旦为true，STR认为待机前的工作做完了，就开始进入STR待机了。</p>
+<p>而<code>rDisableBacklight</code>线程则是关闭电视背光的功能。<code>enterVeryQuickStandby()</code>里面会设置一些待机呼吸灯的模式。</p>
+<p>此时当<code>Power key up</code>的时候，会在<code>interceptKeyBeforeQueueing</code>中进行处理，如果发现<code>isStandbyLogoFinish</code>已经为true，那么久进入SuperNova的待机。</p>
+<p>这就是KONKA智能电视待机的大致流程。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/KONKA/" rel="tag"># KONKA</a>
+          
+            <a href="/tags/智能电视/" rel="tag"># 智能电视</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/05/03/Android原生待机流程frameworks层分析/" rel="next" title="Android原生待机流程frameworks层分析">
+                <i class="fa fa-chevron-left"></i> Android原生待机流程frameworks层分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/06/30/异步获取网络图片和BitmapFactory.Options缩放图片/" rel="prev" title="异步获取网络图片和BitmapFactory.Options缩放图片">
+                异步获取网络图片和BitmapFactory.Options缩放图片 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

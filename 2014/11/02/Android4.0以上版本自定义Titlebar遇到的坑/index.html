@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,ActionBar,TitleBar,自定义," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服。比如android4.0以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题： Titlebar就是activity最上面显示app name的那个东东，今天在">
+<meta name="keywords" content="Android,ActionBar,TitleBar,自定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android4.0以上版本自定义Titlebar遇到的坑">
+<meta property="og:url" content="http://yoursite.com/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服。比如android4.0以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题： Titlebar就是activity最上面显示app name的那个东东，今天在">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/12.png">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.424Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android4.0以上版本自定义Titlebar遇到的坑">
+<meta name="twitter:description" content="虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服。比如android4.0以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题： Titlebar就是activity最上面显示app name的那个东东，今天在">
+<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/12.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/"/>
+
+
+
+
+
+  <title>Android4.0以上版本自定义Titlebar遇到的坑 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android4.0以上版本自定义Titlebar遇到的坑</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-02T22:34:34+08:00">
+                2014-11-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服。比如<code>android4.0</code>以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题：</p>
+<p><code>Titlebar</code>就是activity最上面显示app name的那个东东，今天在coding的时候遇到一个需要自定义titlebar的，当然这个很简单了，就是自己根据需要写一个布局然后替换掉默认的titlebar就可以了，替换代码baidu一下有很多，简单的说就是在activity的onCreate方法中加入下面两句：</p>
+<p>1.告诉activity我要使用自己定义的titlebar，不用你默认的</p>
+<pre><code>requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+`&lt;/pre&gt;
+2.让activity加载自己定义的titlebar的布局
+&lt;pre&gt;`getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);`&lt;/pre&gt;
+然后在`manifest`中自定义titlebar的那个activity中加入自定义的theme，贴上我自定义theme的代码，我使用的是4.4的版本
+&lt;pre&gt;`&amp;lt;style name=&quot;HomePage&quot; parent=&quot;AppTheme&quot;&amp;gt;
+    &amp;lt;item name=&quot;android:windowTitleSize&quot;&amp;gt;60dp&amp;lt;/item&amp;gt;
+    &amp;lt;item name=&quot;android:windowTitleBackgroundStyle&quot;&amp;gt;@style/WindowTitleBackground&amp;lt;/item&amp;gt;
+&amp;lt;/style&amp;gt;
+&amp;lt;style name=&quot;WindowTitleBackground&quot;&amp;gt;
+    &amp;lt;item name=&quot;android:background&quot;&amp;gt;@color/blue&amp;lt;/item&amp;gt;
+&amp;lt;/style&amp;gt;
+`&lt;/pre&gt;
+这个时候第一个坑出现了
+&lt;!--more--&gt;
+**坑一：**报如下错误：
+&lt;pre&gt;`android.util.AndroidRuntimeException: 
+You cannot combine custom titles with other title features
+`&lt;/pre&gt;
+原因是说android4.0以上使用actionbar替代titlebar了，所以调用
+&lt;pre&gt;`requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);`&lt;/pre&gt;
+** 网上解决办法：**使用android自带的主题就OK了，也就是将`parent=“AppTheme”`
+换成`parent=“android:Theme”`,自己试了一下发现确实不报错了，可以正常运行了，但是问题来了：整个app背景都变成黑色的了，这根本不是我想要的颜色啊。。。于是查看`android:Theme`的源码(一部分)发现是这样写的：
+&lt;pre&gt;`&amp;lt;style name=&quot;Theme&quot;&amp;gt;
+    &amp;lt;item name=&quot;colorForeground&quot;&amp;gt;@android:color/bright_foreground_dark&amp;lt;/item&amp;gt;
+    &amp;lt;item name=&quot;colorForegroundInverse&quot;&amp;gt;@android:color/bright_foreground_dark_inverse&amp;lt;/item&amp;gt;
+    &amp;lt;item name=&quot;colorBackground&quot;&amp;gt;@android:color/background_dark&amp;lt;/item&amp;gt;
+    &amp;lt;item name=&quot;colorBackgroundCacheHint&quot;&amp;gt;?android:attr/colorBackground&amp;lt;/item&amp;gt;
+    ....
+&amp;lt;/style&amp;gt;
+`&lt;/pre&gt;
+看到colorBackground那句了吗，明白为什么黑了吧。
+
+**最终解决办法：**但是我不想要黑的啊，那就继续想办法解决呗，最终在一国外网址上看到一个老外也遇到这个问题了，他给的解决方法是在自定义的主题中加入这样一句代码：
+&lt;pre&gt;`&amp;lt;item name=&quot;android:windowActionBar&quot;&amp;gt;false&amp;lt;/item&amp;gt;`&lt;/pre&gt;
+那么更改过后的自定义主题就变成这样的了
+&lt;pre&gt;`&amp;lt;style name=&quot;HomePage&quot; parent=&quot;AppTheme&quot;&amp;gt;
+    &amp;lt;item name=&quot;android:windowTitleSize&quot;&amp;gt;60dp&amp;lt;/item&amp;gt;
+    &amp;lt;item name=&quot;android:windowTitleBackgroundStyle&quot;&amp;gt;@style/WindowTitleBackground&amp;lt;/item&amp;gt;
+    &amp;lt;item name=&quot;android:windowActionBar&quot;&amp;gt;false&amp;lt;/item&amp;gt;
+&amp;lt;/style&amp;gt;
+&amp;lt;style name=&quot;WindowTitleBackground&quot;&amp;gt;
+    &amp;lt;item name=&quot;android:background&quot;&amp;gt;@color/blue&amp;lt;/item&amp;gt;
+&amp;lt;/style&amp;gt;
+`&lt;/pre&gt;
+这样这个问题就顺利解决了，这句话的用处就是`disable actionbar`。
+
+**坑二：**启动activity时默认的titlebar会瞬间闪一下
+
+第一个坑填平之后就开始遇到第二个坑了，为什么我每次启动这个自定义title的activity时候，都会闪一下默认的titlebar才加载自定义的titlebar呢，我不是自己定义了吗？为毛默认的还要闪一下，刷存在感吗。。。
+
+**原因：**首先google了一下，发现是这样的：在启动一个application的时候，为了尽快地响应用户，`application`会先从`manifest`中读取相关属性，然后尽快展现一个预览界面给用户，这个界面的展现是可能先于activity的加载的，所以预览界面读取到manifest中有定义theme这个属性，且属性值并不是`@android:style/Theme.NoTitleBar`，默认就会加载显示app name的titlebar，等到activity加载的时候执行到了要自定义titlebar的代码，并且加载了自定义的titlebar，那么就会变成显示自定义的titlebar，所以会出现闪了一下默认的titlebar的情况
+
+**解决办法：**我们可以将activity的theme属性设置为@android:style/Theme.NoTitleBar，告诉app 我不需要titlebar，那样就不会预加载带app name的titlebar了，但是我们自定义的标题栏就没法加载了，现在就需要在activity加载自定义的标题栏的时候让activity知道我还是要加载titlebar的，那么就需要加上这么一句代码：
+&lt;pre&gt;`setTheme(R.style.HomePage);`&lt;/pre&gt;
+还有一点我需要特别强调的是：如果没有加这句
+&lt;pre&gt;`&amp;lt;item name=&quot;android:windowActionBar&quot;&amp;gt;false&amp;lt;/item&amp;gt;`&lt;/pre&gt;
+那么`setTheme`方法要放到`super.onCreate(savedInstanceState);`之前的，否则会报错。
+查看super.onCreate(savedInstanceState)的代码可以知道是和`actionbar`有关系的：
+&lt;pre&gt;`protected void onCreate(Bundle savedInstanceState) {
+    if (DEBUG_LIFECYCLE) 
+        Slog.v(TAG, &quot;onCreate &quot; + this + &quot;: &quot; + savedInstanceState);
+    if (mLastNonConfigurationInstances != null) {
+        mAllLoaderManagers = mLastNonConfigurationInstances.loaders;
+    }
+    if (mActivityInfo.parentActivityName != null) {
+        if (mActionBar == null) {
+            mEnableDefaultActionBarUp = true;
+        } else {
+            mActionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        }
+    }
+ ...
+}
+</code></pre><p>哎，遇到的两个坑总算解决了，贴一张运行的效果图<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/12.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/12.png" alt="1"></a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/ActionBar/" rel="tag"># ActionBar</a>
+          
+            <a href="/tags/TitleBar/" rel="tag"># TitleBar</a>
+          
+            <a href="/tags/自定义/" rel="tag"># 自定义</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/10/30/Linux下开机自动挂载samba目录，且可以正常读写/" rel="next" title="Linux下开机自动挂载samba目录，且可以正常读写">
+                <i class="fa fa-chevron-left"></i> Linux下开机自动挂载samba目录，且可以正常读写
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/11/29/又大了一岁/" rel="prev" title="又大了一岁">
+                又大了一岁 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

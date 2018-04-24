@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,ripple,涟漪动画," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下： 然后动画的具体细节要求是这样的：">
+<meta name="keywords" content="Android,ripple,涟漪动画">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Ripple Animation-涟漪动画">
+<meta property="og:url" content="http://yoursite.com/2015/09/28/Android Ripple Animation-涟漪动画/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下： 然后动画的具体细节要求是这样的：">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/09/ezgif.com-crop.gif">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/09/QQ20150928-2@2x-744x159.png">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/09/QQ20150928-3@2x-744x304.png">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.426Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Ripple Animation-涟漪动画">
+<meta name="twitter:description" content="因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下： 然后动画的具体细节要求是这样的：">
+<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2015/09/ezgif.com-crop.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/09/28/Android Ripple Animation-涟漪动画/"/>
+
+
+
+
+
+  <title>Android Ripple Animation-涟漪动画 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/09/28/Android Ripple Animation-涟漪动画/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Ripple Animation-涟漪动画</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-28T23:16:20+08:00">
+                2015-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/09/ezgif.com-crop.gif" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/09/ezgif.com-crop.gif" alt="ezgif.com-crop"></a> 然后动画的具体细节要求是这样的：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/09/QQ20150928-2@2x.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/09/QQ20150928-2@2x-744x159.png" alt="QQ20150928-2@2x"></a> <a id="more"></a><br>然后google搜索了一下涟漪效果，发现github上有一些类似的开源库，但是发现大部分都是点击按钮然后开始出现涟漪效果，与自己要做的这个涟漪动画不太符合，所以在dwl的指引下，想着干脆自己实现一个算了，于是就尝试着自定义这个涟漪动画，最终实现的效果就和上面的是一样的，下面阐述一下实现原理。</p>
+<p>首先我们将这个动画看成是一个圆环，圆环里面的校园是一个空心的透明圆，外面是一个透明的大圆，draw圆环的原理很简单，就是在draw透明圆的基础上，将画笔paint的strokeWidth设置成外面的环的宽度。<span style="color: #ff0000;"><strong>这里需要注意的是，事实上通过设置strokeWidth之后draw出来的外面大圆的半径并不是简单的内圆的半径加上圆环的宽度，而是内圆的半径+1/2圆环的宽度。</strong></span>如下图所示，红色的就是半径就是我们在draw圆环外面大圆的时候应该设置的半径，然后将笔宽strokeWidth设置为圆环的宽度即可：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/09/QQ20150928-3@2x.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/09/QQ20150928-3@2x-744x304.png" alt="QQ20150928-3@2x"></a> 那么知道draw圆环的原理之后，下面就可以开始draw了，里面的小圆很简单：</p>
+<pre><code>canvas.drawCircle(centerX, centerY, mCircleRadius, mCirclePaint);`&lt;/pre&gt;
+那么外面的大圆也很简单：
+&lt;pre&gt;`canvas.drawCircle(centerX, centerY, mCircleRadius + mRippleWidth / 2, mRipplePaint);`&lt;/pre&gt;
+**重点就是mRippleWidth这个变量，根据动画介绍可以，波纹的宽度是从0到mRippleWidth，那么根据上面我们说的外圆的半径为内圆的半径+1/2(圆环)波纹的宽度，所以大圆的半径是mCircleRadius+mRippleWidth/2。**
+
+**半径的变化规律知道了，只有半径的变化显然是不够的，为了达到波纹从0到mRippleWidth的效果，我们必须同步更改大圆画笔paint的strokeWidth的值，也就是画出圆环效果，strokeWidth的变化规律和波纹宽度是一样的，从0到mRippleWidth**
+
+ok,知道了半径和大圆画笔的变化规律，接下来就是按照规律去改变对应的值，然后刷新界面了，代码如下：
+&lt;pre&gt;`ValueAnimator va = ValueAnimator.ofInt(0, sRippleWidth);
+va.setDuration(RIPPLE_ANIM_DURATION * 2);
+va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+    @Override
+    public void onAnimationUpdate(ValueAnimator animation) {
+        int value = (int) animation.getAnimatedValue();
+        mRippleWidth = value;
+        mRipplePaint.setStrokeWidth(value);
+        invalidate();
+    }
+});
+va.start();`&lt;/pre&gt;
+在初始化代码片段中，我们将外面的大圆画笔paint的strokeWidth初始化为0，颜色初始化成波纹的颜色：
+&lt;pre&gt;`mRipplePaint.setStyle(Paint.Style.STROKE);
+mRipplePaint.setStrokeWidth(0);
+mRipplePaint.setARGB(127, 255, 255, 255);
+</code></pre><p><span style="color: #ff0000;"><strong>然后根据动画的定义，我们逐渐地将画笔的宽度设置为从0到最终波纹宽度的每一个临时宽度，同时也将波纹变化过程中的的每一个临时宽度值赋值给mRippleWidth用来更新大圆的半径。然后调用invalidata()刷新界面，这样效果就出来了。</strong></span></p>
+<p>当然还有一些细节，比如波纹宽度渐变的过程中，要伴随着alpha变化，同时要求波纹到指定时间后自动开始(这里是3000毫秒开始)，都需要我们去实现，当然这些都不是难点了，相信大家都能搞定。</p>
+<p>就这样了，欢迎大家交流意见。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/ripple/" rel="tag"># ripple</a>
+          
+            <a href="/tags/涟漪动画/" rel="tag"># 涟漪动画</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/27/来杭半年/" rel="next" title="来杭半年">
+                <i class="fa fa-chevron-left"></i> 来杭半年
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/15/使用merge标签替换FrameLayout布局/" rel="prev" title="使用merge标签替换FrameLayout布局">
+                使用merge标签替换FrameLayout布局 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

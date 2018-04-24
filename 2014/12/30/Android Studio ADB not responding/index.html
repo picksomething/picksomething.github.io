@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,ADB,Eclipse,Genymotion,Studio," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: ADB not responding">
+<meta name="keywords" content="Android,ADB,Eclipse,Genymotion,Studio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Studio ADB not responding...">
+<meta property="og:url" content="http://yoursite.com/2014/12/30/Android Studio ADB not responding/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: ADB not responding">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4-300x163.png">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图5-300x278.png">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Studio ADB not responding...">
+<meta name="twitter:description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: ADB not responding">
+<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4-300x163.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2014/12/30/Android Studio ADB not responding/"/>
+
+
+
+
+
+  <title>Android Studio ADB not responding... | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/12/30/Android Studio ADB not responding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android Studio ADB not responding...</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-12-30T01:15:41+08:00">
+                2014-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示:</p>
+<pre><code>ADB not responding. If you&apos;d like to retry
+then please manually kill &quot;adb&quot; and click &apos;Restart&apos;
+`&lt;/pre&gt;
+刚开始我以为是刚导出的原因,是不是之前Eclipse的adb连着这个Genymotion虚拟机,导致出现这样的错误,于是我就开始尝试:
+</code></pre><ol>
+<li>关闭Genymotion虚拟机,重新在Studio中通过Genymotion的插件启动Genymotion虚拟机,结果是:Not work</li>
+<li>重启电脑,依然Not work<br>我试着Google了一下,发现好像蛮多人遇到这个问题,但是要么就是别人在Stack Overflow提问没人回答,要么就是有人给出答案,无非就是说因为电脑里面有两个sdk目录(一个eclipse的sdk,一个studio的sdk),需要重启一下adb服务,也就是执行下面这两行代码:<br><pre><code>adb kill-server
+adb start-server</code></pre><a id="more"></a>
+但是还是没用,还有答案就是说通过<br><pre>`ps aux | grep adb</pre></li>
+</ol>
+<p>获取adb的进程号,然后kill掉,在我这里一样不起作用,就在我想暂时放弃<code>Genymotion</code>虚拟机使用studio自带的avd创建一个虚拟机的时候,突然发现有一个日文博客(<a href="http://banbara.hatenablog.com/entry/2014/11/11/011738" target="_blank" rel="noopener">点击这里</a>) 给了我一点思路,也就是打开<code>Genymotion</code>的主界面,如图:<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4-300x163.png" alt="抓图4"></a></p>
+<p>然后点击<code>Settings</code>,打开设置界面,选择<code>ADB</code><br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图5.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图5-300x278.png" alt="抓图5"></a></p>
+<p>我虽然看不懂日文,但是感觉博主的意思是之前选择了<code>Use custom Android SDK tools</code>让改成选择<code>Use Genymotion Android tools</code>来解决问题,但是我的设置里面选择的就是第一项:使用<code>Genymotion</code>默认的android工具,但是都到这里了我不如试一下第二项,将<code>android-sdk</code>的目录指向我的studio使用的sdk目录,(如果有多个sdk目录的,别选择错了),完事之后,我重新启动了一下<code>Genymotion</code>虚拟机,然后重新执行studio中的从eclipse导出的项目,居然OK了,我自己都不敢相信.</p>
+<p>PS:我的操作系统是<code>Linux mint 64</code>位</p>
+<p>疑惑:我后面又重新将ADB选项改为第一个(默认的),再次重新启动Genymotion试了一下,也不会报之前的错误了,我就不大明白了…</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/ADB/" rel="tag"># ADB</a>
+          
+            <a href="/tags/Eclipse/" rel="tag"># Eclipse</a>
+          
+            <a href="/tags/Genymotion/" rel="tag"># Genymotion</a>
+          
+            <a href="/tags/Studio/" rel="tag"># Studio</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/12/29/2014年总结/" rel="next" title="2014年总结">
+                <i class="fa fa-chevron-left"></i> 2014年总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/01/DrawerLayout导航抽屉的使用/" rel="prev" title="DrawerLayout导航抽屉的使用">
+                DrawerLayout导航抽屉的使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

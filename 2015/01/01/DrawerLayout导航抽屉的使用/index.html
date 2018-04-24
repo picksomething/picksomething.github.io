@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,ActionBar,DrawerLayout,Fragment," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用. 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知">
+<meta name="keywords" content="Android,ActionBar,DrawerLayout,Fragment">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DrawerLayout导航抽屉的使用">
+<meta property="og:url" content="http://yoursite.com/2015/01/01/DrawerLayout导航抽屉的使用/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用. 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DrawerLayout导航抽屉的使用">
+<meta name="twitter:description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用. 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知">
+<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2015/01/01/DrawerLayout导航抽屉的使用/"/>
+
+
+
+
+
+  <title>DrawerLayout导航抽屉的使用 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/01/01/DrawerLayout导航抽屉的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DrawerLayout导航抽屉的使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-01T15:41:28+08:00">
+                2015-01-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合<code>ActionBarShelock</code>(<a href="https://github.com/JakeWharton/ActionBarSherlock" target="_blank" rel="noopener">Github地址</a>,<a href="http://actionbarsherlock.com/" target="_blank" rel="noopener">官网地址</a>)使用的<code>SlidingMenu</code>(<a href="https://github.com/jfeinstein10/SlidingMenu" target="_blank" rel="noopener">Github地址</a>),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用.</p>
+<p>今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png" alt=""></a></p>
+<p>根据Google官方文档可以知道，使用DrawerLayout控件一般需要5大步：</p>
+<ol>
+<li><p>创建一个DrawerLayout布局<br>这个比较简单，要求DrawerLayout为根布局，第一个子布局代表没有打开抽屉时候的主视图(这个视图的宽度必须为match_parent)，第二个子布局就代表抽屉布局了，一般抽屉中放入的都是一些设置选项，以ListView为常见布局.代码如下：</p>
+<p>&lt;android.support.v4.widget.DrawerLayout</p>
+<pre><code>xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+android:id=&quot;@+id/drawer_layout&quot;
+android:layout_width=&quot;match_parent&quot;
+android:layout_height=&quot;match_parent&quot;&amp;gt;
+&amp;lt;!-- 主视图布局，必须是DrawerLayout的第一个子布局，且宽度要充满父级容器 --&amp;gt;
+</code></pre><a id="more"></a>
+<pre><code>&amp;lt;FrameLayout
+    android:id=&quot;@+id/content_frame&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;match_parent&quot; /&amp;gt;
+&amp;lt;!-- 抽屉视图布局 --&amp;gt;
+&amp;lt;ListView android:id=&quot;@+id/left_drawer&quot;
+          android:layout_width=&quot;240dp&quot;
+          android:layout_height=&quot;match_parent&quot;
+          android:layout_gravity=&quot;start&quot;
+          android:choiceMode=&quot;singleChoice&quot;
+          android:divider=&quot;@android:color/transparent&quot;
+          android:dividerHeight=&quot;0dp&quot;
+          android:background=&quot;#c2e&quot;/&amp;gt;
+</code></pre><p>&lt;/android.support.v4.widget.DrawerLayout&gt;<br>`<br>需要特别说明的是抽屉视图中的layout_gravity属性代表抽屉的打开方向，start代表从左边打开，end代表从右边打开，当然如果你的sdk api小于17的话，可以使用left和right可以达到同样的效果.</p>
+</li>
+<li><p>初始化抽屉布局列表<br>抽屉列表的布局和内容取决于你自己实现的App的需求，但是一般都是以ListView配合Adapter来实现，这里我们用一个String数组来填充抽屉列表，部分代码如下：<br><pre>`public class MainActivity extends Activity {</pre></p>
+<pre><code>private String[] mPlanetTitles;
+private DrawerLayout mDrawerLayout;
+private ListView mDrawerList;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    findViews();
+    setListener();
+}
+
+private void setListener() {
+    mDrawerList.setAdapter(new ArrayAdapter&amp;lt;&amp;gt;(this, R.layout.drawer_list_item, mPlanetTitles));
+    mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+}
+
+private void findViews() {
+    mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    mDrawerList = (ListView) findViewById(R.id.left_drawer);
+}
+</code></pre><p>}<br>`<br>这一步很简单，就是一些初始化抽屉列表，填充数据，设置一下点击事件。</p>
+</li>
+<li><p>处理抽屉栏里面不同选项的点击事件<br>我们知道，打开抽屉之后点击不同的选项要执行什么动作是取决于自己如何实现的，我这里是点击不同的选项就插入一个不同的fragment到主视图中，根据点击的不同行星名字我们在不同的fragment中显示对应行星的一张图片。</p>
+<p>首先看一下点击事件的实现代码：<br><pre>`    private class DrawerItemClickListener implements ListView.OnItemClickListener {</pre></p>
+<pre><code>    @Override
+    public void onItemClick(AdapterView&amp;lt;?&amp;gt; parent, View view, int position, long id) {
+        selectItem(position);
+    }
+}
+
+private void selectItem(int position) {
+    Fragment fragment = new PlanetFragment();
+    Bundle args = new Bundle();
+    args.putInt(PlanetFragment.ARG_PLANET_NUMBER,position);
+    fragment.setArguments(args);
+
+    // 通过替换已经存在的fragment来插入新的fragment
+    FragmentManager fragmentManager = getFragmentManager();
+    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+
+    // 高亮选中的item, 更新Title, 关闭抽屉视图
+    mDrawerList.setItemChecked(position,true);
+    setTitle(mPlanetTitles[position]);
+    mDrawerLayout.closeDrawer(mDrawerList);
+}
+</code></pre><p>…<br><code>&lt;/pre&gt;
+然后就是自定义的PlanetFragment的代码：
+&lt;pre&gt;</code>public class PlanetFragment extends Fragment {</p>
+<pre><code>public static final String ARG_PLANET_NUMBER = &quot;planet_number&quot;;
+
+public PlanetFragment() {
+}
+
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_planet, container, false);
+    int i = getArguments().getInt(ARG_PLANET_NUMBER);
+    String planet = getResources().getStringArray(R.array.planets_array)[i];
+    int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()), &quot;drawable&quot;, getActivity().getPackageName());
+    ((ImageView)view.findViewById(R.id.image)).setImageResource(imageId);
+    getActivity().setTitle(planet);
+    return view;
+}
+</code></pre><p>}<br>`<br>Fragment主要就是根据传递进来的不同的position来确定对应的行星的名字，然后通过名字来确定对应的imageId，从而在Fragment中展示出对应行星的图片。</p>
+</li>
+<li><p>监听抽屉视图的打开和关闭事件<br>为了监听抽屉的打开和关闭事件，我们可以调用<code>DrawerLayout</code>的setDrawerListener()传一个<code>DrawerLayout.DrawerListener</code>接口的实例对象进去，该接口提供回调事件像onDrawerOpened()和onDrawerClosed().<br>然后，与其实现<code>DrawerListener</code>接口，我们可以使用继承<code>ActionBarDrawerToggle</code>类的实例对象来代替，<code>ActionBarDrawerToggle</code>也实现了<code>Drawer.DrawerListener</code>，所以任然可以重写那些DrawerListener接口的回调方法，而且该类也有利于操作栏图标和导航抽屉之间的一些适当的相互作用行为，我们看一下代码：<br><pre>`    private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle{</pre></p>
+<pre><code>    public CustomActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+        super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        super.onDrawerOpened(drawerView);
+        getActionBar().setTitle(mDrawerTitle);
+        //刷新菜单，调用onPrepareOptionsMenu()
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        super.onDrawerClosed(drawerView);
+        getActionBar().setTitle(mTitle);
+        invalidateOptionsMenu();
+    }
+}
+
+@Override
+public boolean onPrepareOptionsMenu(Menu menu) {
+    boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+    return super.onPrepareOptionsMenu(menu);
+}
+</code></pre><p>…<br><code>&lt;/pre&gt;
+然后设置监听
+&lt;pre&gt;</code>mDrawerToggle = new CustomActionBarDrawerToggle(</p>
+<pre><code>this,
+mDrawerLayout,
+R.string.drawer_open,
+R.string.drawer_close
+</code></pre><p>);<br>mDrawerLayout.setDrawerListener(mDrawerToggle);<br><code>&lt;/pre&gt;
+这里需要说明的是如果使用support.v4包中的ActionBarDrawerToggle(已经不建议使用了),构造方法是这样的
+&lt;pre&gt;</code>new ActionBarDrawerToggle(</p>
+<pre><code>this,                  /* host Activity */
+mDrawerLayout,         /* DrawerLayout object */
+R.drawable.ic_drawer,  /* nav drawer image to replace &apos;Up&apos; caret */
+R.string.drawer_open,  /* &quot;open drawer&quot; description for accessibility */
+R.string.drawer_close  /* &quot;close drawer&quot; description for accessibility */
+</code></pre><p>)<br><code>&lt;/pre&gt;
+需要传递一个R.drawable.ic_drawer导航抽屉图标来替换&quot;上&quot;符号
+但是因为support.v4中的这个类已经不推荐使用了
+&lt;pre&gt;</code>This class is deprecated.<br>Please use ActionBarDrawerToggle in support-v7-appcompat.<br><code>&lt;/pre&gt;
+推荐使用support.v7中的这个类，v7中该类有两个构造方法，如下所示：
+&lt;pre&gt;</code>//Construct a new ActionBarDrawerToggle.<br>ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes)</p>
+<p>//Construct a new ActionBarDrawerToggle with a Toolbar.<br>ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes)<br>`<br>使用第一个就可以了，v7类中已经实现好很酷的抽屉按钮和动画.</p>
+</li>
+<li><p>通过app icon打开和关闭抽屉视图<br><pre><code>//使ActionBar上的应用图标可以随着切换导航抽屉而改变    
+getActionBar().setDisplayHomeAsUpEnabled(true);
+getActionBar().setHomeButtonEnabled(true);</code></pre><br>然后重写下面这些方法<br><pre>`    @Override</pre></p>
+<pre><code>protected void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    mDrawerToggle.syncState();
+}
+
+@Override
+public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    mDrawerToggle.onConfigurationChanged(newConfig);
+}
+
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_main,menu);
+    return super.onCreateOptionsMenu(menu);
+}
+
+@Override
+public boolean onPrepareOptionsMenu(Menu menu) {
+    boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+    return super.onPrepareOptionsMenu(menu);
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    // The action bar home/up action should open or close the drawer.
+    // ActionBarDrawerToggle will take care of this.
+    if (mDrawerToggle.onOptionsItemSelected(item)) {
+        return true;
+    }
+    // Handle action buttons
+    switch(item.getItemId()) {
+        case R.id.action_websearch:
+            // create intent to perform web search for this planet
+            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+            // catch event that there&apos;s no activity to handle intent
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+            }
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+}
+</code></pre><p>…<br>`<br>就这样就好了，其实还是挺简单的，但是到具体的app中根据需求怎么灵活运用就是另一回事了.</p>
+<p><strong>补充：有些时候你可能会发现执行下面这两行代码会报空指针</strong><br><pre><code>getActionBar().setDisplayHomeAsUpEnabled(true);
+getActionBar().setHomeButtonEnabled(true);</code></pre><br>这个和配置中android:theme有关系，改成下面这样类似的就可以了<br><pre>`android:theme=”@android:style/Theme.Holo.Light.DarkActionBar”</pre></p>
+</li>
+</ol>
+<p>完整代码Github地址：<a href="https://github.com/picksomething/DrawerLayout" target="_blank" rel="noopener">点击这里</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/ActionBar/" rel="tag"># ActionBar</a>
+          
+            <a href="/tags/DrawerLayout/" rel="tag"># DrawerLayout</a>
+          
+            <a href="/tags/Fragment/" rel="tag"># Fragment</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/12/30/Android Studio ADB not responding/" rel="next" title="Android Studio ADB not responding...">
+                <i class="fa fa-chevron-left"></i> Android Studio ADB not responding...
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/18/浅谈Android管理task方式/" rel="prev" title="浅谈Android管理task方式">
+                浅谈Android管理task方式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

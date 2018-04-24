@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,HandlerThread," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。也就是说如果我们使用Handler提供的">
+<meta name="keywords" content="Android,HandlerThread">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中通过HandlerThread实现真正的多线程">
+<meta property="og:url" content="http://yoursite.com/2013/10/23/Android中通过HandlerThread实现真正的多线程/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。也就是说如果我们使用Handler提供的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中通过HandlerThread实现真正的多线程">
+<meta name="twitter:description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。也就是说如果我们使用Handler提供的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/10/23/Android中通过HandlerThread实现真正的多线程/"/>
+
+
+
+
+
+  <title>Android中通过HandlerThread实现真正的多线程 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/10/23/Android中通过HandlerThread实现真正的多线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android中通过HandlerThread实现真正的多线程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-10-23T23:20:41+08:00">
+                2013-10-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇博客中我在解释Handler的过程中提到了<code>HandlerThread</code>，我们先回顾一下上一篇博客中对于Handler的定义：<strong><span style="color: #ff0000;">Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。</span></strong>也就是说如果我们使用Handler提供的方法handler.post(new Runnable());时候，如果使用不当的话一样会出现界面卡死，因为其默认管线的还是主线程，也就是说其还是会在主线程中简单地调用Runnable中的run()方法，这样耗时任务虽然在run()方法中，但是还是运行在主线程，所以同样会阻塞UI，接下来我们来看两个例子，就会更明白了，第一个例子：</p>
+<pre><code>package cn.picksomething.testhandler;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+
+public class MainActivity extends Activity {
+
+    private String TAG = &quot;TAG&quot;;
+    private Handler handler = new Handler();
+&lt;!--more--&gt;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        handler.post(new myRunnable());
+        Log.d(TAG, &quot;onCreate-----The thread id is：&quot; + Thread.currentThread().getId());
+        setContentView(R.layout.main);
+    }
+
+    class myRunnable implements Runnable{
+        @Override
+        public void run() {
+            Log.d(TAG, &quot;run method is calling----&quot;);
+            Log.d(TAG, &quot;The thread id is：&quot; + Thread.currentThread().getId());
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+}
+`&lt;/pre&gt;
+运行上述程序，程序启动6秒之后，才看到布局被加载，显示出TextView上的Hello World!字样。
+分析一下程序执行的过程，首先程序启动，就把myRunnable加入到当前线程的消息队列中，也就是handler默认关联的主线程消息队列，android的handler确实是异步机制，所以在handler.post(new myRunnable());之后，程序会继续执行，所以以后的语句会继续执行，会输出onCreate中的当前线程ID。但同时myRunnable()的run方法也在运行，一样输出run方法中的当前线程ID，然后让当前线程休眠6秒。
+通过输出结果和分析，我们可以得出handler和主线程是同一个线程，handler也是运行在主线程中的，这个时候若是执行耗时任务，显然会阻塞UI。当然肯定有解决办法的：
+Android给我们提供了Looper这样一个类，上一遍博客中已经介绍过了，Android中每一个Thread都跟着一个Looper，Looper可以帮助Thread维护一个消息队列，每个Thread都只有一个消息队列。我们看看另一个例子：
+&lt;pre&gt;`package cn.picksomething.testlooper;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.app.Activity;
+import android.util.Log;
+
+public class MainActivity extends Activity {
+
+    private String TAG = &quot;TAG&quot;;
+    private Handler handler = null;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        HandlerThread mThread = new HandlerThread(&quot;handlerThread&quot;);
+        mThread.start();
+        handler = new Handler(mThread.getLooper());
+        handler.post(new myRunnable());
+        Log.d(TAG, &quot;onCreate-----The Thread id is:&quot; + Thread.currentThread().getId());
+        setContentView(R.layout.main);
+    }
+
+    class myRunnable implements Runnable{
+        @Override
+        public void run() {
+            Log.d(TAG, &quot;myRunnable is running----&quot;);
+            Log.d(TAG, &quot;The thread id is:&quot; + Thread.currentThread().getId());
+            try {
+                Thread.sleep(6000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+}
+</code></pre><p>运行上述程序，过滤打印信息，我们看到<code>LogCat</code>输出如下结果：<br>同时我们看到程序已启动，就立即输出了布局文件中的<code>Hello world!</code>信息。<br>在这个例子中，用到了HandlerThread，在HandlerThread对象中可以通过getLooper方法获取一个Looper对象控制句柄，我们可以将这个Looper对象映射到一个Handler中来实现一个线程同步机制，所以就会有上面的结果了。这样就达到了多线程的效果。<br>补充：<code>HandlerThread</code>这个类，HandlerThread继承于Thread，所以它本质就是个Thread。HandlerThread类用于方便的创建一个含有<code>looper</code>的线程类，looper用来创建handler类。我们一般不创建looper对象，直接调用HandlerThread即可。HandlerThread本身实现了循环处理消息的功能，不用再直接调用<code>Looper.prepare()</code>方法。与普通Thread的差别就在于它有个Looper成员变量。这个Looper其实就是对消息队列以及队列处理逻辑的封装，简单说就是消息队列+消息循环。<br>小结：多了解Android内部机制，不能只满足于结果正确。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/HandlerThread/" rel="tag"># HandlerThread</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/10/23/Android在非UI线程中更新UI的方法与扩展/" rel="next" title="Android在非UI线程中更新UI的方法与扩展">
+                <i class="fa fa-chevron-left"></i> Android在非UI线程中更新UI的方法与扩展
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/10/24/Java中枚举enum的基本用法/" rel="prev" title="Java中枚举enum的基本用法">
+                Java中枚举enum的基本用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

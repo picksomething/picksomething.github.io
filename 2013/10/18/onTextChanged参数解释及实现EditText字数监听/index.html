@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,TextWatcher," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法： beforeTextChanged(CharSequence s, int start, int count, int after) `&amp;lt;/pr">
+<meta name="keywords" content="Android,TextWatcher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="onTextChanged参数解释及实现EditText字数监听">
+<meta property="og:url" content="http://yoursite.com/2013/10/18/onTextChanged参数解释及实现EditText字数监听/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法： beforeTextChanged(CharSequence s, int start, int count, int after) `&amp;lt;/pr">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="onTextChanged参数解释及实现EditText字数监听">
+<meta name="twitter:description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法： beforeTextChanged(CharSequence s, int start, int count, int after) `&amp;lt;/pr">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/10/18/onTextChanged参数解释及实现EditText字数监听/"/>
+
+
+
+
+
+  <title>onTextChanged参数解释及实现EditText字数监听 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/10/18/onTextChanged参数解释及实现EditText字数监听/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">onTextChanged参数解释及实现EditText字数监听</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-10-18T20:34:59+08:00">
+                2013-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。<br>它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：</p>
+<pre><code>beforeTextChanged(CharSequence s, int start, int count, int after)
+`&lt;/pre&gt;
+这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换。
+&lt;pre&gt;`onTextChanged(CharSequence s, int start, int before, int count)
+`&lt;/pre&gt;
+这个方法是在Text改变过程中触发调用的，它的意思就是说在原有的文本s中，从start开始的count个字符替换长度为before的旧文本，注意这里没有将要之类的字眼，也就是说一句执行了替换动作。
+可能说起来比较抽象，我举个简单的例子，比如说我们监听一个EditText，默认开始的时候EditText中没有文本，当我们输入LOVE四个字母的时候，在打印信息中我输出各个参数看一下参数的变化。
+&lt;!--more--&gt;
+&lt;pre&gt;`10-18 16:40:21.528: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=----start=0----after=1----count=0
+10-18 16:40:21.528: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=L----start=0----before=0----count=1
+10-18 16:40:21.532: D/Debug(4501): afterTextChanged 被执行----&amp;gt;L
+10-18 16:40:29.304: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=L----start=1----after=1----count=0
+10-18 16:40:29.308: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LO----start=1----before=0----count=1
+10-18 16:40:29.308: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LO
+10-18 16:40:32.772: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=LO----start=2----after=1----count=0
+10-18 16:40:32.772: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LOV----start=2----before=0----count=1
+10-18 16:40:32.776: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LOV
+10-18 16:40:34.772: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=LOV----start=3----after=1----count=0
+10-18 16:40:34.772: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LOVE----start=3----before=0----count=1
+10-18 16:40:34.776: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LOVE
+`&lt;/pre&gt;
+通过上面的打印信息我们可以发现在输入L之前`beforeTextChanged`被执行，s为空，所以s输入空，start=0，也就是从位置0开始，count=0，也就是0个字符将会被替换，after=1，也就是说0个字符将会被一个新的长度为after=1的文本(也就是L)替换。
+当输入发生改变的时候`onTextChanged`被执行，此时s=L也就是输入的字母L，从start=0开始，count=1个字符替换了长度为before=0的旧文本。通俗点将就是字母L从位置0开始替换了原来的空文本，下面的就可以依次类推了。那么我们如何利用这个接口监听EditText的文本变化来实现限制输入字数的功能呢，我相信大家都有自己的想法了，这里我给出自己的一个简单实现，主要代码如下：
+&lt;pre&gt;`source_des.addTextChangedListener(new TextWatcher() { 
+    private CharSequence temp; 
+    private int selectionStart; 
+    private int selectionEnd; 
+
+    @Override 
+    public void onTextChanged(CharSequence s, int start, int before, int count) { 
+        Log.d(TAG, &quot;onTextChanged 被执行----&amp;gt;s=&quot; + s + &quot;----start=&quot;+ start 
+          + &quot;----before=&quot;+before + &quot;----count&quot; +count); temp = s; 
+    }
+
+    public void beforeTextChanged(CharSequence s, int start, int count,int after) { 
+        Log.d(TAG, &quot;beforeTextChanged 被执行----&amp;gt; s=&quot; + s+&quot;----start=&quot;+ start 
+          + &quot;----after=&quot;+after + &quot;----count&quot; +count); 
+    } 
+
+    public void afterTextChanged(Editable s) { 
+        Log.d(TAG, &quot;afterTextChanged 被执行----&amp;gt;&quot; + s); 
+        selectionStart = source_des.getSelectionStart(); 
+        selectionEnd = source_des.getSelectionEnd(); 
+        if (temp.length() &amp;gt; MAX_LENGTH) { 
+            Toast.makeText(MainActivity.this, &quot;只能输入九个字&quot;, 
+              Toast.LENGTH_SHORT).show(); 
+            s.delete(selectionStart - 1, selectionEnd); 
+            int tempSelection = selectionEnd; 
+            source_des.setText(s); 
+            source_des.setSelection(tempSelection); 
+        } 
+    } 
+});
+</code></pre><p>如大家有什么疑问，欢迎交流。<br>小结：多总结。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/TextWatcher/" rel="tag"># TextWatcher</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/09/17/Android中Activity的四种加载模式/" rel="next" title="Android中Activity的四种加载模式">
+                <i class="fa fa-chevron-left"></i> Android中Activity的四种加载模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/10/23/Android在非UI线程中更新UI的方法与扩展/" rel="prev" title="Android在非UI线程中更新UI的方法与扩展">
+                Android在非UI线程中更新UI的方法与扩展 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

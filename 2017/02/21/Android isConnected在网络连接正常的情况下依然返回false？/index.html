@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,isConnected,NetworkInfo,网络连接," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="起因最近在测试一个功能的时候，偶然发现，网络连接都正常且能上网的情况下，居然提示网络不通，最开始以为只是偶然情况，就没太在意，后来发现能够重现，然后就决定研究一下，还真研究出一些问题  问题然后就看了一下程序判断网络是否连接的这一块代码，代码如下，很简单也很常规： /**   * 判断网络是否连接   *   * @param context   * @return   */ public sta">
+<meta name="keywords" content="Android,isConnected,NetworkInfo,网络连接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android isConnected在网络连接正常的情况下依然返回false？">
+<meta property="og:url" content="http://yoursite.com/2017/02/21/Android isConnected在网络连接正常的情况下依然返回false？/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="起因最近在测试一个功能的时候，偶然发现，网络连接都正常且能上网的情况下，居然提示网络不通，最开始以为只是偶然情况，就没太在意，后来发现能够重现，然后就决定研究一下，还真研究出一些问题  问题然后就看了一下程序判断网络是否连接的这一块代码，代码如下，很简单也很常规： /**   * 判断网络是否连接   *   * @param context   * @return   */ public sta">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:54:59.329Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android isConnected在网络连接正常的情况下依然返回false？">
+<meta name="twitter:description" content="起因最近在测试一个功能的时候，偶然发现，网络连接都正常且能上网的情况下，居然提示网络不通，最开始以为只是偶然情况，就没太在意，后来发现能够重现，然后就决定研究一下，还真研究出一些问题  问题然后就看了一下程序判断网络是否连接的这一块代码，代码如下，很简单也很常规： /**   * 判断网络是否连接   *   * @param context   * @return   */ public sta">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/21/Android isConnected在网络连接正常的情况下依然返回false？/"/>
+
+
+
+
+
+  <title>Android isConnected在网络连接正常的情况下依然返回false？ | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/21/Android isConnected在网络连接正常的情况下依然返回false？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android isConnected在网络连接正常的情况下依然返回false？</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-21T15:11:14+08:00">
+                2017-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>最近在测试一个功能的时候，偶然发现，网络连接都正常且能上网的情况下，居然提示网络不通，最开始以为只是偶然情况，就没太在意，后来发现能够重现，然后就决定研究一下，还真研究出一些问题</p>
+<hr>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>然后就看了一下程序判断网络是否连接的这一块代码，代码如下，很简单也很常规：</p>
+<pre><code>/**
+  * 判断网络是否连接
+  *
+  * @param context
+  * @return
+  */
+public static boolean isNetworkConnected(Context context) {
+    try {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null &amp;&amp; activeNetworkInfo.isConnected;
+    } catch (Exception e) {
+        return false;
+    }
+}
+</code></pre><p>这就是普通的判断网络是否连接(注意，只是判断是否连接，至于能不能上网并不能判断)的，用的也都是Android自身的API来判断的，按说没有什么问题啊，但是就是这个方法一直返回false。。。</p>
+<a id="more"></a>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>我首先想到可能的原因是权限问题，因为我用的是Android 6.0的测试机，Android 6.0之后很多权限不是需要程序主动去申请，用户同意之后才会获得，我就想着是不是因为没有获取到访问网络信息的权限，所以在获取网络连接情况的代码短的地方抛出异常了，导致返回的一直是false，带着疑问，我就调试了一下，发现程序并不会抛出异常，都是正常执行，networkInfo也不为null，<strong>networkInfo.isConnected返回的就是false</strong>，这下就有意思了，我看了一下NetworkInfo类的实例方法isConnected()，也没有被deprecated，也没有说可能会不准确之类的啊，就觉得更郁闷了。。。</p>
+<p>然后我想看看其他手机是不是也是这样的，我试了一台Android4.3的vivo手机和一台同样系统版本的三星手机，都是正常的，然后又测试了一台Android 6.0的nexus手机，也是ok的，就唯独6.0的小米系统返回的是false。。。</p>
+<p>为了更进一步确认是只有连接wifi的情况下会这样，还是说移动网络也会这样，我就把我的6.0的小米测试机的wifi关掉，用我的联通4G来测试，结果还是一样，isConnected依然返回false。</p>
+<blockquote>
+<p>因为这个判断网络是否连接的方法，在应用打开的时候也会调用，我发现在应用打开的时候调用返回的就是true，都是正常的，唯独退出应用之后，后台定时任务每次调用的时候返回的就是false了</p>
+</blockquote>
+<p>网上有说调用<code>isConnectedOrConnecting</code>，结果是一样的。</p>
+<p>简单总结一下就是，在6.0的小米手机上，正常在应用内调用isConnected()返回值都是正常的，等退出应用之后，通过定时任务调用就会在连接的情况下也返回false，其他测试手机则不会。</p>
+<blockquote>
+<p>于是我猜测：可能是miui为了流畅度或者是低耗电量等方面的优化，故意这样设计的，就是为了防止一些应用在后台定时判断网络连接的情况下，做一些网络请求任务，造成高耗电又影响流畅性，所以小米系统基本在所有应用都退出，回到桌面的情况下，有可能会短暂的禁掉当前的网络链接，当然这也只是猜测而已。</p>
+</blockquote>
+<h4 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h4><p>如果在小米6.0的机器上，大家非要在后台判断网络连接情况，那么目前来看，最保险的做法就是在程序中请求一下常用的网站，比如baidu，或者ping一下，来判断网络的真正链接情况，实现很简单，网上有很多，我在这里就不写了，当然我亲测这种方法是有效的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/isConnected/" rel="tag"># isConnected</a>
+          
+            <a href="/tags/NetworkInfo/" rel="tag"># NetworkInfo</a>
+          
+            <a href="/tags/网络连接/" rel="tag"># 网络连接</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/26/Android自定义进度条时padding无效果/" rel="next" title="Android自定义进度条时padding无效果?">
+                <i class="fa fa-chevron-left"></i> Android自定义进度条时padding无效果?
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/29/Android上传Library到JCenter可能遇到的问题/" rel="prev" title="Android上传Library到JCenter可能遇到的问题">
+                Android上传Library到JCenter可能遇到的问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#起因"><span class="nav-number">1.</span> <span class="nav-text">起因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

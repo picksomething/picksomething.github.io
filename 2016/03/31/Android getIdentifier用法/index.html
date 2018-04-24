@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,getIdentifier," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言最近这段时间在忙着开发一个Android游戏，当然并不是真正的游戏，只是一个伪游戏而已，因为应用需要的图片资源和布局都比较多，所以难免就出现了下面这种类型的代码片段： switch (index) {     case 1:         mView = mInflater.inflate(R.layout.layout_gift_one, null);         break;">
+<meta name="keywords" content="Android,getIdentifier">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android getIdentifier用法">
+<meta property="og:url" content="http://yoursite.com/2016/03/31/Android getIdentifier用法/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="前言最近这段时间在忙着开发一个Android游戏，当然并不是真正的游戏，只是一个伪游戏而已，因为应用需要的图片资源和布局都比较多，所以难免就出现了下面这种类型的代码片段： switch (index) {     case 1:         mView = mInflater.inflate(R.layout.layout_gift_one, null);         break;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:51:47.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android getIdentifier用法">
+<meta name="twitter:description" content="前言最近这段时间在忙着开发一个Android游戏，当然并不是真正的游戏，只是一个伪游戏而已，因为应用需要的图片资源和布局都比较多，所以难免就出现了下面这种类型的代码片段： switch (index) {     case 1:         mView = mInflater.inflate(R.layout.layout_gift_one, null);         break;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/03/31/Android getIdentifier用法/"/>
+
+
+
+
+
+  <title>Android getIdentifier用法 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/31/Android getIdentifier用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android getIdentifier用法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T22:18:55+08:00">
+                2016-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近这段时间在忙着开发一个Android游戏，当然并不是真正的游戏，只是一个伪游戏而已，因为应用需要的图片资源和布局都比较多，所以难免就出现了下面这种类型的代码片段：</p>
+<pre><code>switch (index) {
+    case 1:
+        mView = mInflater.inflate(R.layout.layout_gift_one, null);
+        break;
+    case 2:
+        mView = mInflater.inflate(R.layout.layout_gift_two, null);
+        break;
+    case 3:
+        mView = mInflater.inflate(R.layout.layout_gift_three, null);
+        break;
+    case 4:
+        mView = mInflater.inflate(R.layout.layout_gift_four, null);
+        break;
+    case 5:
+        mView = mInflater.inflate(R.layout.layout_gift_five, null);
+        break;
+    case 6:
+        mView = mInflater.inflate(R.layout.layout_gift_six, null);
+        break;
+}`&lt;/pre&gt;
+
+对于我这种有代码洁癖的人，每次看到这种代码我心里着实是不舒服的，今天上午写代码的时候，遇到一个这样的需求，简化一下大致是这样的：
+
+* * *
+
+#### 需求
+
+&gt; 有6个textview用于显示6种商品的数量，然后定义了一个长度为6的数组用于存放6种商品的数量，那么有一个需求是要在特定的条件下将6种商品的数量置为0，同时在textview显示
+
+&lt;!--more--&gt;
+
+* * *
+
+#### 分析
+
+遇到这种问题，数组置0很简单，但是问题来了：6个textview都是从布局文件中获取的，每个textview的资源id不一样，每个textview的名字都不一样，相当于要执行6次`findviewById`和`xxxTextView.setText(&quot;0&quot;)`，我一想到这里，感觉如果这样写简直太丑陋了
+
+心想既然标识商品的数量用的就是一个数组，那么可以不可以把6个textview也放到数组里面？正好这两天在stackoverflow上看另一个问题的时候，好像看到过类似的用法，模糊中记得好像是用的getIdentifier，于是就搜索了一下，果然可以，成功的将6个textview用一行代码就放到了一个长度为6的数组中，不用6次findViewById，也不用6次xxTextView.setText(&quot;0&quot;)了，一个循环就搞定了。
+
+* * *
+
+#### 实现
+
+学习要举一反三，学以致用，那么当我再次看到项目中开头那段代码的时候，心里想这个不是也可以使用getIdentifier简化吗，于是简化之后上面的代码就变成这样了。
+
+&lt;pre&gt;`int layoutId = getResources().getIdentifier(
+        &quot;layout_gift_&quot; + index, &quot;layout&quot;, getPackageName());
+mView = mLayoutInflater.inflate(layoutId, null);`&lt;/pre&gt;
+
+是不是看起来整洁了很多
+
+* * *
+
+#### 扩展
+
+然后又点进去getIdentifier方法的源码里面看了一下，用法简介是这样写的：
+
+&lt;pre&gt;`/**
+ * Return a resource identifier for the given resource name.  A fully
+ * qualified resource name is of the form &quot;package:type/entry&quot;.  The
+ * first two components (package and type) are optional if defType and
+ * defPackage, respectively, are specified here.
+**/
+public int getIdentifier(String name, String defType, String defPackage)`&lt;/pre&gt;
+
+也就是说传递参数的方式有两种情况：
+</code></pre><ol>
+<li><p>第一个参数按照<code>package:type/entry</code>的方式传递的话，那么后面两个type和package参数是可选的，也就是可以传null，就像这样：</p>
+<pre>`int layoutId = getResources().getIdentifier(
+"com.huhulab.xxx:layout/layout_1",null,null);`</pre>
+
+<p><strong>第一个参数的格式也就是：包名+”:”+资源属性类型+”/“+资源名，其中资源属性类型就是指你要获取的资源是layout，id或者drawable之类的。</strong></p>
+</li>
+<li><p>就是按照我上面的那种方法传递，像这样：</p>
+<p><pre>`int textId = getResources().getIdentifier(<br>“text1”,id,”com.huhulab.xxx”);</pre></p>
+</li>
+</ol>
+<p><strong>三个参数分别是：资源名，资源属性类型，包名</strong></p>
+<hr>
+<h4 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h4><p>当然源码简介里面还有这么一句提示：</p>
+<blockquote>
+<p>Note: use of this function is discouraged.  It is much more<br>  efficient to retrieve resources by identifier than by name.</p>
+</blockquote>
+<p>也就是说并不鼓励使用这个方法，因为通过id获取资源比通过名字获取资源更高效，也就是说这种方法耗时可能会比较久，所以除非必须不要过多使用这个方法<br>当然因为R.layout和R.id等其实都是一个内部类，你也可以通过反射获取类中的某一个变量，也就是你要找的那个资源名</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/getIdentifier/" rel="tag"># getIdentifier</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/18/URLConnection.setDoOutput(true)导致Get请求变Post请求？/" rel="next" title="URLConnection.setDoOutput(true)导致Get请求变Post请求？">
+                <i class="fa fa-chevron-left"></i> URLConnection.setDoOutput(true)导致Get请求变Post请求？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/17/Android UI测试框架Espresso/" rel="prev" title="Android UI测试框架Espresso">
+                Android UI测试框架Espresso <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结尾"><span class="nav-number">2.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

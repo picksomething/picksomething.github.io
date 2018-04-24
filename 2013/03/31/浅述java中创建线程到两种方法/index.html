@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,Thread,线程," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="首先，按照线程的模型，一个具体的线程也是由虚拟的cpu，代码与数据组成，其中代码与数据构成了线程体，线程体决定了线程到行为。虚拟的cpu是在创建线程时由系统自动封装进Thread类到实例中，而线程体要应用程序通过一个对象传递给Thread类的构造函数。Java中到线程体是由线程类的run()方法定义，在该方法中定义线程的具体行为。线程开始执行时，也是从它的run()方法开始执行。下面看一下Thre">
+<meta name="keywords" content="Java,Thread,线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅述java中创建线程到两种方法">
+<meta property="og:url" content="http://yoursite.com/2013/03/31/浅述java中创建线程到两种方法/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="首先，按照线程的模型，一个具体的线程也是由虚拟的cpu，代码与数据组成，其中代码与数据构成了线程体，线程体决定了线程到行为。虚拟的cpu是在创建线程时由系统自动封装进Thread类到实例中，而线程体要应用程序通过一个对象传递给Thread类的构造函数。Java中到线程体是由线程类的run()方法定义，在该方法中定义线程的具体行为。线程开始执行时，也是从它的run()方法开始执行。下面看一下Thre">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅述java中创建线程到两种方法">
+<meta name="twitter:description" content="首先，按照线程的模型，一个具体的线程也是由虚拟的cpu，代码与数据组成，其中代码与数据构成了线程体，线程体决定了线程到行为。虚拟的cpu是在创建线程时由系统自动封装进Thread类到实例中，而线程体要应用程序通过一个对象传递给Thread类的构造函数。Java中到线程体是由线程类的run()方法定义，在该方法中定义线程的具体行为。线程开始执行时，也是从它的run()方法开始执行。下面看一下Thre">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/03/31/浅述java中创建线程到两种方法/"/>
+
+
+
+
+
+  <title>浅述java中创建线程到两种方法 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/03/31/浅述java中创建线程到两种方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">浅述java中创建线程到两种方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-03-31T20:38:37+08:00">
+                2013-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先，按照线程的模型，一个具体的线程也是由虚拟的<code>cpu</code>，代码与数据组成，其中代码与数据构成了线程体，线程体决定了线程到行为。虚拟的cpu是在创建线程时由系统自动封装进<code>Thread</code>类到实例中，而线程体要应用程序通过一个对象传递给<code>Thread</code>类的构造函数。Java中到线程体是由线程类的<code>run()</code>方法定义，在该方法中定义线程的具体行为。线程开始执行时，也是从它的run()方法开始执行。<br>下面看一下Thread类的构造方法。</p>
+<pre><code>public Thread(ThreadGroup group,Runnable target,String name);
+`&lt;/pre&gt;
+&lt;!--more--&gt;
+其中`group`是指明该线程所属的线程组；`target`提供线程体的对象。`java.lang.Runnable`接口中定义了run()方法。实现该接口的类的对象可以提供线程体，线程启动时该对象的run()方法将被调用；name线程名称。
+言归正传，线程创建中，线程体的构造是关键。任何实现Runnable接口的对象都可以作为Thread类构造方法中的target参数，而Thread类本身也实现了Runnable接口，因此可以有两种方式提供run方法的实现：实现Runnable接口和继承Thread类。
+**a.通过实现Runnable接口创建线程**
+在java.lang中Runnable接口的定义为：
+&lt;pre&gt;`public interface Runnable{
+    void run();
+}
+`&lt;/pre&gt;
+使用这种方法创建线程的步骤是：
+1.定义一个线程类实现Runnable接口，即在该类中提供run()方法的实现。
+2.把Runnable的一个实例作为参数传递给Thread类的一个构造方法，该实例对象提供线程体run().
+下面给一个简单的例子:
+&lt;pre&gt;`public class ThreadTest {
+    public static void main(String args[]){
+    Thread t1 = new Thread( new Hello());
+    Thread t2 = new Thread(new Hello());
+    t1.start();
+    t2.start();
+    }
+}
+
+class Hello implements Runnable{
+    int i;
+    public void run(){
+        while(true){
+            System.out.println(&quot;Hello &quot;+i++);
+            if(i == 5)
+                break;
+        }
+    }
+}
+`&lt;/pre&gt;
+该例中，Hello类实现了Runnable接口，在ThreadTest类的main方法中，以Hello类的两个实例对象分别创建了t1,t2两个线程，并将线程启动。在创建的线程中，Hello类的run()方法就是线程体，int i是线程的数据，当t1,t2启动时，就从Hello类对象的run()方法开始执行。
+
+**b.通过继承Thread类创建线程**
+在java.lang包中，Thread类的声明如下：
+public class Thread extends Object implements Runnable
+因此，Thread类本身实现了Runnable接口，在Thread类的定义中可以发现run()方法。
+通过继承Thread类创建线程的步骤是：
+1.从Thread类派生子类，并重写其中的run()方法定义线程体。
+2.创建该子类的对象创建线程。
+下面给出一个简单的例子：
+&lt;pre&gt;`public class ThreadTest2 {
+    public static void main(String args[]){
+    Hello2 t1 = new Hello2();
+    Hello2 t2 = new Hello2();
+    t1.start();
+    t2.start();
+    }
+}
+
+class Hello2 extends Thread{
+    int i;
+    public void run(){
+        while(true){
+            System.out.println(&quot;Hello &quot;+i++);
+            if(i == 5)
+                break;
+        }
+    }
+}
+</code></pre><p>在例中，类Hello2继承了Thread类，并将Thread类的run()方法进行了重写，run()方法的功能与上个例子中的线程相同。<br><span style="color: #008000;">另外，新建的线程不会自动运行。必须调用线程的start()方法。该方法的调用把嵌入在线程中的虚拟CPU置为可运行状态，意味着它可被调度运行，但这并不意味着线程会立即运行。</span><br>小结：线程是java中很重要的一部分，线程的两种创建方法一定要熟悉。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Thread/" rel="tag"># Thread</a>
+          
+            <a href="/tags/线程/" rel="tag"># 线程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/12/29/ubuntu-gnome-e6-a1-8c-e9-9d-a2-e7-8e-af-e5-a2-83-e4-b8-8b-e6-88-aa-e5-b1-8f-e5-91-bd-e4-bb-a4/" rel="next" title="ubuntu gnome桌面环境下截屏命令">
+                <i class="fa fa-chevron-left"></i> ubuntu gnome桌面环境下截屏命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/04/07/Android中关于Handler的总结/" rel="prev" title="Android中关于Handler的总结">
+                Android中关于Handler的总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

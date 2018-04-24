@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,SDK,位置," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显">
+<meta name="keywords" content="Android,SDK,位置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中使用百度SDK获得经纬度和位置信息">
+<meta property="og:url" content="http://yoursite.com/2013/05/04/Android中使用百度SDK获得经纬度和位置信息/index.html">
+<meta property="og:site_name" content="一路追梦想">
+<meta property="og:description" content="自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中使用百度SDK获得经纬度和位置信息">
+<meta name="twitter:description" content="自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2013/05/04/Android中使用百度SDK获得经纬度和位置信息/"/>
+
+
+
+
+
+  <title>Android中使用百度SDK获得经纬度和位置信息 | 一路追梦想</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一路追梦想</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">热爱技术，更热爱生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/04/Android中使用百度SDK获得经纬度和位置信息/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android中使用百度SDK获得经纬度和位置信息</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-05-04T21:20:37+08:00">
+                2013-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。<br>今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显示百度地图，直接把位置信息显示出来就行，刚开始接触百度SDK，很多知识都不是很熟悉，就从网上找，但是发现大部分获取的位置信息返回的都是null，最后才发现少了一句<code>option.setAddrType(&quot;all&quot;);</code><br>下面贴出代码，供网友参考，首先是布局文件：</p>
+<pre><code>&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
+&amp;lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+    android:layout_width=&quot;fill_parent&quot;
+    android:layout_height=&quot;fill_parent&quot;
+    android:orientation=&quot;vertical&quot; &amp;gt;
+&lt;!--more--&gt;
+    &amp;lt;Button
+        android:id=&quot;@+id/btn_start&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:layout_marginTop=&quot;20dp&quot;
+        android:text=&quot;Start&quot;/&amp;gt;
+
+    &amp;lt;TextView
+        android:id=&quot;@+id/tv_loc_info&quot;
+        android:layout_width=&quot;fill_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;
+        android:textSize=&quot;18sp&quot; /&amp;gt;
+
+&amp;lt;/LinearLayout&amp;gt;
+`&lt;/pre&gt;
+接着就是源码了
+&lt;pre&gt;`package com.zzu.picksomething.msfx;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MyLocation extends Activity {
+    private TextView locationInfoTextView = null;
+    private Button startButton = null;
+    private LocationClient locationClient = null;
+    private static final int UPDATE_TIME = 5000;
+    private static int LOCATION_COUTNS = 0;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_mylocation);
+        locationInfoTextView = (TextView) this.findViewById(R.id.tv_loc_info);
+        startButton = (Button) this.findViewById(R.id.btn_start);
+        locationClient = new LocationClient(this);
+        //设置定位条件
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);                                //是否打开GPS
+        option.setCoorType(&quot;bd09ll&quot;);                          //设置返回值的坐标类型。
+        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
+        option.setProdName(&quot;LocationDemo&quot;);                    //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
+        option.setScanSpan(UPDATE_TIME);                        //设置定时定位的时间间隔。单位毫秒
+        option.setAddrType(&quot;all&quot;);
+        locationClient.setLocOption(option);
+        //注册位置监听器
+        locationClient.registerLocationListener(new BDLocationListener() {
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                // TODO Auto-generated method stub
+                if (location == null) {
+                    return;
+                }
+                StringBuffer sb = new StringBuffer(256);
+                sb.append(&quot;Time : &quot;);
+                sb.append(location.getTime());
+                sb.append(&quot;\nError code : &quot;);
+                sb.append(location.getLocType());
+                sb.append(&quot;\nLatitude : &quot;);
+                sb.append(location.getLatitude());
+                sb.append(&quot;\nLontitude : &quot;);
+                sb.append(location.getLongitude());
+                sb.append(&quot;\nRadius : &quot;);
+                sb.append(location.getRadius());
+                if (location.getLocType() == BDLocation.TypeGpsLocation){
+                    sb.append(&quot;\nSpeed : &quot;);
+                    sb.append(location.getSpeed());
+                    sb.append(&quot;\nSatellite : &quot;);
+                    sb.append(location.getSatelliteNumber());
+                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
+                    sb.append(&quot;\nAddress : &quot;);
+                    sb.append(location.getAddrStr());
+                }
+                LOCATION_COUTNS ++;
+                sb.append(&quot;\n检查位置更新次数：&quot;);
+                sb.append(String.valueOf(LOCATION_COUTNS));
+                locationInfoTextView.setText(sb.toString());
+            }
+            @Override
+            public void onReceivePoi(BDLocation location) {
+            }
+        });
+        startButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (locationClient == null) {
+                    return;
+                }
+                if (locationClient.isStarted()) {
+                    startButton.setText(&quot;Start&quot;);
+                    locationClient.stop();
+                }else {
+                    startButton.setText(&quot;Stop&quot;);
+                    locationClient.start();
+                    /*
+                    *当所设的整数值大于等于1000（ms）时，定位SDK内部使用定时定位模式。
+                    *调用requestLocation( )后，每隔设定的时间，定位SDK就会进行一次定位。
+                    *如果定位SDK根据定位依据发现位置没有发生变化，就不会发起网络请求，
+                    *返回上一次定位的结果；如果发现位置改变，就进行网络请求进行定位，得到新的定位结果。
+                    *定时定位时，调用一次requestLocation，会定时监听到定位结果。
+                    */
+                    locationClient.requestLocation();
+                }
+            }
+        });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (locationClient != null &amp;amp;&amp;amp; locationClient.isStarted()) {
+            locationClient.stop();
+            locationClient = null;
+        }
+    }
+}
+</code></pre><p>补充：使用百度的SDK获取位置信息，必须要去下载百度最新的SDK，官方网站有，然后放到对应的文件夹。另外需要在配置文件中加入一些权限。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/SDK/" rel="tag"># SDK</a>
+          
+            <a href="/tags/位置/" rel="tag"># 位置</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2013/04/29/Android中Listview重复显示搜索结果/" rel="next" title="Android中Listview重复显示搜索结果">
+                <i class="fa fa-chevron-left"></i> Android中Listview重复显示搜索结果
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2013/08/03/入职感受/" rel="prev" title="入职感受">
+                入职感受 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.jpg"
+                alt="picksomething" />
+            
+              <p class="site-author-name" itemprop="name">picksomething</p>
+              <p class="site-description motion-element" itemprop="description">专注Android，Java，React Native，Python</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">126</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">picksomething</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
