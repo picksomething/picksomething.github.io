@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://picksomething.cn/2018/04/24/%E6%96%B0%E4%B8%96%E7%95%8C/</loc>
-    <lastmod>2018-04-24T11:52:43.883Z</lastmod>
+    <lastmod>2018-04-24T12:02:51.988Z</lastmod>
     <data>
         <display>
         <title>新世界</title>
@@ -195,6 +195,30 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2016/01/12/ViewPager+Fragment+%E8%87%AA%E5%AE%9A%E4%B9%89Tab%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2018-04-24T07:46:37.427Z</lastmod>
+    <data>
+        <display>
+        <title>ViewPager+Fragment+自定义Tab的使用</title>
+        <pubTime>2016-01-12T06:19:15.000Z</pubTime>
+        
+        <tag>Fragment</tag>
+         
+        <tag>Tab</tag>
+         
+        <tag>ViewPager</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2018/03/06/iOS%E4%B8%8D%E6%98%BE%E7%A4%BALaunchScreen%E4%B8%8A%E7%9A%84%E5%9B%BE%E7%89%87/</loc>
     <lastmod>2018-04-24T07:46:37.427Z</lastmod>
     <data>
@@ -213,18 +237,42 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2016/01/12/ViewPager+Fragment+%E8%87%AA%E5%AE%9A%E4%B9%89Tab%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <loc>http://picksomething.cn/2016/04/17/Android%20UI%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6Espresso/</loc>
     <lastmod>2018-04-24T07:46:37.427Z</lastmod>
     <data>
         <display>
-        <title>ViewPager+Fragment+自定义Tab的使用</title>
-        <pubTime>2016-01-12T06:19:15.000Z</pubTime>
+        <title>Android UI测试框架Espresso</title>
+        <pubTime>2016-04-17T13:01:21.000Z</pubTime>
         
-        <tag>Fragment</tag>
+        <tag>Android</tag>
          
-        <tag>Tab</tag>
+        <tag>Conflict with dependecy</tag>
          
-        <tag>ViewPager</tag>
+        <tag>Espresso</tag>
+         
+        <tag>UI自动化测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2016/02/18/URLConnection.setDoOutput(true)%E5%AF%BC%E8%87%B4Get%E8%AF%B7%E6%B1%82%E5%8F%98Post%E8%AF%B7%E6%B1%82%EF%BC%9F/</loc>
+    <lastmod>2018-04-24T07:46:37.427Z</lastmod>
+    <data>
+        <display>
+        <title>URLConnection.setDoOutput(true)导致Get请求变Post请求？</title>
+        <pubTime>2016-02-18T15:38:49.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>setDoOutput</tag>
          
          
            
@@ -260,28 +308,6 @@
            
              
               <breadCrumb title="React native" url="http://picksomething.cn/categories/React-native/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2016/02/18/URLConnection.setDoOutput(true)%E5%AF%BC%E8%87%B4Get%E8%AF%B7%E6%B1%82%E5%8F%98Post%E8%AF%B7%E6%B1%82%EF%BC%9F/</loc>
-    <lastmod>2018-04-24T07:46:37.427Z</lastmod>
-    <data>
-        <display>
-        <title>URLConnection.setDoOutput(true)导致Get请求变Post请求？</title>
-        <pubTime>2016-02-18T15:38:49.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>setDoOutput</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -326,32 +352,6 @@
            
              
               <breadCrumb title="Shell" url="http://picksomething.cn/categories/Shell/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2016/04/17/Android%20UI%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6Espresso/</loc>
-    <lastmod>2018-04-24T07:46:37.427Z</lastmod>
-    <data>
-        <display>
-        <title>Android UI测试框架Espresso</title>
-        <pubTime>2016-04-17T13:01:21.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Conflict with dependecy</tag>
-         
-        <tag>Espresso</tag>
-         
-        <tag>UI自动化测试</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -409,45 +409,17 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2015/09/28/Android%20Ripple%20Animation-%E6%B6%9F%E6%BC%AA%E5%8A%A8%E7%94%BB/</loc>
+    <loc>http://picksomething.cn/2015/12/20/%E7%94%9F%E7%97%85%E8%BF%99%E5%8D%8A%E6%9C%88/</loc>
     <lastmod>2018-04-24T07:46:37.426Z</lastmod>
     <data>
         <display>
-        <title>Android Ripple Animation-涟漪动画</title>
-        <pubTime>2015-09-28T15:16:20.000Z</pubTime>
+        <title>生病这半月</title>
+        <pubTime>2015-12-20T11:06:28.000Z</pubTime>
         
-        <tag>Android</tag>
-         
-        <tag>ripple</tag>
-         
-        <tag>涟漪动画</tag>
-         
          
            
              
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2015/05/22/Android%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1Timer%E5%A4%B1%E6%95%88%EF%BC%9F/</loc>
-    <lastmod>2018-04-24T07:46:37.426Z</lastmod>
-    <data>
-        <display>
-        <title>Android定时任务Timer失效？</title>
-        <pubTime>2015-05-21T17:41:24.000Z</pubTime>
-        
-        <tag>ScheduledThreadPoolExecutor</tag>
-         
-        <tag>Timer失效</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+              <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
           
         </display>
     </data>
@@ -474,6 +446,28 @@
            
              
               <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2015/05/22/Android%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1Timer%E5%A4%B1%E6%95%88%EF%BC%9F/</loc>
+    <lastmod>2018-04-24T07:46:37.426Z</lastmod>
+    <data>
+        <display>
+        <title>Android定时任务Timer失效？</title>
+        <pubTime>2015-05-21T17:41:24.000Z</pubTime>
+        
+        <tag>ScheduledThreadPoolExecutor</tag>
+         
+        <tag>Timer失效</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -527,6 +521,30 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2015/09/28/Android%20Ripple%20Animation-%E6%B6%9F%E6%BC%AA%E5%8A%A8%E7%94%BB/</loc>
+    <lastmod>2018-04-24T07:46:37.426Z</lastmod>
+    <data>
+        <display>
+        <title>Android Ripple Animation-涟漪动画</title>
+        <pubTime>2015-09-28T15:16:20.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>ripple</tag>
+         
+        <tag>涟漪动画</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2015/11/06/RecyclerView%20with%20header%20and%20footer/</loc>
     <lastmod>2018-04-24T07:46:37.426Z</lastmod>
     <data>
@@ -542,6 +560,24 @@
          
         <tag>RecyclerView</tag>
          
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2015/10/15/%E4%BD%BF%E7%94%A8merge%E6%A0%87%E7%AD%BE%E6%9B%BF%E6%8D%A2FrameLayout%E5%B8%83%E5%B1%80/</loc>
+    <lastmod>2018-04-24T07:46:37.426Z</lastmod>
+    <data>
+        <display>
+        <title>使用merge标签替换FrameLayout布局</title>
+        <pubTime>2015-10-14T16:59:42.000Z</pubTime>
+        
          
            
              
@@ -579,94 +615,6 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2015/10/15/%E4%BD%BF%E7%94%A8merge%E6%A0%87%E7%AD%BE%E6%9B%BF%E6%8D%A2FrameLayout%E5%B8%83%E5%B1%80/</loc>
-    <lastmod>2018-04-24T07:46:37.426Z</lastmod>
-    <data>
-        <display>
-        <title>使用merge标签替换FrameLayout布局</title>
-        <pubTime>2015-10-14T16:59:42.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2015/12/20/%E7%94%9F%E7%97%85%E8%BF%99%E5%8D%8A%E6%9C%88/</loc>
-    <lastmod>2018-04-24T07:46:37.426Z</lastmod>
-    <data>
-        <display>
-        <title>生病这半月</title>
-        <pubTime>2015-12-20T11:06:28.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2015/01/27/Android%E5%BC%80%E6%9C%BA%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4Launcher/</loc>
-    <lastmod>2018-04-24T07:46:37.425Z</lastmod>
-    <data>
-        <display>
-        <title>Android开机设置默认Launcher</title>
-        <pubTime>2015-01-26T16:22:10.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Launcher</tag>
-         
-        <tag>Provision</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2015/03/01/Python%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BC%82%E5%B8%B8/</loc>
-    <lastmod>2018-04-24T07:46:37.425Z</lastmod>
-    <data>
-        <display>
-        <title>Python之文件与异常</title>
-        <pubTime>2015-02-28T19:12:01.000Z</pubTime>
-        
-        <tag>Python</tag>
-         
-        <tag>except</tag>
-         
-        <tag>open</tag>
-         
-        <tag>split</tag>
-         
-        <tag>try</tag>
-         
-         
-           
-             
-              <breadCrumb title="Python" url="http://picksomething.cn/categories/Python/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://picksomething.cn/2014/12/30/Android%20Studio%20ADB%20not%20responding/</loc>
     <lastmod>2018-04-24T07:46:37.425Z</lastmod>
     <data>
@@ -695,6 +643,36 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2015/01/18/%E6%B5%85%E8%B0%88Android%E7%AE%A1%E7%90%86task%E6%96%B9%E5%BC%8F/</loc>
+    <lastmod>2018-04-24T07:46:37.425Z</lastmod>
+    <data>
+        <display>
+        <title>浅谈Android管理task方式</title>
+        <pubTime>2015-01-17T18:03:43.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Affinity</tag>
+         
+        <tag>Back Stack</tag>
+         
+        <tag>LaunchMode</tag>
+         
+        <tag>Task</tag>
+         
+        <tag>taskAffinity</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2015/01/01/DrawerLayout%E5%AF%BC%E8%88%AA%E6%8A%BD%E5%B1%89%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2018-04-24T07:46:37.425Z</lastmod>
     <data>
@@ -709,6 +687,30 @@
         <tag>DrawerLayout</tag>
          
         <tag>Fragment</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2015/01/27/Android%E5%BC%80%E6%9C%BA%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4Launcher/</loc>
+    <lastmod>2018-04-24T07:46:37.425Z</lastmod>
+    <data>
+        <display>
+        <title>Android开机设置默认Launcher</title>
+        <pubTime>2015-01-26T16:22:10.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Launcher</tag>
+         
+        <tag>Provision</tag>
          
          
            
@@ -749,29 +751,23 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2015/02/01/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%B8%B8%E7%94%A8Git%E5%91%BD%E4%BB%A4(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/</loc>
+    <loc>http://picksomething.cn/2015/03/18/Android%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E6%89%93%E5%BC%80%E5%85%B3%E9%97%AD%E9%80%9A%E7%9F%A5%E6%A0%8F/</loc>
     <lastmod>2018-04-24T07:46:37.425Z</lastmod>
     <data>
         <display>
-        <title>工作中常用Git命令(持续更新)</title>
-        <pubTime>2015-01-31T17:40:11.000Z</pubTime>
+        <title>Android通过反射机制实现打开关闭通知栏</title>
+        <pubTime>2015-03-18T10:08:45.000Z</pubTime>
         
-        <tag>git</tag>
+        <tag>Android</tag>
          
-        <tag>fetch</tag>
+        <tag>反射</tag>
          
-        <tag>fork</tag>
-         
-        <tag>pull</tag>
-         
-        <tag>rebase</tag>
-         
-        <tag>tag</tag>
+        <tag>通知栏</tag>
          
          
            
              
-              <breadCrumb title="Git" url="http://picksomething.cn/categories/Git/"/>
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -803,23 +799,29 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2015/03/18/Android%E9%80%9A%E8%BF%87%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E6%89%93%E5%BC%80%E5%85%B3%E9%97%AD%E9%80%9A%E7%9F%A5%E6%A0%8F/</loc>
+    <loc>http://picksomething.cn/2015/02/01/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%B8%B8%E7%94%A8Git%E5%91%BD%E4%BB%A4(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/</loc>
     <lastmod>2018-04-24T07:46:37.425Z</lastmod>
     <data>
         <display>
-        <title>Android通过反射机制实现打开关闭通知栏</title>
-        <pubTime>2015-03-18T10:08:45.000Z</pubTime>
+        <title>工作中常用Git命令(持续更新)</title>
+        <pubTime>2015-01-31T17:40:11.000Z</pubTime>
         
-        <tag>Android</tag>
+        <tag>git</tag>
          
-        <tag>反射</tag>
+        <tag>fetch</tag>
          
-        <tag>通知栏</tag>
+        <tag>fork</tag>
+         
+        <tag>pull</tag>
+         
+        <tag>rebase</tag>
+         
+        <tag>tag</tag>
          
          
            
              
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+              <breadCrumb title="Git" url="http://picksomething.cn/categories/Git/"/>
           
         </display>
     </data>
@@ -839,6 +841,34 @@
         <tag>list</tag>
          
         <tag>Python</tag>
+         
+         
+           
+             
+              <breadCrumb title="Python" url="http://picksomething.cn/categories/Python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2015/03/01/Python%E4%B9%8B%E6%96%87%E4%BB%B6%E4%B8%8E%E5%BC%82%E5%B8%B8/</loc>
+    <lastmod>2018-04-24T07:46:37.425Z</lastmod>
+    <data>
+        <display>
+        <title>Python之文件与异常</title>
+        <pubTime>2015-02-28T19:12:01.000Z</pubTime>
+        
+        <tag>Python</tag>
+         
+        <tag>except</tag>
+         
+        <tag>open</tag>
+         
+        <tag>split</tag>
+         
+        <tag>try</tag>
          
          
            
@@ -873,29 +903,19 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2015/01/18/%E6%B5%85%E8%B0%88Android%E7%AE%A1%E7%90%86task%E6%96%B9%E5%BC%8F/</loc>
-    <lastmod>2018-04-24T07:46:37.425Z</lastmod>
+    <loc>http://picksomething.cn/2014/10/11/%E5%8D%9A%E5%AE%A2%E6%90%AC%E5%AE%B6/</loc>
+    <lastmod>2018-04-24T07:46:37.424Z</lastmod>
     <data>
         <display>
-        <title>浅谈Android管理task方式</title>
-        <pubTime>2015-01-17T18:03:43.000Z</pubTime>
+        <title>博客搬家</title>
+        <pubTime>2014-10-11T06:28:49.000Z</pubTime>
         
-        <tag>Android</tag>
-         
-        <tag>Affinity</tag>
-         
-        <tag>Back Stack</tag>
-         
-        <tag>LaunchMode</tag>
-         
-        <tag>Task</tag>
-         
-        <tag>taskAffinity</tag>
+        <tag>博客</tag>
          
          
            
              
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+              <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
           
         </display>
     </data>
@@ -918,54 +938,6 @@
            
              
               <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2014/05/03/Android%E6%99%BA%E8%83%BD%E7%94%B5%E8%A7%86%E5%BE%85%E6%9C%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2018-04-24T07:46:37.424Z</lastmod>
-    <data>
-        <display>
-        <title>Android智能电视待机流程分析</title>
-        <pubTime>2014-05-03T07:59:02.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>KONKA</tag>
-         
-        <tag>智能电视</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2014/12/14/OpenSuSE13.2%E6%B7%BB%E5%8A%A0Android%20Studio%E5%88%B0%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%88%97%E8%A1%A8/</loc>
-    <lastmod>2018-04-24T07:46:37.424Z</lastmod>
-    <data>
-        <display>
-        <title>OpenSuSE13.2添加Android Studio到应用程序列表</title>
-        <pubTime>2014-12-14T14:42:25.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-        <tag>Android Studio</tag>
-         
-        <tag>快捷方式</tag>
-         
-         
-           
-             
-              <breadCrumb title="Linux" url="http://picksomething.cn/categories/Linux/"/>
           
         </display>
     </data>
@@ -997,19 +969,23 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2014/10/11/%E5%8D%9A%E5%AE%A2%E6%90%AC%E5%AE%B6/</loc>
+    <loc>http://picksomething.cn/2014/12/14/OpenSuSE13.2%E6%B7%BB%E5%8A%A0Android%20Studio%E5%88%B0%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E5%88%97%E8%A1%A8/</loc>
     <lastmod>2018-04-24T07:46:37.424Z</lastmod>
     <data>
         <display>
-        <title>博客搬家</title>
-        <pubTime>2014-10-11T06:28:49.000Z</pubTime>
+        <title>OpenSuSE13.2添加Android Studio到应用程序列表</title>
+        <pubTime>2014-12-14T14:42:25.000Z</pubTime>
         
-        <tag>博客</tag>
+        <tag>Linux</tag>
+         
+        <tag>Android Studio</tag>
+         
+        <tag>快捷方式</tag>
          
          
            
              
-              <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
+              <breadCrumb title="Linux" url="http://picksomething.cn/categories/Linux/"/>
           
         </display>
     </data>
@@ -1067,6 +1043,32 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2014/10/30/Linux%E4%B8%8B%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BDsamba%E7%9B%AE%E5%BD%95%EF%BC%8C%E4%B8%94%E5%8F%AF%E4%BB%A5%E6%AD%A3%E5%B8%B8%E8%AF%BB%E5%86%99/</loc>
+    <lastmod>2018-04-24T07:46:37.424Z</lastmod>
+    <data>
+        <display>
+        <title>Linux下开机自动挂载samba目录，且可以正常读写</title>
+        <pubTime>2014-10-30T02:02:36.000Z</pubTime>
+        
+        <tag>fstab</tag>
+         
+        <tag>Linux</tag>
+         
+        <tag>mount</tag>
+         
+        <tag>挂载</tag>
+         
+         
+           
+             
+              <breadCrumb title="Linux" url="http://picksomething.cn/categories/Linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2013/10/23/Android%E5%9C%A8%E9%9D%9EUI%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%9B%B4%E6%96%B0UI%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%89%A9%E5%B1%95/</loc>
     <lastmod>2018-04-24T07:46:37.424Z</lastmod>
     <data>
@@ -1109,71 +1111,71 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2014/10/30/Linux%E4%B8%8B%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BDsamba%E7%9B%AE%E5%BD%95%EF%BC%8C%E4%B8%94%E5%8F%AF%E4%BB%A5%E6%AD%A3%E5%B8%B8%E8%AF%BB%E5%86%99/</loc>
+    <loc>http://picksomething.cn/2014/05/03/Android%E6%99%BA%E8%83%BD%E7%94%B5%E8%A7%86%E5%BE%85%E6%9C%BA%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/</loc>
     <lastmod>2018-04-24T07:46:37.424Z</lastmod>
     <data>
         <display>
-        <title>Linux下开机自动挂载samba目录，且可以正常读写</title>
-        <pubTime>2014-10-30T02:02:36.000Z</pubTime>
+        <title>Android智能电视待机流程分析</title>
+        <pubTime>2014-05-03T07:59:02.000Z</pubTime>
         
-        <tag>fstab</tag>
+        <tag>Android</tag>
          
+        <tag>KONKA</tag>
+         
+        <tag>智能电视</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2013/04/07/Android%E4%B8%AD%E5%85%B3%E4%BA%8EHandler%E7%9A%84%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
+    <data>
+        <display>
+        <title>Android中关于Handler的总结</title>
+        <pubTime>2013-04-07T02:01:47.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Handler</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2012/12/29/ubuntu-gnome-e6-a1-8c-e9-9d-a2-e7-8e-af-e5-a2-83-e4-b8-8b-e6-88-aa-e5-b1-8f-e5-91-bd-e4-bb-a4/</loc>
+    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu gnome桌面环境下截屏命令</title>
+        <pubTime>2012-12-29T13:24:29.000Z</pubTime>
+        
         <tag>Linux</tag>
          
-        <tag>mount</tag>
+        <tag>Ubuntu</tag>
          
-        <tag>挂载</tag>
+        <tag>Gnome</tag>
+         
+        <tag>截屏</tag>
          
          
            
              
               <breadCrumb title="Linux" url="http://picksomething.cn/categories/Linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2013/10/23/Android%E4%B8%AD%E9%80%9A%E8%BF%87HandlerThread%E5%AE%9E%E7%8E%B0%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
-    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
-    <data>
-        <display>
-        <title>Android中通过HandlerThread实现真正的多线程</title>
-        <pubTime>2013-10-23T15:20:41.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>HandlerThread</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2013/05/04/Android%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6SDK%E8%8E%B7%E5%BE%97%E7%BB%8F%E7%BA%AC%E5%BA%A6%E5%92%8C%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF/</loc>
-    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
-    <data>
-        <display>
-        <title>Android中使用百度SDK获得经纬度和位置信息</title>
-        <pubTime>2013-05-04T13:20:37.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>SDK</tag>
-         
-        <tag>位置</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -1198,50 +1200,6 @@
            
              
               <breadCrumb title="Java" url="http://picksomething.cn/categories/Java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2013/10/18/onTextChanged%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E5%8F%8A%E5%AE%9E%E7%8E%B0EditText%E5%AD%97%E6%95%B0%E7%9B%91%E5%90%AC/</loc>
-    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
-    <data>
-        <display>
-        <title>onTextChanged参数解释及实现EditText字数监听</title>
-        <pubTime>2013-10-18T12:34:59.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>TextWatcher</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2013/04/29/Android%E4%B8%ADListview%E9%87%8D%E5%A4%8D%E6%98%BE%E7%A4%BA%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C/</loc>
-    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
-    <data>
-        <display>
-        <title>Android中Listview重复显示搜索结果</title>
-        <pubTime>2013-04-29T06:08:40.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>ListView</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -1320,16 +1278,62 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2013/04/07/Android%E4%B8%AD%E5%85%B3%E4%BA%8EHandler%E7%9A%84%E6%80%BB%E7%BB%93/</loc>
+    <loc>http://picksomething.cn/2013/10/23/Android%E4%B8%AD%E9%80%9A%E8%BF%87HandlerThread%E5%AE%9E%E7%8E%B0%E7%9C%9F%E6%AD%A3%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2018-04-24T07:46:37.423Z</lastmod>
     <data>
         <display>
-        <title>Android中关于Handler的总结</title>
-        <pubTime>2013-04-07T02:01:47.000Z</pubTime>
+        <title>Android中通过HandlerThread实现真正的多线程</title>
+        <pubTime>2013-10-23T15:20:41.000Z</pubTime>
         
         <tag>Android</tag>
          
-        <tag>Handler</tag>
+        <tag>HandlerThread</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2013/04/29/Android%E4%B8%ADListview%E9%87%8D%E5%A4%8D%E6%98%BE%E7%A4%BA%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C/</loc>
+    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
+    <data>
+        <display>
+        <title>Android中Listview重复显示搜索结果</title>
+        <pubTime>2013-04-29T06:08:40.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>ListView</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2013/05/04/Android%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%99%BE%E5%BA%A6SDK%E8%8E%B7%E5%BE%97%E7%BB%8F%E7%BA%AC%E5%BA%A6%E5%92%8C%E4%BD%8D%E7%BD%AE%E4%BF%A1%E6%81%AF/</loc>
+    <lastmod>2018-04-24T07:46:37.423Z</lastmod>
+    <data>
+        <display>
+        <title>Android中使用百度SDK获得经纬度和位置信息</title>
+        <pubTime>2013-05-04T13:20:37.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>SDK</tag>
+         
+        <tag>位置</tag>
          
          
            
@@ -1390,47 +1394,21 @@
 
     
   <url>
-    <loc>http://picksomething.cn/2012/12/29/ubuntu-gnome-e6-a1-8c-e9-9d-a2-e7-8e-af-e5-a2-83-e4-b8-8b-e6-88-aa-e5-b1-8f-e5-91-bd-e4-bb-a4/</loc>
+    <loc>http://picksomething.cn/2013/10/18/onTextChanged%E5%8F%82%E6%95%B0%E8%A7%A3%E9%87%8A%E5%8F%8A%E5%AE%9E%E7%8E%B0EditText%E5%AD%97%E6%95%B0%E7%9B%91%E5%90%AC/</loc>
     <lastmod>2018-04-24T07:46:37.423Z</lastmod>
     <data>
         <display>
-        <title>ubuntu gnome桌面环境下截屏命令</title>
-        <pubTime>2012-12-29T13:24:29.000Z</pubTime>
+        <title>onTextChanged参数解释及实现EditText字数监听</title>
+        <pubTime>2013-10-18T12:34:59.000Z</pubTime>
         
-        <tag>Linux</tag>
+        <tag>Android</tag>
          
-        <tag>Ubuntu</tag>
-         
-        <tag>Gnome</tag>
-         
-        <tag>截屏</tag>
+        <tag>TextWatcher</tag>
          
          
            
              
-              <breadCrumb title="Linux" url="http://picksomething.cn/categories/Linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2012/10/15/%E5%85%B3%E4%BA%8E%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E4%BC%A0%E9%80%92%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86/</loc>
-    <lastmod>2018-04-24T07:46:37.422Z</lastmod>
-    <data>
-        <display>
-        <title>关于动态内存传递的一些知识</title>
-        <pubTime>2012-10-15T02:02:42.000Z</pubTime>
-        
-        <tag>C++</tag>
-         
-        <tag>动态传递</tag>
-         
-         
-           
-             
-              <breadCrumb title="C/C++" url="http://picksomething.cn/categories/C-C/"/>
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -1450,6 +1428,28 @@
         <tag>模板类</tag>
          
         <tag>泛型</tag>
+         
+         
+           
+             
+              <breadCrumb title="C/C++" url="http://picksomething.cn/categories/C-C/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2012/10/15/%E5%85%B3%E4%BA%8E%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E4%BC%A0%E9%80%92%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86/</loc>
+    <lastmod>2018-04-24T07:46:37.422Z</lastmod>
+    <data>
+        <display>
+        <title>关于动态内存传递的一些知识</title>
+        <pubTime>2012-10-15T02:02:42.000Z</pubTime>
+        
+        <tag>C++</tag>
+         
+        <tag>动态传递</tag>
          
          
            
