@@ -791,24 +791,13 @@
       
         
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们知道ES6允许使用“箭头”（=&gt;）定义函数，习惯Java中函数定义之后，刚开始接触js，每次看到箭头函数都感觉怪怪的，那么为什么ES6要引入箭头函数呢，这个问题也一直困扰这我，虽然只要明白了箭头函数的语法，基本就可以正常的学习rn，使用rn开始开发，但是有些东西搞不清楚，心里头就感觉不踏实，今天咨询了一下做前后端开发的大学室友，才稍微明白了一点</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><ul>
-<li><p>引入箭头函数的原因</p>
-<pre><code>*   一是更简短的函数书写
-</code></pre><ul>
-<li>二是对this的词法解析</li>
-</ul>
-</li>
-<li><p><strong>更短的函数书写</strong></p>
-<p>这个其实很好理解，看下面的一段代码：</p>
-<pre><code>// 正常函数写法
-</code></pre><p>[1,2,3].map(function (x) {</p>
-<pre><code>return x * x;
-</code></pre><p>});<br>// 箭头函数写法<br>[1,2,3].map(x =&gt; x * x);<br>`</p>
-<blockquote>
-<p>上面的箭头函数的第二种写法里面的<code>x =&amp;gt; x * x</code>是等价于<code>(x) =&amp;gt; {return x * x}</code>,一个参数的时候小括号可以省略，后面的大括号如果省略的话，代表是一个隐式的返回值，具体这个箭头函数的语法可以看第一篇基础总结里面有提到</p>
-</blockquote>
-</li>
-<li><strong>对this的词法解释(不绑定自己的 this，arguments，super)</strong>
+<h2 id="引入箭头函数的原因"><a href="#引入箭头函数的原因" class="headerlink" title="引入箭头函数的原因"></a>引入箭头函数的原因</h2><ol>
+<li>更简短的函数书写</li>
+<li>对this的词法解析</li>
+<li>更短的函数书写</li>
+</ol>
+<h3 id="更简短的函数书写"><a href="#更简短的函数书写" class="headerlink" title="更简短的函数书写"></a>更简短的函数书写</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正常函数写法</span></span><br><span class="line">    [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].map(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> x * x;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 箭头函数写法</span></span><br><span class="line">    [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].map(x =&amp;gt; x * x);</span><br></pre></td></tr></table></figure>
+<p>上面的箭头函数的第二种写法里面的<code>x =&gt; x * x</code>是等价于<code>(x) =&gt; {return x * x}</code>,一个参数的时候小括号可以省略，后面的大括号如果省略的话，代表是一个隐式的返回值，具体这个箭头函数的语法可以看前一篇基础总结里面有提到</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/09/26/React native基础之箭头函数/#more" rel="contents">
@@ -966,7 +955,7 @@
       
         
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习了一周React native之后，感觉还挺有意思的，今天来说说通过React native调用Android平台的一些本地方法(API)，以我目前的水平，感觉这个功能可能平时用的不会太多，但我感觉通过React native开发Android应用的过程中肯定会有用到的时候，本文以调用Android平台的Toast为例来讲讲如何通过React native调用Android<br>原生的一些方法(API)。</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>下面开始项目从创建到运行成功的全过程</p>
+<p>下面开始项目从创建到运行成功的全过程</p>
 <h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init CallNativeToast</span><br></pre></td></tr></table></figure>
 <h2 id="创建一个NativeModule"><a href="#创建一个NativeModule" class="headerlink" title="创建一个NativeModule"></a>创建一个NativeModule</h2><p>本地模块一般是继承ReactContextBaseJavaModule的Java类，然后实现React native(js)调用Android本地API所需的功能，我们这次目标是通过js调用Android来展示一个Toast，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToastModule</span> <span class="keyword">extends</span> <span class="title">ReactContextBaseJavaModule</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DURATION_SHORT_KEY = <span class="string">"SHORT"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DURATION_LONG_KEY = <span class="string">"LONG"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ToastModule</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(reactContext);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"ToastExample"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getConstants</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Map&lt;String, Object&gt; constants = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        constants.put(DURATION_SHORT_KEY, Toast.LENGTH_SHORT);</span><br><span class="line">        constants.put(DURATION_LONG_KEY, Toast.LENGTH_LONG);</span><br><span class="line">        <span class="keyword">return</span> constants;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(String message, <span class="keyword">int</span> duration)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(getReactApplicationContext(), message, duration).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

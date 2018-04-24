@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Android,JavaScript,NativeModule,React native," />
+  <meta name="keywords" content="Android,React native,JavaScript,NativeModule," />
 
 
 
@@ -82,7 +82,7 @@
 
 
 <meta name="description" content="前言学习了一周React native之后，感觉还挺有意思的，今天来说说通过React native调用Android平台的一些本地方法(API)，以我目前的水平，感觉这个功能可能平时用的不会太多，但我感觉通过React native开发Android应用的过程中肯定会有用到的时候，本文以调用Android平台的Toast为例来讲讲如何通过React native调用Android原生的一些方法(">
-<meta name="keywords" content="Android,JavaScript,NativeModule,React native">
+<meta name="keywords" content="Android,React native,JavaScript,NativeModule">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React native基础之调用Android本地方法">
 <meta property="og:url" content="http://picksomething.cn/2017/09/18/React native基础之调用Android本地方法/index.html">
@@ -90,7 +90,7 @@
 <meta property="og:description" content="前言学习了一周React native之后，感觉还挺有意思的，今天来说说通过React native调用Android平台的一些本地方法(API)，以我目前的水平，感觉这个功能可能平时用的不会太多，但我感觉通过React native开发Android应用的过程中肯定会有用到的时候，本文以调用Android平台的Toast为例来讲讲如何通过React native调用Android原生的一些方法(">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2017/09/qq_pic_merged_1505732794971.jpg">
-<meta property="og:updated_time" content="2018-04-24T15:30:06.612Z">
+<meta property="og:updated_time" content="2018-04-24T15:40:53.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React native基础之调用Android本地方法">
 <meta name="twitter:description" content="前言学习了一周React native之后，感觉还挺有意思的，今天来说说通过React native调用Android平台的一些本地方法(API)，以我目前的水平，感觉这个功能可能平时用的不会太多，但我感觉通过React native开发Android应用的过程中肯定会有用到的时候，本文以调用Android平台的Toast为例来讲讲如何通过React native调用Android原生的一些方法(">
@@ -368,7 +368,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习了一周React native之后，感觉还挺有意思的，今天来说说通过React native调用Android平台的一些本地方法(API)，以我目前的水平，感觉这个功能可能平时用的不会太多，但我感觉通过React native开发Android应用的过程中肯定会有用到的时候，本文以调用Android平台的Toast为例来讲讲如何通过React native调用Android<br>原生的一些方法(API)。</p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>下面开始项目从创建到运行成功的全过程</p>
+<p>下面开始项目从创建到运行成功的全过程</p>
 <h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native init CallNativeToast</span><br></pre></td></tr></table></figure>
 <h2 id="创建一个NativeModule"><a href="#创建一个NativeModule" class="headerlink" title="创建一个NativeModule"></a>创建一个NativeModule</h2><p>本地模块一般是继承ReactContextBaseJavaModule的Java类，然后实现React native(js)调用Android本地API所需的功能，我们这次目标是通过js调用Android来展示一个Toast，代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToastModule</span> <span class="keyword">extends</span> <span class="title">ReactContextBaseJavaModule</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DURATION_SHORT_KEY = <span class="string">"SHORT"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DURATION_LONG_KEY = <span class="string">"LONG"</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ToastModule</span><span class="params">(ReactApplicationContext reactContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(reactContext);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"ToastExample"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getConstants</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Map&lt;String, Object&gt; constants = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        constants.put(DURATION_SHORT_KEY, Toast.LENGTH_SHORT);</span><br><span class="line">        constants.put(DURATION_LONG_KEY, Toast.LENGTH_LONG);</span><br><span class="line">        <span class="keyword">return</span> constants;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@ReactMethod</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(String message, <span class="keyword">int</span> duration)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(getReactApplicationContext(), message, duration).show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -416,11 +416,11 @@
           
             <a href="/tags/Android/" rel="tag"># Android</a>
           
+            <a href="/tags/React-native/" rel="tag"># React native</a>
+          
             <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
           
             <a href="/tags/NativeModule/" rel="tag"># NativeModule</a>
-          
-            <a href="/tags/React-native/" rel="tag"># React native</a>
           
         </div>
       
@@ -588,7 +588,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">3.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个NativeModule"><span class="nav-number">4.</span> <span class="nav-text">创建一个NativeModule</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有几点需要说明："><span class="nav-number">4.1.</span> <span class="nav-text">有几点需要说明：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册模块"><span class="nav-number">5.</span> <span class="nav-text">注册模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS中调用"><span class="nav-number">6.</span> <span class="nav-text">JS中调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行截图"><span class="nav-number">7.</span> <span class="nav-text">运行截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">8.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">2.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个NativeModule"><span class="nav-number">3.</span> <span class="nav-text">创建一个NativeModule</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有几点需要说明："><span class="nav-number">3.1.</span> <span class="nav-text">有几点需要说明：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册模块"><span class="nav-number">4.</span> <span class="nav-text">注册模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS中调用"><span class="nav-number">5.</span> <span class="nav-text">JS中调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行截图"><span class="nav-number">6.</span> <span class="nav-text">运行截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结尾"><span class="nav-number">7.</span> <span class="nav-text">结尾</span></a></li></ol></div>
             
 
           </div>
