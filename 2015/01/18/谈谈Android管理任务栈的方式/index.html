@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_multitasking.png">
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_multiple_instances.png">
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack_singletask_multiactivity.png">
-<meta property="og:updated_time" content="2018-04-25T04:19:42.573Z">
+<meta property="og:updated_time" content="2018-04-25T04:29:03.469Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈谈Android管理任务栈的方式">
 <meta name="twitter:description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习技术最好的途径就是Google官方文档加代">
@@ -385,9 +385,7 @@
 <p>下面我将使用到的主要activity属性如下：<code>taskAffinity launchMode</code>和一些主要的intent标志：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FLAG_ACTIVITY_NEW_TASK</span><br><span class="line">FLAG_ACTIVITY_CLEAR_TOP</span><br><span class="line">FLAG_ACTIVITY_SINGLE_TOP</span><br></pre></td></tr></table></figure>
 <p>根据Google Android官方文档的建议：</p>
-<ul>
-<li><p>定义启动模式：</p>
-<p>启动模式允许你定义一个activity的实例如何与当前的task关联，有两种方法来定义不同的启动模式：</p>
+<h2 id="定义启动模式"><a href="#定义启动模式" class="headerlink" title="定义启动模式"></a>定义启动模式</h2><p>启动模式允许你定义一个activity的实例如何与当前的task关联，有两种方法来定义不同的启动模式：</p>
 <ul>
 <li><p>使用manifest配置文件<br>launchMode属性指明activity如何被启动到task的指令，有四种不同的启动模式你可以赋值给launchMode属性：</p>
 <ul>
@@ -400,12 +398,8 @@
 <p>这意味着如果你的应用程序发送一个intent请求打开Android Browser，Android Browser的Activity不会放到和你的应用同一个task中。相反，要么一个针对Browser的新的task启动，或者如果早已经有了一个Browser的task在后台运行，该task将会转到前台处理新的intent。</p>
 <p>无论一个activity是在一个新的task中启动，还是和启动它的activity处于同一个task，返回键总是可以带用户回到之前的activity。</p>
 <p>然而，如果你启动activity的时候指定singleTask启动模式，接着如果该activity的一个实例存在于一个后台task中，那整个task会被带到前台，这个时候，回退栈(back stack)栈顶现在包括带到前台的task中的所有activities。<br>如下图所示：</p>
-</li>
-</ul>
-</li>
-</ul>
 <p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack_singletask_multiactivity.png"></p>
-<ul>
+</li>
 <li><p>使用Intent标志</p>
 <p>当启动一个activity时，你可以修改一个activity和它的task的关联性通过在你用startActivity()方法传递的intent中包含标志，你可以包含的标志有：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLAG_ACTIVITY_NEW_TASK</span><br></pre></td></tr></table></figure>
@@ -418,10 +412,7 @@
 <p>注意：如果特定的activity的启动模式是standard，它也会被从栈顶移除并且一个新的实例在它的位置被启动来处理进来的intent，因为当启动模式是standard时，一个针对新的new intent的新的实例总会被创建</p>
 </li>
 </ul>
-<ul>
-<li>处理affinities</li>
-</ul>
-<p>affinity属性指明一个activity更喜欢属于哪个task。默认地，来自一个应用程序的所有activities彼此都有一个亲和性。所以，一般来说一个相同应用的所有activities倾向于在一个相同的task中。然而，你可以修改一个activity的默认affinity属性。定义在不同应用程序的activities可以共享一个affinity属性，或者定义在同一个应用程序的activities可以被赋予不同的task亲和性。<br>你可以通过<activity>元素的taskAffinity来修改任何给定的activities的亲和性。</activity></p>
+<h2 id="处理affinities"><a href="#处理affinities" class="headerlink" title="处理affinities"></a>处理affinities</h2><p>affinity属性指明一个activity更喜欢属于哪个task。默认地，来自一个应用程序的所有activities彼此都有一个亲和性。所以，一般来说一个相同应用的所有activities倾向于在一个相同的task中。然而，你可以修改一个activity的默认affinity属性。定义在不同应用程序的activities可以共享一个affinity属性，或者定义在同一个应用程序的activities可以被赋予不同的task亲和性。<br>你可以通过<activity>元素的taskAffinity来修改任何给定的activities的亲和性。</activity></p>
 <p>taskAffinity属性带有一个字符串值，该值必须和声明在manifest中的默认包名一样唯一，因为系统使用这个名字来识别应用程序的默认task亲和性。</p>
 <p>亲和性使用在两种情况下：</p>
 <ul>
@@ -533,8 +524,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,7 +564,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -605,6 +605,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义启动模式"><span class="nav-number">1.</span> <span class="nav-text">定义启动模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理affinities"><span class="nav-number">2.</span> <span class="nav-text">处理affinities</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

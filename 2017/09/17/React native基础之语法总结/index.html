@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="絮叨最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意哈 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goo">
+<meta name="description" content="前言最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goog">
 <meta name="keywords" content="js,React native,const,function,let,语法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React native基础之语法总结">
+<meta property="og:title" content="React Native基础之语法总结">
 <meta property="og:url" content="http://picksomething.cn/2017/09/17/React Native基础之语法总结/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="絮叨最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意哈 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goo">
+<meta property="og:description" content="前言最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goog">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta property="og:updated_time" content="2018-04-25T04:38:16.402Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="React native基础之语法总结">
-<meta name="twitter:description" content="絮叨最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意哈 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goo">
+<meta name="twitter:title" content="React Native基础之语法总结">
+<meta name="twitter:description" content="前言最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：  React native语法感觉好随意 代码看起来好乱啊  不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Goog">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>React native基础之语法总结 | 一路追梦想</title>
+  <title>React Native基础之语法总结 | 一路追梦想</title>
   
 
 
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">React native基础之语法总结</h1>
+          <h1 class="post-title" itemprop="name headline">React Native基础之语法总结</h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React-native/" itemprop="url" rel="index">
-                    <span itemprop="name">React native</span>
+                  <a href="/categories/ReactNative/" itemprop="url" rel="index">
+                    <span itemprop="name">ReactNative</span>
                   </a>
                 </span>
 
@@ -354,48 +354,38 @@
       
 
       
-        <h1 id="絮叨"><a href="#絮叨" class="headerlink" title="絮叨"></a>絮叨</h1><p>最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：</p>
-<ol>
-<li>React native语法感觉好随意哈</li>
-<li>代码看起来好乱啊</li>
-</ol>
-<p>不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Google搜索，大概整理了一些React native中容易忽略的基础东西(本文基于最新的ES6语法)</p>
-<h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>变量感觉React native和Java或者Python还是有挺多不一样的地方的，作为弱类型语言，React native里面竟然有三个定义变量的关键字：var,let和const<br><a id="more"></a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近因为工作需要，开始学习React native，虽然以前学习过js，但都是上大学时候的事了，几年没关注这块了，现在又衍生出很多以js为基础的框架或者编程语言，习惯了Java，现在开始学习React native，最大的两点感觉：</p>
 <ul>
-<li><p>var</p>
-<p>这个学过js的应该都清除，没记错的话js最早一直都是用这个来定义变量</p><p></p>
+<li>React native语法感觉好随意</li>
+<li>代码看起来好乱啊</li>
+</ul>
+<p>不过既然要开始学习了React native了，就要搞清楚里面的方方面面。通过查看官方文档，Google搜索，大概整理了一些React native中容易忽略的基础东西(本文基于最新的ES6语法)</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>变量感觉React native和Java或者Python还是有挺多不一样的地方的，作为弱类型语言，React native里面竟然有三个定义变量的关键字：var,let和const<br><a id="more"></a></p>
+<ul>
+<li><p>var<br>这个学过js的应该都清楚，没记错的话js最早一直都是用这个来定义变量</p>
 </li>
-<li><p>let</p>
-<p>之前学习swift的时候，好像swift语法里面也有let这个定义变量的关键字，在React native中，let和var的主要区别是作用域不同，var的作用域是函数内，也就是在一个函数内的任何地方都可以访问或者修改var定义的变量，而使用let定义的变量，只在定义该变量的代码区块内可用</p>
+<li><p>let<br>之前学习swift的时候，好像swift语法里面也有let这个定义变量的关键字，在React native中，let和var的主要区别是作用域不同，var的作用域是函数内，也就是在一个函数内的任何地方都可以访问或者修改var定义的变量，而使用let定义的变量，只在定义该变量的代码区块内可用</p>
 </li>
-<li><p>const</p>
-<p>这个和let的作用域相同，都在定义改变量的代码块内可用，它和let不同的是，const定义的变量是不可以改变的，类似java中带final的关键字变量，声明的时候需要赋值</p>
+<li><p>const<br>这个和let的作用域相同，都在定义改变量的代码块内可用，它和let不同的是，const定义的变量是不可以改变的，类似java中带final的关键字变量，声明的时候需要赋值</p>
 </li>
 </ul>
-<h1 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h1><ul>
-<li><p></p><p>=&gt;(Arrow functions)</p>
-<p>在看React native文档的时候，经常可以看到=&gt;这个符号，比如下面这段代码：</p>
-<pre><code>function getMoviesFromApiAsync() {
-</code></pre><p>  return fetch(‘<a href="https://facebook.github.io/react-native/movies.json&#39;" target="_blank" rel="noopener">https://facebook.github.io/react-native/movies.json&#39;</a>)</p>
-<pre><code>.then((response) =&amp;gt; response.json())
-.then((responseJson) =&amp;gt; {
-  return responseJson.movies;
-</code></pre><p>  })<br>  .catch((error) =&gt; {</p>
-<pre><code>console.error(error);
-</code></pre><p>  });<br>}<br><code>&lt;/pre&gt;
-在函数getMoviesFromApiAsync函数里面，两次看到=&gt;这个符号，这个符号官方定义是叫做箭头函数(Arrow functions)，它语法简洁，和java 8中的lambda蛮像的，基本语法如下：
-&lt;pre&gt;</code>(param1, param2, …, paramN) =&gt; { statements }<br>(param1, param2, …, paramN) =&gt; expression<br>// equivalent to: (param1, param2, …, paramN) =&gt; { return expression; }<br>// Parentheses are optional when there’s only one parameter name:<br>(singleParam) =&gt; { statements }<br>singleParam =&gt; { statements }<br>// A function with no parameters should be written with a pair of parentheses.<br>() =&gt; { statements }<br>`<br>看完基本语法你就会明白上面的例子中(response) =&gt; response.json和(responseJson) =&gt; {return responseJson.movies;}的含义了：=&gt;前面小括号里面的相当于参数，=&gt;后面相当于函数返回值或者函数表达式<br>有几点需要注意的就是：</p>
-<pre><code>*   如果没有参数需要传入，直接写()，切记不可省略
-</code></pre><ul>
+<h2 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h2><ul>
+<li><p>=&gt;(Arrow functions)<br>在看React native文档的时候，经常可以看到=&gt;这个符号，比如下面这段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoviesFromApiAsync</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> fetch(<span class="string">'https://facebook.github.io/react-native/movies.json'</span>)</span><br><span class="line">    .then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json())</span><br><span class="line">    .then(<span class="function">(<span class="params">responseJson</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> responseJson.movies;</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function">(<span class="params">error</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(error);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在函数getMoviesFromApiAsync函数里面，两次看到=&gt;这个符号，这个符号官方定义是叫做箭头函数(Arrow functions)，它语法简洁，和java 8中的lambda蛮像的，基本语法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(param1, param2, …, paramN) =&gt; &#123; statements &#125;</span><br><span class="line">(param1, param2, …, paramN) =&gt; expression</span><br><span class="line">  <span class="comment">// equivalent to: (param1, param2, …, paramN) =&amp;gt; &#123; return expression; &#125;</span></span><br><span class="line">  <span class="comment">// Parentheses are optional when there's only one parameter name:</span></span><br><span class="line">  (singleParam) =&gt; &#123; statements &#125;</span><br><span class="line">  singleParam =&gt; &#123; statements &#125;</span><br><span class="line">  <span class="comment">// A function with no parameters should be written with a pair of parentheses.</span></span><br><span class="line">  () =&gt; &#123; statements &#125;</span><br></pre></td></tr></table></figure>
+<p>看完基本语法你就会明白上面的例子中<code>(response) =&gt; response.json</code>和<code>(responseJson) =&gt; {return responseJson.movies;}</code>的含义了：=&gt;前面小括号里面的相当于参数，=&gt;后面相当于函数返回值或者函数表达式</p>
+<p>有几点需要注意的就是：</p>
+<ul>
+<li>如果没有参数需要传入，直接写()，切记不可省略</li>
 <li>如果只有一个参数，()是可写可不写的</li>
 <li>两个以上的参数，()是必须要写的</li>
 </ul>
-<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>在java中假设你定义了一个String类型的变量name=”World”，然后需要输出Hello,World!的时候，一般都是printf(“Hello,” + name + “!”)，现在在React native里面这种拼接也是允许的，但还有一种拼接方式如下：</p>
-<p><pre>`”Hello, ${name}!”</pre></p>
 </li>
 </ul>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>在Java中假设你定义了一个String类型的变量<code>name=&quot;World&quot;</code>然后需要输出<code>Hello,World!</code>的时候，一般都是<code>printf(&quot;Hello,&quot; + name + &quot;!&quot;)</code>现在在React Native里面这种拼接也是允许的，但还有一种拼接方式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`Hello, $&#123;name&#125;!`</span><br></pre></td></tr></table></figure></p>
 <p>这个和Android中字符串format是有点类似的</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这次就遇到了大概这些不明白的，然后学习总结了一下，后面遇到新的不明白的再继续总结，其实习惯了，感觉写React native也挺好的！<br>一个Hello World的React native项目：<a href="https://github.com/picksomething/ReactAndroidApp" target="_blank" rel="noopener">点击这里!</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这次就遇到了大概这些不明白的，然后学习总结了一下，后面遇到新的不明白的再继续总结，其实习惯了，感觉写React native也挺好的！<br>一个Hello World的React native项目：<a href="https://github.com/picksomething/ReactAndroidApp" target="_blank" rel="noopener">点击这里!</a></p>
 
       
     </div>
@@ -540,7 +530,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -591,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#絮叨"><span class="nav-number">1.</span> <span class="nav-text">絮叨</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数调用"><span class="nav-number">3.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">4.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数调用"><span class="nav-number">3.</span> <span class="nav-text">函数调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串"><span class="nav-number">4.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
