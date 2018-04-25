@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:updated_time" content="2018-04-25T08:16:09.051Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中使用百度SDK获得经纬度和位置信息">
 <meta name="twitter:description" content="自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显">
@@ -354,137 +354,10 @@
       
 
       
-        <p>自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。<br>今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显示百度地图，直接把位置信息显示出来就行，刚开始接触百度SDK，很多知识都不是很熟悉，就从网上找，但是发现大部分获取的位置信息返回的都是null，最后才发现少了一句<code>option.setAddrType(&quot;all&quot;);</code><br>下面贴出代码，供网友参考，首先是布局文件：</p>
-<pre><code>&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
-&amp;lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:layout_width=&quot;fill_parent&quot;
-    android:layout_height=&quot;fill_parent&quot;
-    android:orientation=&quot;vertical&quot; &amp;gt;
-&lt;!--more--&gt;
-    &amp;lt;Button
-        android:id=&quot;@+id/btn_start&quot;
-        android:layout_width=&quot;fill_parent&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:layout_marginTop=&quot;20dp&quot;
-        android:text=&quot;Start&quot;/&amp;gt;
-
-    &amp;lt;TextView
-        android:id=&quot;@+id/tv_loc_info&quot;
-        android:layout_width=&quot;fill_parent&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:textSize=&quot;18sp&quot; /&amp;gt;
-
-&amp;lt;/LinearLayout&amp;gt;
-`&lt;/pre&gt;
-接着就是源码了
-&lt;pre&gt;`package com.zzu.picksomething.msfx;
-
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
-
-public class MyLocation extends Activity {
-    private TextView locationInfoTextView = null;
-    private Button startButton = null;
-    private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 5000;
-    private static int LOCATION_COUTNS = 0;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_mylocation);
-        locationInfoTextView = (TextView) this.findViewById(R.id.tv_loc_info);
-        startButton = (Button) this.findViewById(R.id.btn_start);
-        locationClient = new LocationClient(this);
-        //设置定位条件
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);                                //是否打开GPS
-        option.setCoorType(&quot;bd09ll&quot;);                          //设置返回值的坐标类型。
-        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
-        option.setProdName(&quot;LocationDemo&quot;);                    //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
-        option.setScanSpan(UPDATE_TIME);                        //设置定时定位的时间间隔。单位毫秒
-        option.setAddrType(&quot;all&quot;);
-        locationClient.setLocOption(option);
-        //注册位置监听器
-        locationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                // TODO Auto-generated method stub
-                if (location == null) {
-                    return;
-                }
-                StringBuffer sb = new StringBuffer(256);
-                sb.append(&quot;Time : &quot;);
-                sb.append(location.getTime());
-                sb.append(&quot;\nError code : &quot;);
-                sb.append(location.getLocType());
-                sb.append(&quot;\nLatitude : &quot;);
-                sb.append(location.getLatitude());
-                sb.append(&quot;\nLontitude : &quot;);
-                sb.append(location.getLongitude());
-                sb.append(&quot;\nRadius : &quot;);
-                sb.append(location.getRadius());
-                if (location.getLocType() == BDLocation.TypeGpsLocation){
-                    sb.append(&quot;\nSpeed : &quot;);
-                    sb.append(location.getSpeed());
-                    sb.append(&quot;\nSatellite : &quot;);
-                    sb.append(location.getSatelliteNumber());
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                    sb.append(&quot;\nAddress : &quot;);
-                    sb.append(location.getAddrStr());
-                }
-                LOCATION_COUTNS ++;
-                sb.append(&quot;\n检查位置更新次数：&quot;);
-                sb.append(String.valueOf(LOCATION_COUTNS));
-                locationInfoTextView.setText(sb.toString());
-            }
-            @Override
-            public void onReceivePoi(BDLocation location) {
-            }
-        });
-        startButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (locationClient == null) {
-                    return;
-                }
-                if (locationClient.isStarted()) {
-                    startButton.setText(&quot;Start&quot;);
-                    locationClient.stop();
-                }else {
-                    startButton.setText(&quot;Stop&quot;);
-                    locationClient.start();
-                    /*
-                    *当所设的整数值大于等于1000（ms）时，定位SDK内部使用定时定位模式。
-                    *调用requestLocation( )后，每隔设定的时间，定位SDK就会进行一次定位。
-                    *如果定位SDK根据定位依据发现位置没有发生变化，就不会发起网络请求，
-                    *返回上一次定位的结果；如果发现位置改变，就进行网络请求进行定位，得到新的定位结果。
-                    *定时定位时，调用一次requestLocation，会定时监听到定位结果。
-                    */
-                    locationClient.requestLocation();
-                }
-            }
-        });
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (locationClient != null &amp;amp;&amp;amp; locationClient.isStarted()) {
-            locationClient.stop();
-            locationClient = null;
-        }
-    }
-}
-</code></pre><p>补充：使用百度的SDK获取位置信息，必须要去下载百度最新的SDK，官方网站有，然后放到对应的文件夹。另外需要在配置文件中加入一些权限。</p>
+        <p>自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。<br>今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显示百度地图，直接把位置信息显示出来就行，刚开始接触百度SDK，很多知识都不是很熟悉，就从网上找，但是发现大部分获取的位置信息返回的都是null，最后才发现少了一句<code>option.setAddrType(&quot;all&quot;);</code><br>下面贴出代码，供网友参考，首先是布局文件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/btn_start"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"20dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"Start"</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/tv_loc_info"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"18sp"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>接着就是源码了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zzu.picksomething.msfx;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.baidu.location.BDLocation;</span><br><span class="line"><span class="keyword">import</span> com.baidu.location.BDLocationListener;</span><br><span class="line"><span class="keyword">import</span> com.baidu.location.LocationClient;</span><br><span class="line"><span class="keyword">import</span> com.baidu.location.LocationClientOption;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.view.View.OnClickListener;</span><br><span class="line"><span class="keyword">import</span> android.widget.Button;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyLocation</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> TextView locationInfoTextView = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> Button startButton = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> LocationClient locationClient = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UPDATE_TIME = <span class="number">5000</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> LOCATION_COUTNS = <span class="number">0</span>;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.layout_mylocation);</span><br><span class="line">        locationInfoTextView = (TextView) <span class="keyword">this</span>.findViewById(R.id.tv_loc_info);</span><br><span class="line">        startButton = (Button) <span class="keyword">this</span>.findViewById(R.id.btn_start);</span><br><span class="line">        locationClient = <span class="keyword">new</span> LocationClient(<span class="keyword">this</span>);</span><br><span class="line">        <span class="comment">//设置定位条件</span></span><br><span class="line">        LocationClientOption option = <span class="keyword">new</span> LocationClientOption();</span><br><span class="line">        option.setOpenGps(<span class="keyword">true</span>);                                <span class="comment">//是否打开GPS</span></span><br><span class="line">        option.setCoorType(<span class="string">"bd09ll"</span>);                          <span class="comment">//设置返回值的坐标类型。</span></span><br><span class="line">        option.setPriority(LocationClientOption.NetWorkFirst);  <span class="comment">//设置定位优先级</span></span><br><span class="line">        option.setProdName(<span class="string">"LocationDemo"</span>);                    <span class="comment">//设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。</span></span><br><span class="line">        option.setScanSpan(UPDATE_TIME);                        <span class="comment">//设置定时定位的时间间隔。单位毫秒</span></span><br><span class="line">        option.setAddrType(<span class="string">"all"</span>);</span><br><span class="line">        locationClient.setLocOption(option);</span><br><span class="line">        <span class="comment">//注册位置监听器</span></span><br><span class="line">        locationClient.registerLocationListener(<span class="keyword">new</span> BDLocationListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceiveLocation</span><span class="params">(BDLocation location)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">                <span class="keyword">if</span> (location == <span class="keyword">null</span>) &#123;</span><br><span class="line">                   <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                StringBuffer sb = <span class="keyword">new</span> StringBuffer(<span class="number">256</span>);</span><br><span class="line">                sb.append(<span class="string">"Time : "</span>);</span><br><span class="line">                sb.append(location.getTime());</span><br><span class="line">                sb.append(<span class="string">"\nError code : "</span>);</span><br><span class="line">                sb.append(location.getLocType());</span><br><span class="line">                sb.append(<span class="string">"\nLatitude : "</span>);</span><br><span class="line">                sb.append(location.getLatitude());</span><br><span class="line">                sb.append(<span class="string">"\nLontitude : "</span>);</span><br><span class="line">                sb.append(location.getLongitude());</span><br><span class="line">                sb.append(<span class="string">"\nRadius : "</span>);</span><br><span class="line">                sb.append(location.getRadius());</span><br><span class="line">                <span class="keyword">if</span> (location.getLocType() == BDLocation.TypeGpsLocation)&#123;</span><br><span class="line">                    sb.append(<span class="string">"\nSpeed : "</span>);</span><br><span class="line">                    sb.append(location.getSpeed());</span><br><span class="line">                    sb.append(<span class="string">"\nSatellite : "</span>);</span><br><span class="line">                    sb.append(location.getSatelliteNumber());</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (location.getLocType() == BDLocation.TypeNetWorkLocation)&#123;</span><br><span class="line">                    sb.append(<span class="string">"\nAddress : "</span>);</span><br><span class="line">                    sb.append(location.getAddrStr());</span><br><span class="line">                &#125;</span><br><span class="line">                LOCATION_COUTNS ++;</span><br><span class="line">                sb.append(<span class="string">"\n检查位置更新次数："</span>);</span><br><span class="line">                sb.append(String.valueOf(LOCATION_COUTNS));</span><br><span class="line">                locationInfoTextView.setText(sb.toString());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivePoi</span><span class="params">(BDLocation location)</span> </span>&#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        startButton.setOnClickListener(<span class="keyword">new</span> OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (locationClient == <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (locationClient.isStarted()) &#123;</span><br><span class="line">                    startButton.setText(<span class="string">"Start"</span>);</span><br><span class="line">                    locationClient.stop();</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                    startButton.setText(<span class="string">"Stop"</span>);</span><br><span class="line">                    locationClient.start();</span><br><span class="line">                   <span class="comment">/*</span></span><br><span class="line"><span class="comment">                    *当所设的整数值大于等于1000（ms）时，定位SDK内部使用定时定位模式。</span></span><br><span class="line"><span class="comment">                    *调用requestLocation( )后，每隔设定的时间，定位SDK就会进行一次定位。</span></span><br><span class="line"><span class="comment">                    *如果定位SDK根据定位依据发现位置没有发生变化，就不会发起网络请求，</span></span><br><span class="line"><span class="comment">                    *返回上一次定位的结果；如果发现位置改变，就进行网络请求进行定位，得到新的定位结果。</span></span><br><span class="line"><span class="comment">                    *定时定位时，调用一次requestLocation，会定时监听到定位结果。</span></span><br><span class="line"><span class="comment">                    */</span></span><br><span class="line">                    locationClient.requestLocation();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDestroy();</span><br><span class="line">        <span class="keyword">if</span> (locationClient != <span class="keyword">null</span> &amp;amp;&amp;amp; locationClient.isStarted()) &#123;</span><br><span class="line">            locationClient.stop();</span><br><span class="line">            locationClient = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>补充：使用百度的SDK获取位置信息，必须要去下载百度最新的SDK，官方网站有，然后放到对应的文件夹。另外需要在配置文件中加入一些权限。</p>
 
       
     </div>
@@ -603,7 +476,7 @@ public class MyLocation extends Activity {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +487,7 @@ public class MyLocation extends Activity {
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

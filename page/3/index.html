@@ -264,154 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/07/09/Activity进入和退出时动画的一致性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="picksomething">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/favicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一路追梦想">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/07/09/Activity进入和退出时动画的一致性/" itemprop="url">Activity进入和退出时动画的一致性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-09T02:41:04+08:00">
-                2015-07-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>今天把开发好的产品拿给设计师看，设计师说打开设置菜单的动画在不同的手机上表现不同，有的手机上是从中间展开的，有的手机是从右边出来的，有的手机上压根没有动画，说让最好统一成从右边出来的，那么既然启动设置activity的时候从右边出来，退出设置的时候应该也是从右边消失，这样才能保证动画的一致性。</p>
-<p>都知道activity切换动画是通过overridePendingTransition(int enterAnim, int exitAnim)来实现的，重写这个方法然后传递进入和退出动画就可以实现activity启动时候的切换动画了。那假如我们现在是要在activity1启动activity2的时候加入切换动画，要求activity2从右边出现，那么就是在activity1调用startactivity之后和activity2调用finish之后分别调用overridePendingTransition然后传入两个进出动画就好了，如下图所示：</p>
-<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/07/Activity切换-1.png"><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015/07/09/Activity进入和退出时动画的一致性/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/07/08/命令行编译Android应用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -504,7 +356,9 @@
 
       
         
-          <p>现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。<br>我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式的apk，然后签名发布。<br>事实上无论使用哪种模式编译你的Android应用，在安装到设备或者模拟器之前你都需要先签名，debug模式有debug key，release模式有你自己私有的key。<br>大家都知道，通过Android studio编译我们的应用模块的时候，会生成可以安装到手机上的.apk文件，当在我们使用debug模式编译的时候，sdk tool会带一个debug key根据你在build.gradle文件中的<code>debuggable true</code>的设置自动给应用签名，但是你不能发布一个使用debug key签名的应用，当你使用release编译类型编译出一个未签名的apk文件时，你必须用你的私有key手动给它签名，可以使用模块的build.gradle文件中的Keytool和Jarsigner，下面就讲讲怎么在命令行中通过release模式编译出一个未签名的apk，然后手动签名的过程(下文讲解都是基于mac环境)。<br>
+          <p>现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。</p>
+<p>我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式的apk，然后签名发布<br>事实上无论使用哪种模式编译你的Android应用，在安装到设备或者模拟器之前你都需要先签名，debug模式有debug key，release模式有你自己私有的key。</p>
+<p>大家都知道，通过AS编译我们的应用模块的时候，会生成可以安装到手机上的.apk文件，当在我们使用debug模式编译的时候，sdk tool会带一个debug key根据你在build.gradle文件中的<code>debuggable true</code>的设置自动给应用签名，但是你不能发布一个使用debug key签名的应用，当你使用release编译类型编译出一个未签名的apk文件时，你必须用你的私有key手动给它签名，可以使用模块的build.gradle文件中的Keytool和Jarsigner，下面就讲讲怎么在命令行中通过release模式编译出一个未签名的apk，然后手动签名的过程(下文讲解都是基于mac环境)。<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/07/08/命令行编译Android应用/#more" rel="contents">
@@ -798,33 +652,16 @@
 
       
         
-          
-            <p>今天使用某加密加密应用之后，发现应用安装之后在<code>/data/data/package/</code>目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过<code>adb pull</code>到本地了。<br>接着就想用<code>dex2jar</code>工具转换成jar文件，发现居然报错了：</p>
-<pre><code>com.googlecode.dex2jar.DexException: dex-translator not 
-support translate an odex file, please refere smali 
-http://code.google.com/p/smali/ to convert odex to dex
-`&lt;/pre&gt;
-错误信息很明了，虽然这个文件后缀是.dex，但是这是一个odex文件，dex2jar工具不支持转换，需要先将odex转换成dex文件才行。
-根据提示到`http://code.google.com/p/smali/`下载对应的工具，以下是反编译odex文件的步骤：
-&lt;!--more--&gt;
-</code></pre><ol>
-<li>下载smali工具(<a href="http://code.google.com/p/smali/" target="_blank" rel="noopener">http://code.google.com/p/smali/</a>)<br>将下面列表中的四个文件都下载下来<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/05/smali_list.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/05/smali_list-744x270.png" alt="smali_list"></a></li>
-<li>新建一个目录，我这里建的目录名叫做baksmali<br>将第一步下载的四个文件移到baksmali文件夹里面</li>
-<li>在baksmali文件夹中再新建一个system文件夹</li>
-<li>在system文件夹下再新建一个framework文件夹<br>因为后面在运行baksmali反编译命令的时候需要比如<code>core.jar</code>,<code>framework.jar</code>,<code>ext.jar</code>,<code>android.policy.jar</code>等jar包的支持，这些jar包在apk安装对应的rom的/system/framework文件夹里面都有,所以我们在本地建一个对应的目录，然后通过<code>adb pull</code>命令讲这些jar包pull到本地的<code>baksmali/system/framework</code>目录下<br>当然3、4步并不是必须的，你完全可以选择将baksmali命令所需的jar包pull下来之后放到和baksmali工具同一个目录里面，这样也是完全可以的，支持比较混乱。<br>建好之后的目录结构是这样的：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/05/dir_list.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/05/dir_list-744x176.png" alt="dir_list"></a></li>
-<li>下载所需jar包<br>切换到本地的<code>baksmali/system/framework</code>目录,执行<br><pre><code>adb pull /system/framework</code></pre><br>这样就把rom里面<code>/system/framework</code>目录下所有的jar包下载到本地<code>framework</code>目录了。</li>
-<li>开始反编译<code>odex</code>文件<br>切换到本地的<code>baksmali</code>目录下，执行如下命令：<br><pre><code>java -jar baksmali-2.0.3.jar -d system/framework -x xxx.odex</code></pre><br><code>-d</code>参数就是指定到那个目录下寻找那些所需的jar文件，如果所需的jar包就在当前目录，那么就不需要指定该目录了。<br>命令执行完成之后就会在当前目录下生成一个out目录，该目录里面就是对应的smali文件</li>
-<li>生成<code>dex</code>文件<br>我们需要将生成的out目录转换成dex文件，执行如下命令：<br><pre><code>java -jar smali-2.0.3.jar  -o classes.dex out</code></pre><br>该命令就是根据out目录生成一个dex文件，-o是指定生成的dex文件的别名<br>执行完成之后就会生成一个<code>classes.dex</code>的真正dex文件<br>接下来就轻松了</li>
-</ol>
-<ul>
-<li>下载安装<code>dex2jar</code>工具，下载地址:<a href="https://github.com/pxb1988/dex2jar" target="_blank" rel="noopener">https://github.com/pxb1988/dex2jar</a><br>mac下直接执行如下命令即可<br><pre><code>brew install dex2jar</code></pre><br>安装完成之后执行:<br><pre>`d2j-dex2jar classes.dex</pre></li>
-</ul>
-<p>命令执行后会生成一个classes-dex2jar.jar文件</p>
-<ul>
-<li>下载安装JD-GUI查看java代码,下载地址:<a href="http://jd.benow.ca/" target="_blank" rel="noopener">http://jd.benow.ca/</a><br>就是这么简单，odex挡住了dex2jar，却没挡住baksmali，不过有些加密你会发现你反编译odex之后看到的也只是一个空壳而已，可能需要高级的内存dump工具来获取内存中的代码文件进行分析。</li>
-</ul>
-
-          
+          <p>今天使用某加密加密应用之后，发现应用安装之后在<code>/data/data/package/</code>目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过<code>adb pull</code>到本地了。<br>接着就想用<code>dex2jar</code>工具转换成jar文件，发现居然报错了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">com.googlecode.dex2jar.DexException: dex-translator not</span><br><span class="line">support translate an odex file, please refere smali</span><br><span class="line">http://code.google.com/p/smali/ to convert odex to dex</span><br></pre></td></tr></table></figure></p>
+<p>错误信息很明了，虽然这个文件后缀是.dex，但是这是一个odex文件，dex2jar工具不支持转换，需要先将odex转换成dex文件才行</p>
+<p>根据提示到<code>http://code.google.com/p/smali/</code>下载对应的工具，以下是反编译odex文件的步骤：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/05/21/反编译odex文件/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -963,10 +800,8 @@ http://code.google.com/p/smali/ to convert odex to dex
 
       
         
-          <blockquote>
-<p>一个月前，深圳机场，匆忙地和基友gzh告别之后踏上了深圳飞往杭州的飞机，等待自己的是新的工作，新的生活，新的一切。一个月后，沈阳机场，还是匆忙地基友gzh告别之后踏上返回杭州的飞机，继续自己的杭州生活。除了地点不同，心中大部分感觉是相同的，有些时候想想，很多东西都蛮戏剧化的。</p>
-</blockquote>
-<p>登上飞机之后，闲来无事，就打开电脑打算完成这篇自己承诺来杭州一个月的时候写一篇关于感受和体会的博客。<br>认真地说，来杭州整一个月的时间应该是4月24号，也就是前天，本打算前天夜里完成这篇博客，但是因为当天加班回去有点晚，而且第二天也就是昨天早上要赶早上10点的飞机到沈阳参加一位大学好友的婚礼，于是就打算在今天返回杭州的飞机上完成这篇博客。<br>
+          <p>一个月前，深圳机场，匆忙地和基友gzh告别之后踏上了深圳飞往杭州的飞机，等待自己的是新的工作，新的生活，新的一切。一个月后，沈阳机场，还是匆忙地基友gzh告别之后踏上返回杭州的飞机，继续自己的杭州生活。除了地点不同，心中大部分感觉是相同的，有些时候想想，很多东西都蛮戏剧化的</p>
+<p>登上飞机之后，闲来无事，就打开电脑打算完成这篇自己承诺来杭州一个月的时候写一篇关于感受和体会的博客<br>认真地说，来杭州整一个月的时间应该是4月24号，也就是前天，本打算前天夜里完成这篇博客，但是因为当天加班回去有点晚，而且第二天也就是昨天早上要赶早上10点的飞机到沈阳参加一位大学好友的婚礼，于是就打算在今天返回杭州的飞机上完成这篇博客<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/04/26/来杭一个月/#more" rel="contents">
@@ -1662,62 +1497,15 @@ except IOError:
 
       
         
-          
-            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>因为之前工作中一直用的控制版本都是svn，现在改为用git了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看。</p>
-<hr>
-<h5 id="恢复本地删除的文件"><a href="#恢复本地删除的文件" class="headerlink" title="恢复本地删除的文件"></a>恢复本地删除的文件</h5><p>直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。</p>
-<pre><code>&lt;!--more--&gt;
-
-* * *
-
-#### 处理冲突
-
-如果系统中有一些配置文件在服务器上做了配置修改,然后后续开发又新添加一些配置项的时候,
-在发布这个配置文件的时候,会发生代码冲突:
-
-&gt; error: Your local changes to the following files would be
-</code></pre><blockquote>
-<pre><code>overwritten by merge:protected/config/main.php.Please,commit your 
-changes or stash them before you can merge.
-</code></pre></blockquote>
-<pre><code>* * *
-
-#### 更新本地代码
-
-最好不要用`git pul`要使用`git fetch`
-
-* * *
-
-#### 版本库初始化
-
-* * *
-
-#### 合并分支
-
-当我们在分之上改动完毕，问题解决之后，需要将分支的修改合并到主分支上，需要用到合并分支命令。
-切换到主分支，执行：
-
-* * *
-
-#### 删除分支
-
-* * *
-
-#### Tag相关
-
-* * *
-
-#### 忽略已经提交的文件夹(文件)
-
-一般我们在用git提交第一版的时候，难免会提交一些我们没必要提交的文件或者文件夹，比如Android Studio编写的Android项目的.idea文件夹，如果我们已经提交了这个文件夹，想忽略掉该文件夹，以后不提交的话，我们可以这样做：
-
-* * *
-
-#### 更新forked仓库
-
-有时候我们fork远程仓库到我们自己的仓库之后，远程仓库更新的话，forked的仓库也需要保持同步，下面是本地fork仓库同步远程仓库的步骤:
-</code></pre>
-          
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为之前工作中一直用的控制版本都是svn，现在改为用git了，不得不说git是非常强大的，自然而然功能多了，命令也就多了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看</p>
+<h2 id="恢复本地删除的文件"><a href="#恢复本地删除的文件" class="headerlink" title="恢复本地删除的文件"></a>恢复本地删除的文件</h2><p>直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/02/01/工作中常用Git命令(持续更新)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1974,11 +1762,367 @@ Terry Jones
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/01/27/Android开机设置默认Launcher/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/01/27/Android开机设置默认Launcher/" itemprop="url">Android开机设置默认Launcher</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-27T00:22:10+08:00">
+                2015-01-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>讲到设置默认Launcher，必须先说说<code>Provision.apk</code>这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过<code>Provision.apk</code>这个应用来实现的。</p>
+<p>首先我们知道Android启动HomeLauncher的最后一步是在<code>ActivityManagerService.java</code>中的<code>startHomeActivityLocked</code>方法中发送一个带有<code>android.intent.category.HOME</code><br>的intent来启动响应该属性的应用，一般Launcher的Manifest配置文件中都会有此属性，所以系统中的Launcher就是这样被启动了。关于Android启动Launcher的流程，找时间可以再写一篇文章分析，暂时介绍到这里。<br>接下来就要说Provision这个应用了，该应用的源码在<code>packages/apps/</code>下的Provision这个文件夹中，看一下该应用的目录结构：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/01/provision.jpg" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/01/provision-300x94.jpg" alt="provision"></a><br>该应用只有一个java文件DefaultActivity.java，我们看一下该应用的配置文件<code>AndroidManifest.xml</code></p>
+<pre><code>&amp;lt;!-- For miscellaneous settings --&amp;gt;
+    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&amp;gt;
+    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&amp;gt;
+&lt;!--more--&gt;
+    &amp;lt;application&amp;gt;
+        &amp;lt;activity android:name=&quot;DefaultActivity&quot;
+                android:excludeFromRecents=&quot;true&quot;&amp;gt;
+            &amp;lt;intent-filter android:priority=&quot;1&quot;&amp;gt;
+                &amp;lt;action android:name=&quot;android.intent.action.MAIN&quot; /&amp;gt;
+                &amp;lt;category android:name=&quot;android.intent.category.HOME&quot; /&amp;gt;
+                &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&amp;gt;
+            &amp;lt;/intent-filter&amp;gt;
+        &amp;lt;/activity&amp;gt;
+    &amp;lt;/application&amp;gt;`&lt;/pre&gt;
+我们注意到其实Provision也会响应`android.intent.category.HOME`属性，并且从这句android:priority=1可以看出起优先级是比一般Launcher都要高的，所以在AMS的startHomeActivityLocked启动Launcher的时候会先启动Provision应用，然后才是启动HomeLauncher，那接着我们看看在Provision中都做了些什么，我们知道默认是启动DefaultActivity.java这个文件，看一下源码：
+&lt;pre&gt;`/**
+ * Application that sets the provisioned bit, like SetupWizard does.
+ */
+public class DefaultActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+
+        // Add a persistent setting to allow other apps to know the device has been provisioned.
+        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
+        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
+
+        // remove this activity from the package manager.
+        PackageManager pm = getPackageManager();
+        ComponentName name = new ComponentName(this, DefaultActivity.class);
+        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+        // terminate the activity.
+        finish();
+    }
+}`&lt;/pre&gt;
+代码很简洁，首先是在Settings的`Global`表中将`DEVICE_PROVISIONED`属性设置为1(这一点还是相当重要的，因为很多地方都会检查该标志是否被置成1来决定是不是要走正常的流程)，在`Secure`表中将`USER_SETUP_COMPLETE`属性设置为1。其实获取一个PackageManager对象，通过该对象的`setComponentEnabledSetting`方法来吧自己给disable掉。看一下该方法的解释和说明：
+&lt;pre&gt;`void setComponentEnabledSetting (ComponentName componentName, int newState, int flags)
+componentName：组件名称 
+newState：组件新的状态，可以设置三个值，分别是如下： 
+　　不可用状态：COMPONENT_ENABLED_STATE_DISABLED 
+　　可用状态：COMPONENT_ENABLED_STATE_ENABLED 
+　　默认状态：COMPONENT_ENABLED_STATE_DEFAULT 
+flags:行为标签，值可以是DONT_KILL_APP或者0。 0说明杀死包含该组件的app`&lt;/pre&gt;
+流程很清楚，Provision将`DEVICE_PROVISIONED`标志设置成1之后，然后就将自己从PM中removed掉了，以后就不会再启动，除非系统被重置，或者data目录被删除。
+
+接下来就是讲如何设置默认Launcher了，思路就是在Provision中设置好默认Launcher，Provision启动之后就直接启动默认Launcher了，就不会存在如果系统中有多个Launcher的时候，弹出让用户选择的情况了。
+
+首先说一下我们公司的需要，我们智能电视默认带有三个Launcher，然后默认Launcher是放到system/etc下面的一个DefaultLauncher的配置文件中，第一次启动系统的时候就是根据改配置文件来决定默认Launcher的，首先看一下我们是怎么修改DefaultActivity.java文件的：
+&lt;pre&gt;`public class DefaultActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle icicle) {
+        super.onCreate(icicle);
+        // Add a persistent setting to allow other apps to know the device has been provisioned.
+        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
+        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
+
+        // remove this activity from the package manager.
+        PackageManager pm = getPackageManager();
+        ComponentName name = new ComponentName(this, DefaultActivity.class);
+        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
+        setDefaultLauncher();
+        // terminate the activity.
+        finish();
+    }
+
+    private String getDefaultLauncherPkgName() {
+        final String path = &quot;/system/etc/defaultlauncher.dat&quot;;
+        System.out.println(&quot;in getDefaultLauncherPkgName&quot;);
+        String PackageName = null;
+        File f = new File(path);
+        if (!f.exists()) {
+            System.out.println(&quot;/system/etc/defaultlauncher.dat is not exit&quot;);
+            return null;
+        }
+        if (f == null) {
+            System.out.println(&quot;File f is null&quot;);
+            return null;
+        }
+        try {
+            FileReader r = new FileReader(f);
+            BufferedReader br = new BufferedReader(r);
+            String temp = null;
+            try {
+                while ((temp = br.readLine()) != null) {
+                    if (temp.indexOf(&quot;defaultlauncher&quot;) != -1) {
+                        Pattern p = Pattern.compile(&quot;\\s*|\t|\r|\n&quot;);
+                        Matcher m = p.matcher(temp);
+                        String dest = m.replaceAll(&quot;&quot;);
+                        PackageName = (dest).substring((dest).indexOf(&quot;=&quot;) + 1);
+                        break;
+                    }
+                }
+                br.close();
+                r.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(&quot;getDefaultLauncherPkgName PackageName = &quot; + PackageName);
+        return PackageName;
+    }
+
+    private boolean setDefaultLauncher() {
+        // get default component   
+        System.out.println(&quot;Come in setDefaultLauncher&quot;);
+        PackageManager pm = getPackageManager();
+        ArrayList&lt;IntentFilter&gt; LauncherIntentList = new ArrayList&lt;IntentFilter&gt;();
+        ArrayList&lt;ComponentName&gt; LauncherList = new ArrayList&lt;ComponentName&gt;();
+        //clear the current preferred launcher
+        ArrayList&lt;IntentFilter&gt; intentList = new ArrayList&lt;IntentFilter&gt;();
+        ArrayList&lt;ComponentName&gt; cnList = new ArrayList&lt;ComponentName&gt;();
+        pm.getPreferredActivities(intentList, cnList, null);
+        IntentFilter dhIF;
+        for (int i = 0; i &lt; cnList.size(); i++) {
+            dhIF = intentList.get(i);
+            if (dhIF.hasAction(Intent.ACTION_MAIN) &amp;&amp; dhIF.hasCategory(Intent.CATEGORY_HOME)) {
+                LauncherIntentList.add(intentList.get(i));
+                LauncherList.add(cnList.get(i));
+            }
+        }
+        if (LauncherList.size() == 1) {
+            System.out.println(&quot;Already have set default launcher&quot;);
+            return true;
+        }
+        if (LauncherList.size() &gt; 1) {
+            for (int i = 0; i &lt; LauncherList.size(); i++)
+                pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());
+        }
+        String defaultLauncherPkg = getDefaultLauncherPkgName();
+        if (defaultLauncherPkg == null) {
+            System.out.println(&quot;In ActivityManagerService setDefaultLauncher defaultLauncherPkg = null&quot;);
+            return false;
+        }
+        // get all Launcher activities     
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        List&lt;ResolveInfo&gt; list = new ArrayList&lt;ResolveInfo&gt;();
+        list = pm.queryIntentActivities(intent, 0);
+        // get all components and the best match   
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MAIN);
+        filter.addCategory(Intent.CATEGORY_HOME);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        final int N = list.size();
+        ComponentName[] set = new ComponentName[N];
+        int bestMatch = IntentFilter.MATCH_CATEGORY_EMPTY;
+        int defaultLauncherIndex = -1;
+        for (int i = 0; i &lt; N; i++) {
+            ResolveInfo r = list.get(i);
+            set[i] = new ComponentName(r.activityInfo.packageName, r.activityInfo.name);
+            if (defaultLauncherPkg.equals(r.activityInfo.packageName))
+                defaultLauncherIndex = i;
+            System.out.println(&quot;SetDefaultLauncher: &quot; + set[i].getPackageName() + &quot; &quot; + set[i].getClassName());
+            //if (r.match &gt; bestMatch) bestMatch = r.match;  
+        }
+        // add the default launcher as the preferred launcher
+        if (defaultLauncherIndex == -1) {
+            return false;
+        }
+        ComponentName launcher = new ComponentName(set[defaultLauncherIndex].getPackageName(),
+                set[defaultLauncherIndex].getClassName());
+        pm.addPreferredActivity(filter, bestMatch, set, launcher);
+        return true;
+    }
+}
+`&lt;/pre&gt;
+这里需要重点说明的就是这两个方法：
+&lt;pre&gt;`//清除之前默认选择的Launcher
+pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());
+//添加默认Launcher
+pm.addPreferredActivity(filter, bestMatch, set, launcher);`&lt;/pre&gt;
+PS：这两句能够执行成功的前提是必须在AndroidManifest.xml文件中加入权限：
+&lt;pre&gt;`&amp;lt;!-- For miscellaneous settings --&amp;gt;
+    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&amp;gt;
+    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&amp;gt;
+    &amp;lt;!-- Konka Patch Start --&amp;gt;
+    &amp;lt;uses-permission android:name=&quot;android.permission.SET_PREFERRED_APPLICATIONS&quot;/&amp;gt;
+    &amp;lt;!-- Konka Patch End --&amp;gt;`&lt;/pre&gt;
+这样系统开机就会进入默认设置的Launcher了，用户可以在我这基础上修改默认Launcher的设置方式，或者在Provision程序中设置一些需要在启动Launcher之前进行的设置等等。
+
+网上还有其他一些设置默认Launcher的方式
+
+&lt;pre&gt;`readPermissions();
+String firstBoot = SystemProperties.get(&quot;persist.sys.preactivity&quot;); 
+if (&quot;0&quot;.equals(firstBoot)) {
+    addPreferredActivityForULauncher();
+}
+SystemProperties.set(&quot;persist.sys.preactivity&quot;, &quot;1&quot;);
+mRestoredSettings = mSettings.readLPw();
+private void addPreferredActivityForULauncher() {
+    IntentFilter filter = new IntentFilter();
+    filter.addAction(&quot;android.intent.action.MAIN&quot;);
+    filter.addCategory(&quot;android.intent.category.HOME&quot;); 
+    filter.addCategory(&quot;android.intent.category.DEFAULT&quot;);
+    ComponentName preActivity = new ComponentName(&quot;com.android.ulauncher&quot;
+        ,&quot;com.android.ulauncher.Launcher&quot;); 
+    ComponentName[] set = new ComponentName[] {
+        new ComponentName(&quot;com.android.launcher&quot;, 
+           &quot;com.android.launcher2.Launcher&quot;),preActivity
+    }; 
+    mSettings.mPreferredActivities.addFilter(
+            new PreferredActivity(filter,
+                IntentFilter.MATCH_CATEGORY_EMPTY, set, preActivity));
+    scheduleWriteSettingsLocked();
+}
+</code></pre><ol>
+<li>在startHomeActivityLocked方法中加入setDefaultLauncher方法<br>感兴趣的大家可以继续研究，亲身经历才会有大的收获。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2028,7 +2172,7 @@ Terry Jones
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2039,7 +2183,7 @@ Terry Jones
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

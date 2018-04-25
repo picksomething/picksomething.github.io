@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow…在Android开发的过程中，我们在新建AVD(Android Virtual Devices)的时候知道对应的设备不同分">
+<meta name="description" content="As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow… 在Android开发的过程中，我们在新建AVD(Android Virtual Devices)的时候知道对应的设备不同">
 <meta name="keywords" content="Android,BitmapFactory,Options">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异步获取网络图片和BitmapFactory.Options缩放图片">
 <meta property="og:url" content="http://picksomething.cn/2014/06/30/异步获取网络图片和BitmapFactory.Options缩放图片/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow…在Android开发的过程中，我们在新建AVD(Android Virtual Devices)的时候知道对应的设备不同分">
+<meta property="og:description" content="As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow… 在Android开发的过程中，我们在新建AVD(Android Virtual Devices)的时候知道对应的设备不同">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.424Z">
+<meta property="og:updated_time" content="2018-04-25T07:57:41.443Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="异步获取网络图片和BitmapFactory.Options缩放图片">
-<meta name="twitter:description" content="As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow…在Android开发的过程中，我们在新建AVD(Android Virtual Devices)的时候知道对应的设备不同分">
+<meta name="twitter:description" content="As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow… 在Android开发的过程中，我们在新建AVD(Android Virtual Devices)的时候知道对应的设备不同">
 
 
 
@@ -354,273 +354,35 @@
       
 
       
-        <p>As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow…<br>在Android开发的过程中，我们在新建<code>AVD(Android Virtual Devices)</code>的时候知道对应的设备不同分配的固定堆内存大小是不一样的，一般低分辨率的手机堆内存大小是16M，高一点分辨率的就是32M，然后更高分辨率的有64M的，Android TV(720P)的就是默认堆内存大小64，但是Android TV(1080P)的默认堆内存大小就是128M。之所以会出现<code>OOM</code>，是因为Android加载图片是把位图放到内存中，位图都是由一个个小的像素点组成，位图的大小与像素点所占的字节有关系，而每个像素点在内存中所占的字节大小是和位图的一个<code>Bitmap.Config</code>属性有关系的，Bitmap.Config枚举类有四个常见的枚举值。我们通过查看Android源码Bitmap类，可以看到其中有如下一个内部枚举类：</p>
-<pre><code>public enum Config {
-    // these native values must match up with the enum in SkBitmap.h
-&lt;!--more--&gt;
-    /**
-     * Each pixel is stored as a single translucency (alpha) channel.
-     * This is very useful to efficiently store masks for instance.
-     * No color information is stored.
-     * With this configuration, each pixel requires 1 byte of memory.
-     */
-    ALPHA_8     (2),
-    /**
-     * Each pixel is stored on 2 bytes and only the RGB channels are
-     * encoded: red is stored with 5 bits of precision (32 possible
-     * values), green is stored with 6 bits of precision (64 possible
-     * values) and blue is stored with 5 bits of precision.
-     * 
-     * This configuration can produce slight visual artifacts depending
-     * on the configuration of the source. For instance, without
-     * dithering, the result might show a greenish tint. To get better
-     * results dithering should be applied.
-     * 
-     * This configuration may be useful when using opaque bitmaps
-     * that do not require high color fidelity.
-     */
-    RGB_565     (4),
+        <p>As we all know,when Android applications load a picture with high resolution,it’s prone to occur OOM.This is caused due to memory overflow…</p>
+<p>在Android开发的过程中，我们在新建<code>AVD(Android Virtual Devices)</code>的时候知道对应的设备不同分配的固定堆内存大小是不一样的，一般低分辨率的手机堆内存大小是16M，高一点分辨率的就是32M，然后更高分辨率的有64M的，Android TV(720P)的就是默认堆内存大小64，但是Android TV(1080P)的默认堆内存大小就是128M。之所以会出现<code>OOM</code>，是因为Android加载图片是把位图放到内存中，位图都是由一个个小的像素点组成，位图的大小与像素点所占的字节有关系，而每个像素点在内存中所占的字节大小是和位图的一个<code>Bitmap.Config</code>属性有关系的，Bitmap.Config枚举类有四个常见的枚举值。我们通过查看Android源码Bitmap类，可以看到其中有如下一个内部枚举类：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Config &#123;</span><br><span class="line">    <span class="comment">// these native values must match up with the enum in SkBitmap.h</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * Each pixel is stored as a single translucency (alpha) channel.</span></span><br><span class="line"><span class="comment">      * This is very useful to efficiently store masks for instance.</span></span><br><span class="line"><span class="comment">      * No color information is stored.</span></span><br><span class="line"><span class="comment">      * With this configuration, each pixel requires 1 byte of memory.</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    ALPHA_8     (<span class="number">2</span>),</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * Each pixel is stored on 2 bytes and only the RGB channels are</span></span><br><span class="line"><span class="comment">      * encoded: red is stored with 5 bits of precision (32 possible</span></span><br><span class="line"><span class="comment">      * values), green is stored with 6 bits of precision (64 possible</span></span><br><span class="line"><span class="comment">      * values) and blue is stored with 5 bits of precision.</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * This configuration can produce slight visual artifacts depending</span></span><br><span class="line"><span class="comment">      * on the configuration of the source. For instance, without</span></span><br><span class="line"><span class="comment">      * dithering, the result might show a greenish tint. To get better</span></span><br><span class="line"><span class="comment">      * results dithering should be applied.</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * This configuration may be useful when using opaque bitmaps</span></span><br><span class="line"><span class="comment">      * that do not require high color fidelity.</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    RGB_565     (<span class="number">4</span>),</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * Each pixel is stored on 2 bytes. The three RGB color channels</span></span><br><span class="line"><span class="comment">      * and the alpha channel (translucency) are stored with a 4 bits</span></span><br><span class="line"><span class="comment">      * precision (16 possible values.)</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * This configuration is mostly useful if the application needs</span></span><br><span class="line"><span class="comment">      * to store translucency information but also needs to save</span></span><br><span class="line"><span class="comment">      * memory.</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * It is recommended to use &#123;<span class="doctag">@link</span> #ARGB_8888&#125; instead of this</span></span><br><span class="line"><span class="comment">      * configuration.</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * Note: as of &#123;<span class="doctag">@link</span> android.os.Build.VERSION_CODES#KITKAT&#125;,</span></span><br><span class="line"><span class="comment">      * any bitmap created with this configuration will be created</span></span><br><span class="line"><span class="comment">      * using &#123;<span class="doctag">@link</span> #ARGB_8888&#125; instead.</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * <span class="doctag">@deprecated</span> Because of the poor quality of this configuration,</span></span><br><span class="line"><span class="comment">      *             it is advised to use &#123;<span class="doctag">@link</span> #ARGB_8888&#125; instead.</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    <span class="meta">@Deprecated</span></span><br><span class="line">    ARGB_4444   (<span class="number">5</span>),</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * Each pixel is stored on 4 bytes. Each channel (RGB and alpha</span></span><br><span class="line"><span class="comment">      * for translucency) is stored with 8 bits of precision (256</span></span><br><span class="line"><span class="comment">      * possible values.)</span></span><br><span class="line"><span class="comment">      *</span></span><br><span class="line"><span class="comment">      * This configuration is very flexible and offers the best</span></span><br><span class="line"><span class="comment">      * quality. It should be used whenever possible.</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    ARGB_8888   (<span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> nativeInt;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@SuppressWarnings</span>(&#123;<span class="string">"deprecation"</span>&#125;)</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Config sConfigs[] = &#123;</span><br><span class="line">        <span class="keyword">null</span>, <span class="keyword">null</span>, ALPHA_8, <span class="keyword">null</span>, RGB_565, ARGB_4444, ARGB_8888</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    Config(<span class="keyword">int</span> ni) &#123;</span><br><span class="line">        <span class="keyword">this</span>.nativeInt = ni;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> Config <span class="title">nativeToConfig</span><span class="params">(<span class="keyword">int</span> ni)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> sConfigs[ni];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>上面写的很清楚了，再写明白点就是这样的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A：透明度，R：红色，G：绿，B：蓝</span><br><span class="line">    Bitmap.Config ARGB_4444：每个像素占四位，即A=<span class="number">4</span>，R=<span class="number">4</span>，G=<span class="number">4</span>，B=<span class="number">4</span>，那么一个像素点占<span class="number">4</span>+<span class="number">4</span>+<span class="number">4</span>+<span class="number">4</span>=<span class="number">16</span>位=<span class="number">2</span><span class="keyword">byte</span></span><br><span class="line">    Bitmap.Config ARGB_8888：每个像素占八位，即A=<span class="number">8</span>，R=<span class="number">8</span>，G=<span class="number">8</span>，B=<span class="number">8</span>，那么一个像素点占<span class="number">8</span>+<span class="number">8</span>+<span class="number">8</span>+<span class="number">8</span>=<span class="number">32</span>位=<span class="number">4</span><span class="keyword">byte</span></span><br><span class="line">    Bitmap.Config RGB_565：即R=<span class="number">5</span>，G=<span class="number">6</span>，B=<span class="number">5</span>，没有透明度，那么一个像素点占<span class="number">5</span>+<span class="number">6</span>+<span class="number">5</span>=<span class="number">16</span>位=<span class="number">2</span><span class="keyword">byte</span></span><br><span class="line">    Bitmap.Config ALPHA_8：只有透明度，没有储存颜色，一个像素点占<span class="number">8</span>位=<span class="number">1</span><span class="keyword">byte</span></span><br></pre></td></tr></table></figure></p>
+<p>这样写就很明吧了，通常都建议使用<code>ARGB_8888</code>这种属性值来存储位图，那么比如一张1080<em>1920的图片，所占用的存储空间的值就是`1080</em>1920*4 Byte`大约就是8M的内存，再大一些的图片，或者是反复加载就很容易就出现OOM了。</p>
+<p>为了防止OOM的产生，我们有下面几个选择：</p>
+<ol>
+<li>采用低质量Bitmap.Config像素占用小的属性加载，比如ARGB_4444，不过不推荐，这样会出现马赛克的现象。</li>
+<li>缩小图片的尺寸，降低分辨率。</li>
+<li>采用缓存加载大量图片。</li>
+</ol>
+<p>今天我们只讨论第二种方法，降低图片大小需要使用一个类<code>BitmapFactory.Options</code>，会用到里面这些属性<code>inJustDecodeBounds</code>，<code>inSampleSize</code>，outWidth，outHeight</p>
+<p>Android源码中对于属性的定义如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * If set to true, the decoder will return null (no bitmap), but</span></span><br><span class="line"><span class="comment">  * the out... fields will still be set, allowing the caller to query</span></span><br><span class="line"><span class="comment">  * the bitmap without having to allocate the memory for its pixels.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">boolean</span> inJustDecodeBounds;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * If set to a value &amp;gt; 1, requests the decoder to subsample the original</span></span><br><span class="line"><span class="comment">  * image, returning a smaller image to save memory. The sample size is</span></span><br><span class="line"><span class="comment">  * the number of pixels in either dimension that correspond to a single</span></span><br><span class="line"><span class="comment">  * pixel in the decoded bitmap. For example, inSampleSize == 4 returns</span></span><br><span class="line"><span class="comment">  * an image that is 1/4 the width/height of the original, and 1/16 the</span></span><br><span class="line"><span class="comment">  * number of pixels. Any value &amp;lt;= 1 is treated the same as 1\. Note: the</span></span><br><span class="line"><span class="comment">  * decoder uses a final value based on powers of 2, any other value will</span></span><br><span class="line"><span class="comment">  * be rounded down to the nearest power of 2.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> inSampleSize;</span><br></pre></td></tr></table></figure></p>
+<p>上面写的也就是说<code>inSampleSize</code>是缩放比例，<code>inJustDecodeBounds</code>设置为true时，可以允许调用者在不需要分配内存给位图的情况下获取位图的宽高</p>
+<p>知道上面的原理之后我们就可以理一下步骤了，基本步骤是：</p>
+<ol>
+<li><p>实例化一个<code>BitmapFactory.Options</code>对象<code>options</code>。</p>
+</li>
+<li><p>设置options的<code>inJustDecodeBounds</code>值为true，以便下一步可以不分配内存来获取图片的分辨率。</p>
+</li>
+<li><p>根据BitmapFactory的<code>decodeXXX</code>方法，以第一步实例化的对象option作为参数，以不分配内存的方法获取到的实际的outWidth和outHeight，结合自己想设置的大小，计算出缩放比例<code>inSampleSize</code>，将值赋给<code>options.inSampleSize</code>。</p>
+</li>
+<li><p>将<code>inJustDecodeBounds</code>的值设置为false。</p>
+</li>
+<li><p>再次使用BitmapFactory的decodeXXX方法，来获取到缩放后的图片，切记在执行改步骤之前一定要先将inJustDecodeBounds的值设置为false。</p>
+</li>
+</ol>
+<p>下面是我从网络上获取一张图片，然后缩放到想要的尺寸显示出来的Demo，附上源码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.picksomething.asyncdownloadimage;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Bitmap;</span><br><span class="line"><span class="keyword">import</span> android.graphics.BitmapFactory;</span><br><span class="line"><span class="keyword">import</span> android.os.AsyncTask;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.view.Menu;</span><br><span class="line"><span class="keyword">import</span> android.view.MenuItem;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.Button;</span><br><span class="line"><span class="keyword">import</span> android.widget.ImageView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.http.HttpEntity;</span><br><span class="line"><span class="keyword">import</span> org.apache.http.HttpResponse;</span><br><span class="line"><span class="keyword">import</span> org.apache.http.client.HttpClient;</span><br><span class="line"><span class="keyword">import</span> org.apache.http.client.methods.HttpGet;</span><br><span class="line"><span class="keyword">import</span> org.apache.http.impl.client.DefaultHttpClient;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.InputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.ref.WeakReference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Button button;</span><br><span class="line">    <span class="keyword">private</span> ImageView imageView;</span><br><span class="line">    <span class="keyword">private</span> String imageUrl = <span class="string">"http://www.konka.com/cms_file/uploads/Image/1/140627120650604/VC5A7259.JPG"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_my);</span><br><span class="line">        button = (Button) findViewById(R.id.download);</span><br><span class="line">        imageView = (ImageView) findViewById(R.id.imageview);</span><br><span class="line">        button.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">                executeAsyncTask();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">executeAsyncTask</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        DownloadImage downloadImage = <span class="keyword">new</span> DownloadImage(imageView);</span><br><span class="line">        imageView.setImageResource(R.drawable.welcome);</span><br><span class="line">        downloadImage.execute(imageUrl);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 从网络加载图片</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Bitmap <span class="title">getBitmapStream</span><span class="params">(String uri)</span> </span>&#123;</span><br><span class="line">        Bitmap bitmap = <span class="keyword">null</span>;</span><br><span class="line">        HttpGet httpGet = <span class="keyword">new</span> HttpGet(uri);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            HttpClient httpClient = <span class="keyword">new</span> DefaultHttpClient();</span><br><span class="line">            HttpResponse httpResponse = httpClient.execute(httpGet);</span><br><span class="line">            HttpEntity entity = httpResponse.getEntity();</span><br><span class="line">            InputStream inputStream = entity.getContent();</span><br><span class="line">            BitmapFactory.Options options = <span class="keyword">new</span> BitmapFactory.Options();</span><br><span class="line">            options.inJustDecodeBounds = <span class="keyword">true</span>;</span><br><span class="line">            BitmapFactory.decodeStream(inputStream, <span class="keyword">null</span>, options);</span><br><span class="line">            <span class="keyword">int</span> inSampleSize = calculateInSampleSize(options, <span class="number">200</span>, <span class="number">100</span>);</span><br><span class="line">            options.inSampleSize = inSampleSize;</span><br><span class="line">            options.inJustDecodeBounds = <span class="keyword">false</span>;</span><br><span class="line">            httpResponse = httpClient.execute(httpGet);</span><br><span class="line">            entity = httpResponse.getEntity();</span><br><span class="line">            inputStream = entity.getContent();</span><br><span class="line">            bitmap = BitmapFactory.decodeStream(inputStream, <span class="keyword">null</span>, options);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> bitmap;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateInSampleSize</span><span class="params">(BitmapFactory.Options options,</span></span></span><br><span class="line"><span class="function"><span class="params">                                            <span class="keyword">int</span> reqWidth, <span class="keyword">int</span> reqHeight)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> height = options.outHeight;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> width = options.outWidth;</span><br><span class="line">        <span class="keyword">int</span> inSampleSize = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (height &gt; reqHeight || width &gt; reqWidth) &#123;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> halfHeight = height / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> halfWidth = width / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">while</span> ((halfHeight / inSampleSize) &gt; reqHeight</span><br><span class="line">                    &amp;&amp; (halfWidth / inSampleSize) &gt; reqWidth) &#123;</span><br><span class="line">                inSampleSize *= <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> inSampleSize;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">DownloadImage</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&amp;<span class="title">lt</span></span>;String, Void, Bitmap&amp;gt; &#123;</span><br><span class="line"></span><br><span class="line">        WeakReference&lt;ImageView&gt; imageViewWeakReference;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">DownloadImage</span><span class="params">(ImageView imageView1)</span> </span>&#123;</span><br><span class="line">            imageViewWeakReference = <span class="keyword">new</span> WeakReference&amp;lt;ImageView&amp;gt;(imageView1);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span><span class="params">(Bitmap bitmap)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>.onPostExecute(bitmap);</span><br><span class="line">            <span class="keyword">if</span>(bitmap != <span class="keyword">null</span> &amp;amp;&amp;amp; imageViewWeakReference != <span class="keyword">null</span>)&#123;</span><br><span class="line">                ImageView imageView1 = imageViewWeakReference.get();</span><br><span class="line">                <span class="keyword">if</span>(imageView1 != <span class="keyword">null</span>)&#123;</span><br><span class="line">                    imageView1.setImageBitmap(bitmap);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Bitmap <span class="title">doInBackground</span><span class="params">(String... params)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getBitmapStream(params[<span class="number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Inflate the menu; this adds items to the action bar if it is present.</span></span><br><span class="line">        getMenuInflater().inflate(R.menu.my, menu);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Handle action bar item clicks here. The action bar will</span></span><br><span class="line">        <span class="comment">// automatically handle clicks on the Home/Up button, so long</span></span><br><span class="line">        <span class="comment">// as you specify a parent activity in AndroidManifest.xml.</span></span><br><span class="line">        <span class="keyword">int</span> id = item.getItemId();</span><br><span class="line">        <span class="keyword">if</span> (id == R.id.action_settings) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onOptionsItemSelected(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
-    /**
-     * Each pixel is stored on 2 bytes. The three RGB color channels
-     * and the alpha channel (translucency) are stored with a 4 bits
-     * precision (16 possible values.)
-     * 
-     * This configuration is mostly useful if the application needs
-     * to store translucency information but also needs to save
-     * memory.
-     * 
-     * It is recommended to use {@link #ARGB_8888} instead of this
-     * configuration.
-     *
-     * Note: as of {@link android.os.Build.VERSION_CODES#KITKAT},
-     * any bitmap created with this configuration will be created
-     * using {@link #ARGB_8888} instead.
-     * 
-     * @deprecated Because of the poor quality of this configuration,
-     *             it is advised to use {@link #ARGB_8888} instead.
-     */
-    @Deprecated
-    ARGB_4444   (5),
-
-    /**
-     * Each pixel is stored on 4 bytes. Each channel (RGB and alpha
-     * for translucency) is stored with 8 bits of precision (256
-     * possible values.)
-     * 
-     * This configuration is very flexible and offers the best
-     * quality. It should be used whenever possible.
-     */
-    ARGB_8888   (6);
-
-    final int nativeInt;
-
-   @SuppressWarnings({&quot;deprecation&quot;})
-    private static Config sConfigs[] = {
-        null, null, ALPHA_8, null, RGB_565, ARGB_4444, ARGB_8888
-    };
-
-    Config(int ni) {
-        this.nativeInt = ni;
-    }
-
-    static Config nativeToConfig(int ni) {
-        return sConfigs[ni];
-    }
-}
-`&lt;/pre&gt;
-上面写的很清楚了，再写明白点就是这样的
-&lt;pre&gt;`A：透明度，R：红色，G：绿，B：蓝
-Bitmap.Config ARGB_4444：每个像素占四位，即A=4，R=4，G=4，B=4，那么一个像素点占4+4+4+4=16位=2byte
-Bitmap.Config ARGB_8888：每个像素占八位，即A=8，R=8，G=8，B=8，那么一个像素点占8+8+8+8=32位=4byte
-Bitmap.Config RGB_565：即R=5，G=6，B=5，没有透明度，那么一个像素点占5+6+5=16位=2byte
-Bitmap.Config ALPHA_8：只有透明度，没有储存颜色，一个像素点占8位=1byte
-&lt;/pre&gt;`
-这样写就很明吧了，通常都建议使用`ARGB_8888`这种属性值来存储位图，那么比如一张1080*1920的图片，所占用的存储空间的值就是`1080*1920*4 Byte`大约就是8M的内存，再大一些的图片，或者是反复加载就很容易就出现OOM了。
-
-为了防止OOM的产生，我们有下面几个选择：
-1、采用低质量Bitmap.Config像素占用小的属性加载，比如ARGB_4444，不过不推荐，这样会出现马赛克的现象。
-
-2、缩小图片的尺寸，降低分辨率。
-
-3、采用缓存加载大量图片。
-
-今天我们只讨论第二种方法，降低图片大小需要使用一个类`BitmapFactory.Options`，会用到里面这些属性`inJustDecodeBounds`，`inSampleSize`，outWidth，outHeight。
-
-Android源码中对于属性的定义如下：
-&lt;pre&gt;`    /**
-     * If set to true, the decoder will return null (no bitmap), but
-     * the out... fields will still be set, allowing the caller to query
-     * the bitmap without having to allocate the memory for its pixels.
-     */
-    public boolean inJustDecodeBounds;
-
-    /**
-     * If set to a value &amp;gt; 1, requests the decoder to subsample the original
-     * image, returning a smaller image to save memory. The sample size is
-     * the number of pixels in either dimension that correspond to a single
-     * pixel in the decoded bitmap. For example, inSampleSize == 4 returns
-     * an image that is 1/4 the width/height of the original, and 1/16 the
-     * number of pixels. Any value &amp;lt;= 1 is treated the same as 1\. Note: the
-     * decoder uses a final value based on powers of 2, any other value will
-     * be rounded down to the nearest power of 2.
-     */
-     public int inSampleSize;
-`&lt;/pre&gt;
-上面写的也就是说`inSampleSize`是缩放比例，`inJustDecodeBounds`设置为true时，可以允许调用者在不需要分配内存给位图的情况下获取位图的宽高。
-
-知道上面的原理之后我们就可以理一下步骤了，大致步骤是：
-
-1、实例化一个`BitmapFactory.Options`对象`options`。
-
-2、设置options的`inJustDecodeBounds`值为true，以便下一步可以不分配内存来获取图片的分辨率。
-
-3、根据BitmapFactory的`decodeXXX`方法，以第一步实例化的对象option作为参数，以不分配内存的方法获取到的实际的outWidth和outHeight，结合自己想设置的大小，计算出缩放比例`inSampleSize`，将值赋给`options.inSampleSize`。
-
-4、将`inJustDecodeBounds`的值设置为false。
-
-5、再次使用BitmapFactory的decodeXXX方法，来获取到缩放后的图片，切记在执行改步骤之前一定要先将inJustDecodeBounds的值设置为false。
-
-下面是我从网络上获取一张图片，然后缩放到想要的尺寸显示出来的Demo，附上源码
-&lt;pre&gt;`package cn.picksomething.asyncdownloadimage;
-
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-
-public class MyActivity extends Activity {
-
-    private Button button;
-    private ImageView imageView;
-    private String imageUrl = &quot;http://www.konka.com/cms_file/uploads/Image/1/140627120650604/VC5A7259.JPG&quot;;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
-        button = (Button) findViewById(R.id.download);
-        imageView = (ImageView) findViewById(R.id.imageview);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                executeAsyncTask();
-            }
-        });
-    }
-
-    private void executeAsyncTask() {
-        DownloadImage downloadImage = new DownloadImage(imageView);
-        imageView.setImageResource(R.drawable.welcome);
-        downloadImage.execute(imageUrl);
-    }
-
-    /**
-     * 从网络加载图片
-     */
-
-    public Bitmap getBitmapStream(String uri) {
-        Bitmap bitmap = null;
-        HttpGet httpGet = new HttpGet(uri);
-        try {
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse httpResponse = httpClient.execute(httpGet);
-            HttpEntity entity = httpResponse.getEntity();
-            InputStream inputStream = entity.getContent();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(inputStream, null, options);
-            int inSampleSize = calculateInSampleSize(options, 200, 100);
-            options.inSampleSize = inSampleSize;
-            options.inJustDecodeBounds = false;
-            httpResponse = httpClient.execute(httpGet);
-            entity = httpResponse.getEntity();
-            inputStream = entity.getContent();
-            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-
-    }
-
-    public static int calculateInSampleSize(BitmapFactory.Options options,
-                                            int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-        if (height &amp;gt; reqHeight || width &amp;gt; reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-            while ((halfHeight / inSampleSize) &amp;gt; reqHeight
-                    &amp;amp;&amp;amp; (halfWidth / inSampleSize) &amp;gt; reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
-    }
-
-    class DownloadImage extends AsyncTask&amp;lt;String, Void, Bitmap&amp;gt; {
-
-        WeakReference&amp;lt;ImageView&amp;gt; imageViewWeakReference;
-
-        public DownloadImage(ImageView imageView1) {
-            imageViewWeakReference = new WeakReference&amp;lt;ImageView&amp;gt;(imageView1);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            if(bitmap != null &amp;amp;&amp;amp; imageViewWeakReference != null){
-                ImageView imageView1 = imageViewWeakReference.get();
-                if(imageView1 != null){
-                    imageView1.setImageBitmap(bitmap);
-                }
-            }
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            return getBitmapStream(params[0]);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.my, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-}
-</code></pre>
       
     </div>
     
@@ -738,7 +500,7 @@ public class MyActivity extends Activity {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -749,7 +511,7 @@ public class MyActivity extends Activity {
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

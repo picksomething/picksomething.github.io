@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,Ubuntu,Gnome,截屏," />
+  <meta name="keywords" content="Linux,Gnome,Ubuntu,截屏," />
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk、xface之类的下面的内容就对你不适合了1234gnome-screenshot -a//是局部截图,自己选择区域gnome-s">
-<meta name="keywords" content="Linux,Ubuntu,Gnome,截屏">
+<meta name="keywords" content="Linux,Gnome,Ubuntu,截屏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu Gnome桌面环境下截屏命令">
 <meta property="og:url" content="http://picksomething.cn/2012/12/29/Ubuntu Gnome桌面环境下截屏命令/index.html">
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk、xface之类的下面的内容就对你不适合了1234gnome-screenshot -a//是局部截图,自己选择区域gnome-s">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-25T05:49:10.467Z">
+<meta property="og:updated_time" content="2018-04-25T10:39:11.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu Gnome桌面环境下截屏命令">
 <meta name="twitter:description" content="今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk、xface之类的下面的内容就对你不适合了1234gnome-screenshot -a//是局部截图,自己选择区域gnome-s">
@@ -355,9 +355,7 @@
 
       
         <p>今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk、<code>xface</code>之类的下面的内容就对你不适合了<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gnome-screenshot -a</span><br><span class="line">//是局部截图,自己选择区域</span><br><span class="line">gnome-screenshot -w</span><br><span class="line">//全屏截图,相当于快捷键print screen。</span><br></pre></td></tr></table></figure></p>
-<p>下面是常用的截屏命令。<br><code>`</code>Shell<br>gnome-screenshot</p>
-<p>gnome-screenshot -help<br>Usage: gnome-screenshot [OPTION…] Take a picture of the screen<br>Help Options:<br>    -h, –help                    Show help options<br>    –help-all                    Show all help options<br>    –help-gtk                    Show GTK+ Options</p>
-<p>Application Options:<br>    -w, –window                  Grab a window instead of the entire screen<br>    -a, –area                    Grab an area of the screen instead of the entire screen<br>    -b, –include-border          Include the window border with the screenshot<br>    -B, –remove-border            Remove the window border from the screenshot<br>    -d, –delay=seconds            Take screenshot after specified delay [in seconds]<br>    -e, –border-effect=effect    Effect to add to the border (shadow, border or none)<br>    -i, –interactive              Interactively set options<br>    –display=DISPLAY              X display to use</p>
+<p>下面是常用的截屏命令。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">gnome-screenshot</span><br><span class="line"></span><br><span class="line">gnome-screenshot -help</span><br><span class="line">Usage: gnome-screenshot [OPTION...] Take a picture of the screen</span><br><span class="line">Help Options:</span><br><span class="line">    -h, --help                    Show help options</span><br><span class="line">    --help-all                    Show all help options</span><br><span class="line">    --help-gtk                    Show GTK+ Options</span><br><span class="line"></span><br><span class="line">Application Options:</span><br><span class="line">    -w, --window                  Grab a window instead of the entire screen</span><br><span class="line">    -a, --area                    Grab an area of the screen instead of the entire screen</span><br><span class="line">    -b, --include-border          Include the window border with the screenshot</span><br><span class="line">    -B, --remove-border            Remove the window border from the screenshot</span><br><span class="line">    -d, --delay=seconds            Take screenshot after specified delay [in seconds]</span><br><span class="line">    -e, --border-effect=effect    Effect to add to the border (shadow, border or none)</span><br><span class="line">    -i, --interactive              Interactively set options</span><br><span class="line">    --display=DISPLAY              X display to use</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -377,9 +375,9 @@
           
             <a href="/tags/Linux/" rel="tag"># Linux</a>
           
-            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
-          
             <a href="/tags/Gnome/" rel="tag"># Gnome</a>
+          
+            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
           
             <a href="/tags/截屏/" rel="tag"># 截屏</a>
           
@@ -404,8 +402,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2013/03/31/浅述java中创建线程到两种方法/" rel="prev" title="浅述java中创建线程到两种方法">
-                浅述java中创建线程到两种方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2013/03/31/Java中创建线程到两种方法/" rel="prev" title="Java中创建线程到两种方法">
+                Java中创建线程到两种方法 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -478,7 +476,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -489,7 +487,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

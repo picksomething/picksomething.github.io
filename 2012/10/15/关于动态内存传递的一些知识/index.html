@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码： #include&amp;amp;lt;iostream&amp;amp;gt; #include&amp;amp;lt;cstring&amp;amp;gt; #include&amp;amp;lt;malloc.h&amp;amp;gt; using namespace std;  void GetMemory(char">
+<meta name="description" content="动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：123456789101112131415161718#include&amp;lt;iostream&amp;gt;#include&amp;lt;cstring&amp;gt;#include&amp;lt;malloc.h&amp;gt;using namespace std;void GetMemory(char *p">
 <meta name="keywords" content="C++,动态传递">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于动态内存传递的一些知识">
 <meta property="og:url" content="http://picksomething.cn/2012/10/15/关于动态内存传递的一些知识/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码： #include&amp;amp;lt;iostream&amp;amp;gt; #include&amp;amp;lt;cstring&amp;amp;gt; #include&amp;amp;lt;malloc.h&amp;amp;gt; using namespace std;  void GetMemory(char">
+<meta property="og:description" content="动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：123456789101112131415161718#include&amp;lt;iostream&amp;gt;#include&amp;lt;cstring&amp;gt;#include&amp;lt;malloc.h&amp;gt;using namespace std;void GetMemory(char *p">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.422Z">
+<meta property="og:updated_time" content="2018-04-25T10:28:13.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于动态内存传递的一些知识">
-<meta name="twitter:description" content="动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码： #include&amp;amp;lt;iostream&amp;amp;gt; #include&amp;amp;lt;cstring&amp;amp;gt; #include&amp;amp;lt;malloc.h&amp;amp;gt; using namespace std;  void GetMemory(char">
+<meta name="twitter:description" content="动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：123456789101112131415161718#include&amp;lt;iostream&amp;gt;#include&amp;lt;cstring&amp;gt;#include&amp;lt;malloc.h&amp;gt;using namespace std;void GetMemory(char *p">
 
 
 
@@ -317,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-C/" itemprop="url" rel="index">
-                    <span itemprop="name">C/C++</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
                   </a>
                 </span>
 
@@ -354,62 +354,13 @@
       
 
       
-        <p><div>动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：</div></p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstring&amp;gt;
-#include&amp;lt;malloc.h&amp;gt;
-using namespace std;
-
-void GetMemory(char *p,int num)
-{
-    p = (char *)malloc(sizeof(char)*num);
-};
-
-int main(void)
-{
-    char *str = NULL;
-    GetMemory(str,100);
-    strcpy(str,&quot;hello&quot;);
-    return 0;
-}
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-咋一看，好像没有什么错误，其实这个程序是不能编译通过的，它是有错误的。
-毛病出在函数`GetMemory`中，`void GetMemory(char *p,int num)`中的`*p`实际上是主函数中的str的一个副本，编译器总是要为函数的每一个参数制作临时副本。在本例中，p申请了新的内存，只是把p所指的内存地址改变了，但是str丝毫没有改变，还是指向NULL 的地址，因为函数GetMemory没有返回值，因此str并不指向p所申请的那段内存，所以函数GetMemory 并不能输出任何东西。最终会造成内存泄漏。
-如果一定要用指针参数去申请内存，那么应该采用指向指针的指针，传str的地址给函数GetMemory函数。代码如下：
-&lt;pre&gt;`#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstring&amp;gt;
-#include&amp;lt;malloc.h&amp;gt;
-using namespace std;
-
-void GetMemory(char **p,int num)
-{
-    *p = (char *)malloc(sizeof(char)*num);
-};
-
-int main(void)
-{
-    char *str = NULL;
-    GetMemory(&amp;amp;str,100);
-    strcpy(str,&quot;hello&quot;);
-    return 0;
-}`&lt;/pre&gt;
-此时是将指向NULL地址的指针传递给了参数`char **p`那么`*p`也就可以表示`NULL`的地址了，对于的str也就是字符串的值。这样才可以真正意义上实现地址的同步改变。
-我们再看一个例子：
-&lt;pre&gt;`#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstring&amp;gt;
-void GetMemory2(int *z)
-{
-    *z=5;
-};
-int main()
-{
-    int v;
-    GetMemory2(&amp;amp;v);
-    cout&amp;lt;&amp;lt;v&amp;lt;&amp;lt;endl;
-    return 0;
-}
-</code></pre><p><code>GetMemory2</code>把v的地址传了进来，<code>*z</code>是地址里的值，是v的副本，通过直接修改地址里面的值，不需要有返回值，也把v给修改了，因为v所指向地址的值发生了改变。<br><span style="color: #008000;">其实第一个函数只是改的p的值，并未影响str，而第三个改变的是传递进来的指针指向的值，其实还可以通过返回值来用第一个函数。而第二个函数使用指向指针的指针作为参数，修改的是*p也就是传递进来的str的地址。所以可以更改成功。原理同第三个函数。</span><br>小结：动态传递这类问题比较复杂，具体还需要大家平时多注意，多揣摩，多实践。</p>
+        <p>动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemory</span><span class="params">(<span class="keyword">char</span> *p,<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    p = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*num);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *str = <span class="literal">NULL</span>;</span><br><span class="line">    GetMemory(str,<span class="number">100</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(str,<span class="string">"hello"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>咋一看，好像没有什么错误，其实这个程序是不能编译通过的，它是有错误的:<br>问题出在函数<code>GetMemory</code>中，<code>void GetMemory(char *p,int num)</code>中的<code>*p</code>实际上是主函数中的str的一个副本，编译器总是要为函数的每一个参数制作临时副本。在本例中，p申请了新的内存，只是把p所指的内存地址改变了，但是str丝毫没有改变，还是指向NULL 的地址，因为函数GetMemory没有返回值，因此str并不指向p所申请的那段内存，所以函数GetMemory 并不能输出任何东西，最终会造成内存泄漏</p>
+<p>如果一定要用指针参数去申请内存，那么应该采用指向指针的指针，传str的地址给函数GetMemory函数。代码如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemory</span><span class="params">(<span class="keyword">char</span> **p,<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *p = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*num);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *str = <span class="literal">NULL</span>;</span><br><span class="line">    GetMemory(&amp;str,<span class="number">100</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(str,<span class="string">"hello"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时是将指向NULL地址的指针传递给了参数<code>char **p</code>那么<code>*p</code>也就可以表示<code>NULL</code>的地址了，对于的str也就是字符串的值，这样才可以真正意义上实现地址的同步改变。</p>
+<p>我们再看一个例子：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemory2</span><span class="params">(<span class="keyword">int</span> *z)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    *z=<span class="number">5</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> v;</span><br><span class="line">    GetMemory2(&amp;v);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;v&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>GetMemory2</code>把v的地址传了进来，<code>*z</code>是地址里的值，是v的副本，通过直接修改地址里面的值，不需要有返回值，也把v给修改了，因为v所指向地址的值发生了改变。<br><span style="color: #008000;">其实第一个函数只是改的p的值，并未影响str，而第三个改变的是传递进来的指针指向的值，其实还可以通过返回值来用第一个函数。而第二个函数使用指向指针的指针作为参数，修改的是*p也就是传递进来的str的地址。所以可以更改成功。原理同第三个函数。</span><br>小结：动态传递这类问题比较复杂，具体还需要大家平时多注意，多揣摩，多实践。</p>
 
       
     </div>
@@ -442,8 +393,8 @@ int main()
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2012/09/13/关于泛型编程中的remove方法/" rel="next" title="关于泛型编程中的remove方法">
-                <i class="fa fa-chevron-left"></i> 关于泛型编程中的remove方法
+              <a href="/2012/09/13/泛型编程中的remove方法/" rel="next" title="泛型编程中的remove方法">
+                <i class="fa fa-chevron-left"></i> 泛型编程中的remove方法
               </a>
             
           </div>
@@ -526,7 +477,7 @@ int main()
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -537,7 +488,7 @@ int main()
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

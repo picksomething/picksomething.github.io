@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="前言因为之前工作中一直用的控制版本都是svn，现在改为用git了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看。  恢复本地删除的文件直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。 &amp;lt;!--more--&amp;gt;  * * *  #### 处理冲突  如果系统中有一些">
+<meta name="description" content="前言因为之前工作中一直用的控制版本都是svn，现在改为用git了，不得不说git是非常强大的，自然而然功能多了，命令也就多了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看 恢复本地删除的文件直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。">
 <meta name="keywords" content="git,fetch,fork,pull,rebase,tag">
 <meta property="og:type" content="article">
 <meta property="og:title" content="工作中常用Git命令(持续更新)">
 <meta property="og:url" content="http://picksomething.cn/2015/02/01/工作中常用Git命令(持续更新)/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="前言因为之前工作中一直用的控制版本都是svn，现在改为用git了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看。  恢复本地删除的文件直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。 &amp;lt;!--more--&amp;gt;  * * *  #### 处理冲突  如果系统中有一些">
+<meta property="og:description" content="前言因为之前工作中一直用的控制版本都是svn，现在改为用git了，不得不说git是非常强大的，自然而然功能多了，命令也就多了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看 恢复本地删除的文件直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/201804/git-merge.png">
+<meta property="og:updated_time" content="2018-04-25T09:50:47.625Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="工作中常用Git命令(持续更新)">
-<meta name="twitter:description" content="前言因为之前工作中一直用的控制版本都是svn，现在改为用git了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看。  恢复本地删除的文件直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。 &amp;lt;!--more--&amp;gt;  * * *  #### 处理冲突  如果系统中有一些">
+<meta name="twitter:description" content="前言因为之前工作中一直用的控制版本都是svn，现在改为用git了，不得不说git是非常强大的，自然而然功能多了，命令也就多了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看 恢复本地删除的文件直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/201804/git-merge.png">
 
 
 
@@ -354,60 +356,51 @@
       
 
       
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>因为之前工作中一直用的控制版本都是svn，现在改为用git了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看。</p>
-<hr>
-<h5 id="恢复本地删除的文件"><a href="#恢复本地删除的文件" class="headerlink" title="恢复本地删除的文件"></a>恢复本地删除的文件</h5><p>直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。</p>
-<pre><code>&lt;!--more--&gt;
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为之前工作中一直用的控制版本都是svn，现在改为用git了，不得不说git是非常强大的，自然而然功能多了，命令也就多了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看</p>
+<h2 id="恢复本地删除的文件"><a href="#恢复本地删除的文件" class="headerlink" title="恢复本地删除的文件"></a>恢复本地删除的文件</h2><p>直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的。<br><a id="more"></a></p>
+<h2 id="处理冲突"><a href="#处理冲突" class="headerlink" title="处理冲突"></a>处理冲突</h2><p>如果系统中有一些配置文件在服务器上做了配置修改，然后后续开发又新添加一些配置项的时候，在发布这个配置文件的时候,会发生代码冲突:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error: Your local changes to the following files would be</span><br><span class="line">overwritten by merge:protected/config/main.php.Please,commit your</span><br><span class="line">changes or stash them before you can merge.</span><br></pre></td></tr></table></figure></p>
+<h3 id="如果希望保留生产服务器上所做的改动-仅仅并入新配置项"><a href="#如果希望保留生产服务器上所做的改动-仅仅并入新配置项" class="headerlink" title="如果希望保留生产服务器上所做的改动,仅仅并入新配置项"></a>如果希望保留生产服务器上所做的改动,仅仅并入新配置项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git pull</span><br><span class="line">git stash pop</span><br></pre></td></tr></table></figure>
+<p>然后可以使用git diff -w +文件名 来确认代码自动合并的情况.</p>
+<h3 id="如果希望用代码库中的文件完全覆盖本地工作版本"><a href="#如果希望用代码库中的文件完全覆盖本地工作版本" class="headerlink" title="如果希望用代码库中的文件完全覆盖本地工作版本"></a>如果希望用代码库中的文件完全覆盖本地工作版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+<p>其中git reset是针对版本,如果想针对文件回退本地修改,使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD file_to_restore</span><br></pre></td></tr></table></figure></p>
+<h2 id="更新本地代码"><a href="#更新本地代码" class="headerlink" title="更新本地代码"></a>更新本地代码</h2><p>最好不要用<code>git pul</code>要使用<code>git fetch</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pull = fetch + merge</span><br><span class="line">fetch = fetch</span><br></pre></td></tr></table></figure></p>
+<h2 id="版本库初始化"><a href="#版本库初始化" class="headerlink" title="版本库初始化"></a>版本库初始化</h2><h3 id="本地建立一个Git版本库"><a href="#本地建立一个Git版本库" class="headerlink" title="本地建立一个Git版本库"></a>本地建立一个Git版本库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mkdir helloworld</span><br><span class="line"><span class="meta">$</span> cd helloworld</span><br><span class="line"><span class="meta">$</span> git init</span><br></pre></td></tr></table></figure>
+<h3 id="在版本库中添加示例文件，如README-md文件"><a href="#在版本库中添加示例文件，如README-md文件" class="headerlink" title="在版本库中添加示例文件，如README.md文件"></a>在版本库中添加示例文件，如README.md文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git add README.md</span><br><span class="line"><span class="meta">$</span> git commit -m "README for this project."</span><br></pre></td></tr></table></figure>
+<h3 id="为版本库添加名为origin的远程版本库"><a href="#为版本库添加名为origin的远程版本库" class="headerlink" title="为版本库添加名为origin的远程版本库"></a>为版本库添加名为origin的远程版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:gotgithub/helloworld.git</span><br></pre></td></tr></table></figure>
+<h3 id="执行推送命令，完成GitHub版本库的初始化"><a href="#执行推送命令，完成GitHub版本库的初始化" class="headerlink" title="执行推送命令，完成GitHub版本库的初始化"></a>执行推送命令，完成GitHub版本库的初始化</h3><p>注意命令行中的-u参数，在推送成功后自动建立本地分支与远程版本库分支的追踪。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure></p>
+<h2 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h2><p>当我们在分之上改动完毕，问题解决之后，需要将分支的修改合并到主分支上，需要用到合并分支命令。<br>切换到主分支，执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge branch-name</span><br></pre></td></tr></table></figure></p>
+<p>需要特别说明的是，git merge 后面可以跟一些参数来达到不同的结果，如下图所示：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/201804/git-merge.png"></p>
+<p>–no-ff指的是强行关闭fast-forward方式<br>fast-forward方式就是当条件允许的时候，git直接把HEAD指针指向合并分支的头，完成合并。属于“快进方式”，不过这种情况如果删除分支，则会丢失分支信息。因为在这个过程中没有创建commit<br>总结来说–no-ff的作用：不使用fast-forward方式合并，保留分支的commit历史</p>
+<h2 id="删除分支"><a href="#删除分支" class="headerlink" title="删除分支"></a>删除分支</h2><h3 id="删除本地分支"><a href="#删除本地分支" class="headerlink" title="删除本地分支"></a>删除本地分支</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d branchName</span><br></pre></td></tr></table></figure>
+<p>强制删除的话换-d换成-D</p>
+<h3 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :branchName</span><br></pre></td></tr></table></figure>
+<p>有种方便记忆这条命令的方法：记住我们不久前见过的 git push [远程名] [本地分支]:[远程分支] 语法，如果省略 [本地分支]，那就等于是在说“在这里提取空白然后把它变成[远程分支]”</p>
+<p>还有一种方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --delete branchName</span><br></pre></td></tr></table></figure></p>
+<h2 id="Tag相关"><a href="#Tag相关" class="headerlink" title="Tag相关"></a>Tag相关</h2><h3 id="添加轻量级Tag"><a href="#添加轻量级Tag" class="headerlink" title="添加轻量级Tag"></a>添加轻量级Tag</h3><p>轻量级的Tag就是在当前的commit上加一个label，不包括其他信息，不推荐使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag v1.0-lw</span><br></pre></td></tr></table></figure></p>
+<h3 id="添加普通Tag"><a href="#添加普通Tag" class="headerlink" title="添加普通Tag"></a>添加普通Tag</h3><p>正常的Tag是相当于一个正常的commit，包括谁提交的，提交事件等信息，推荐使用这种形式的Tag<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a v1.4 -m &quot;my version 1.4&quot;</span><br></pre></td></tr></table></figure></p>
+<h3 id="push单个Tag"><a href="#push单个Tag" class="headerlink" title="push单个Tag"></a>push单个Tag</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin v1.5</span><br></pre></td></tr></table></figure>
+<h3 id="push所有Tag"><a href="#push所有Tag" class="headerlink" title="push所有Tag"></a>push所有Tag</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --tags</span><br></pre></td></tr></table></figure>
+<h3 id="删除本地Tag"><a href="#删除本地Tag" class="headerlink" title="删除本地Tag"></a>删除本地Tag</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -d v1.0</span><br></pre></td></tr></table></figure>
+<h3 id="删除远程Tag"><a href="#删除远程Tag" class="headerlink" title="删除远程Tag"></a>删除远程Tag</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :v1.0</span><br></pre></td></tr></table></figure>
+<h2 id="忽略已经提交的文件夹-文件"><a href="#忽略已经提交的文件夹-文件" class="headerlink" title="忽略已经提交的文件夹(文件)"></a>忽略已经提交的文件夹(文件)</h2><p>一般我们在用git提交第一版的时候，难免会提交一些我们没必要提交的文件或者文件夹，比如Android Studio编写的Android项目的.idea文件夹，如果我们已经提交了这个文件夹，想忽略掉该文件夹，以后不提交的话，我们可以这样做：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm -r --cached .idea/</span><br></pre></td></tr></table></figure></p>
+<p>如果是忽略文件夹，需要-r参数，如果是文件的话，就不需要-r参数了<br>执行完上面的代码之后，然后我们再修改.gitignore，最后commit就OK了</p>
+<h2 id="更新forked仓库"><a href="#更新forked仓库" class="headerlink" title="更新forked仓库"></a>更新forked仓库</h2><p>有时候我们fork远程仓库到我们自己的仓库之后，远程仓库更新的话，forked的仓库也需要保持同步，下面是本地fork仓库同步远程仓库的步骤:</p>
+<p>1.添加远程仓库，取一个别名:upstream<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add upstream git@github.com:huhulab/MultiAdType.git</span><br></pre></td></tr></table></figure></p>
+<p>2.获取所有远程分支到远程跟踪分之，比如upstream/master<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git fetch upstream</span><br></pre></td></tr></table></figure></p>
+<p>3.确认你在你的主分支上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure></p>
+<p>4.重写master分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase upstream/master</span><br></pre></td></tr></table></figure></p>
+<p>5.更新你github上forked的仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -f origin master</span><br></pre></td></tr></table></figure></p>
+<p>第一次rebase的时候需要使用-f参数，强制push</p>
+<h2 id="回退提交"><a href="#回退提交" class="headerlink" title="回退提交"></a>回退提交</h2><p>分两种情况</p>
+<h3 id="没有push到服务器上的提交"><a href="#没有push到服务器上的提交" class="headerlink" title="没有push到服务器上的提交"></a>没有push到服务器上的提交</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD~1</span><br><span class="line">or</span><br><span class="line">git reset --hard commit_id</span><br></pre></td></tr></table></figure>
+<p>带hard参数是将该commit所有的改动也全部还原回去，也就是说此操作之后，分支是clean状态的，如果想保留更改，只是想回退掉该commit的话，就不要带–hard参数</p>
+<h3 id="已经push到服务器上了"><a href="#已经push到服务器上了" class="headerlink" title="已经push到服务器上了"></a>已经push到服务器上了</h3><p>这种情况，如果分支允许强制push的话，你可以这样操作：<br>首先，使用上面那个命令将本地代码回退到你想要回退的commit<br>然后执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure></p>
+<p>强制用本地的版本覆盖服务器的版本，这样在不产生新提交的情况下，就把服务器分支上已经提交的错误提交回退掉，但是一般不推荐这样做，这样会有风险，而且一般团队里面master分支也是不允许强制push的</p>
+<p>这个时候就需要revert命令了<br>通常情况下，我们回退一个commit，只需要执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert commit</span><br></pre></td></tr></table></figure></p>
+<p>但是，当你回退的是通过merge的提交的时候，直接直行上面命令，你会得到如下错误：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error: Commit g is a merge but no -m option was given.</span><br><span class="line">fatal: revert failed</span><br></pre></td></tr></table></figure></p>
+<p>这个时候你需要如下操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git revert -m 1 commit_id</span><br></pre></td></tr></table></figure></p>
+<p>需要说明的是，m代表的是主线，通常是master分支，m后面的参数1或者2代表的是parent在merge commit信息中的顺序</p>
 
-* * *
-
-#### 处理冲突
-
-如果系统中有一些配置文件在服务器上做了配置修改,然后后续开发又新添加一些配置项的时候,
-在发布这个配置文件的时候,会发生代码冲突:
-
-&gt; error: Your local changes to the following files would be
-</code></pre><blockquote>
-<pre><code>overwritten by merge:protected/config/main.php.Please,commit your 
-changes or stash them before you can merge.
-</code></pre></blockquote>
-<pre><code>* * *
-
-#### 更新本地代码
-
-最好不要用`git pul`要使用`git fetch`
-
-* * *
-
-#### 版本库初始化
-
-* * *
-
-#### 合并分支
-
-当我们在分之上改动完毕，问题解决之后，需要将分支的修改合并到主分支上，需要用到合并分支命令。
-切换到主分支，执行：
-
-* * *
-
-#### 删除分支
-
-* * *
-
-#### Tag相关
-
-* * *
-
-#### 忽略已经提交的文件夹(文件)
-
-一般我们在用git提交第一版的时候，难免会提交一些我们没必要提交的文件或者文件夹，比如Android Studio编写的Android项目的.idea文件夹，如果我们已经提交了这个文件夹，想忽略掉该文件夹，以后不提交的话，我们可以这样做：
-
-* * *
-
-#### 更新forked仓库
-
-有时候我们fork远程仓库到我们自己的仓库之后，远程仓库更新的话，forked的仓库也需要保持同步，下面是本地fork仓库同步远程仓库的步骤:
-</code></pre>
       
     </div>
     
@@ -540,7 +533,7 @@ changes or stash them before you can merge.
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -551,7 +544,7 @@ changes or stash them before you can merge.
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -602,7 +595,7 @@ changes or stash them before you can merge.
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复本地删除的文件"><span class="nav-number">1.1.</span> <span class="nav-text">恢复本地删除的文件</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#恢复本地删除的文件"><span class="nav-number">2.</span> <span class="nav-text">恢复本地删除的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理冲突"><span class="nav-number">3.</span> <span class="nav-text">处理冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如果希望保留生产服务器上所做的改动-仅仅并入新配置项"><span class="nav-number">3.1.</span> <span class="nav-text">如果希望保留生产服务器上所做的改动,仅仅并入新配置项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果希望用代码库中的文件完全覆盖本地工作版本"><span class="nav-number">3.2.</span> <span class="nav-text">如果希望用代码库中的文件完全覆盖本地工作版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新本地代码"><span class="nav-number">4.</span> <span class="nav-text">更新本地代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本库初始化"><span class="nav-number">5.</span> <span class="nav-text">版本库初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地建立一个Git版本库"><span class="nav-number">5.1.</span> <span class="nav-text">本地建立一个Git版本库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在版本库中添加示例文件，如README-md文件"><span class="nav-number">5.2.</span> <span class="nav-text">在版本库中添加示例文件，如README.md文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为版本库添加名为origin的远程版本库"><span class="nav-number">5.3.</span> <span class="nav-text">为版本库添加名为origin的远程版本库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#执行推送命令，完成GitHub版本库的初始化"><span class="nav-number">5.4.</span> <span class="nav-text">执行推送命令，完成GitHub版本库的初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#合并分支"><span class="nav-number">6.</span> <span class="nav-text">合并分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除分支"><span class="nav-number">7.</span> <span class="nav-text">删除分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#删除本地分支"><span class="nav-number">7.1.</span> <span class="nav-text">删除本地分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除远程分支"><span class="nav-number">7.2.</span> <span class="nav-text">删除远程分支</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tag相关"><span class="nav-number">8.</span> <span class="nav-text">Tag相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加轻量级Tag"><span class="nav-number">8.1.</span> <span class="nav-text">添加轻量级Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加普通Tag"><span class="nav-number">8.2.</span> <span class="nav-text">添加普通Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#push单个Tag"><span class="nav-number">8.3.</span> <span class="nav-text">push单个Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#push所有Tag"><span class="nav-number">8.4.</span> <span class="nav-text">push所有Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除本地Tag"><span class="nav-number">8.5.</span> <span class="nav-text">删除本地Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除远程Tag"><span class="nav-number">8.6.</span> <span class="nav-text">删除远程Tag</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略已经提交的文件夹-文件"><span class="nav-number">9.</span> <span class="nav-text">忽略已经提交的文件夹(文件)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新forked仓库"><span class="nav-number">10.</span> <span class="nav-text">更新forked仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回退提交"><span class="nav-number">11.</span> <span class="nav-text">回退提交</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#没有push到服务器上的提交"><span class="nav-number">11.1.</span> <span class="nav-text">没有push到服务器上的提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已经push到服务器上了"><span class="nav-number">11.2.</span> <span class="nav-text">已经push到服务器上了</span></a></li></ol></li></ol></div>
             
 
           </div>

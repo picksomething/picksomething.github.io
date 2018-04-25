@@ -264,362 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/01/27/Android开机设置默认Launcher/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="picksomething">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/favicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一路追梦想">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/01/27/Android开机设置默认Launcher/" itemprop="url">Android开机设置默认Launcher</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-01-27T00:22:10+08:00">
-                2015-01-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>讲到设置默认Launcher，必须先说说<code>Provision.apk</code>这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过<code>Provision.apk</code>这个应用来实现的。</p>
-<p>首先我们知道Android启动HomeLauncher的最后一步是在<code>ActivityManagerService.java</code>中的<code>startHomeActivityLocked</code>方法中发送一个带有<code>android.intent.category.HOME</code><br>的intent来启动响应该属性的应用，一般Launcher的Manifest配置文件中都会有此属性，所以系统中的Launcher就是这样被启动了。关于Android启动Launcher的流程，找时间可以再写一篇文章分析，暂时介绍到这里。<br>接下来就要说Provision这个应用了，该应用的源码在<code>packages/apps/</code>下的Provision这个文件夹中，看一下该应用的目录结构：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/01/provision.jpg" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/01/provision-300x94.jpg" alt="provision"></a><br>该应用只有一个java文件DefaultActivity.java，我们看一下该应用的配置文件<code>AndroidManifest.xml</code></p>
-<pre><code>&amp;lt;!-- For miscellaneous settings --&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&amp;gt;
-&lt;!--more--&gt;
-    &amp;lt;application&amp;gt;
-        &amp;lt;activity android:name=&quot;DefaultActivity&quot;
-                android:excludeFromRecents=&quot;true&quot;&amp;gt;
-            &amp;lt;intent-filter android:priority=&quot;1&quot;&amp;gt;
-                &amp;lt;action android:name=&quot;android.intent.action.MAIN&quot; /&amp;gt;
-                &amp;lt;category android:name=&quot;android.intent.category.HOME&quot; /&amp;gt;
-                &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&amp;gt;
-            &amp;lt;/intent-filter&amp;gt;
-        &amp;lt;/activity&amp;gt;
-    &amp;lt;/application&amp;gt;`&lt;/pre&gt;
-我们注意到其实Provision也会响应`android.intent.category.HOME`属性，并且从这句android:priority=1可以看出起优先级是比一般Launcher都要高的，所以在AMS的startHomeActivityLocked启动Launcher的时候会先启动Provision应用，然后才是启动HomeLauncher，那接着我们看看在Provision中都做了些什么，我们知道默认是启动DefaultActivity.java这个文件，看一下源码：
-&lt;pre&gt;`/**
- * Application that sets the provisioned bit, like SetupWizard does.
- */
-public class DefaultActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
-        // Add a persistent setting to allow other apps to know the device has been provisioned.
-        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
-        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
-
-        // remove this activity from the package manager.
-        PackageManager pm = getPackageManager();
-        ComponentName name = new ComponentName(this, DefaultActivity.class);
-        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        // terminate the activity.
-        finish();
-    }
-}`&lt;/pre&gt;
-代码很简洁，首先是在Settings的`Global`表中将`DEVICE_PROVISIONED`属性设置为1(这一点还是相当重要的，因为很多地方都会检查该标志是否被置成1来决定是不是要走正常的流程)，在`Secure`表中将`USER_SETUP_COMPLETE`属性设置为1。其实获取一个PackageManager对象，通过该对象的`setComponentEnabledSetting`方法来吧自己给disable掉。看一下该方法的解释和说明：
-&lt;pre&gt;`void setComponentEnabledSetting (ComponentName componentName, int newState, int flags)
-componentName：组件名称 
-newState：组件新的状态，可以设置三个值，分别是如下： 
-　　不可用状态：COMPONENT_ENABLED_STATE_DISABLED 
-　　可用状态：COMPONENT_ENABLED_STATE_ENABLED 
-　　默认状态：COMPONENT_ENABLED_STATE_DEFAULT 
-flags:行为标签，值可以是DONT_KILL_APP或者0。 0说明杀死包含该组件的app`&lt;/pre&gt;
-流程很清楚，Provision将`DEVICE_PROVISIONED`标志设置成1之后，然后就将自己从PM中removed掉了，以后就不会再启动，除非系统被重置，或者data目录被删除。
-
-接下来就是讲如何设置默认Launcher了，思路就是在Provision中设置好默认Launcher，Provision启动之后就直接启动默认Launcher了，就不会存在如果系统中有多个Launcher的时候，弹出让用户选择的情况了。
-
-首先说一下我们公司的需要，我们智能电视默认带有三个Launcher，然后默认Launcher是放到system/etc下面的一个DefaultLauncher的配置文件中，第一次启动系统的时候就是根据改配置文件来决定默认Launcher的，首先看一下我们是怎么修改DefaultActivity.java文件的：
-&lt;pre&gt;`public class DefaultActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        // Add a persistent setting to allow other apps to know the device has been provisioned.
-        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
-        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
-
-        // remove this activity from the package manager.
-        PackageManager pm = getPackageManager();
-        ComponentName name = new ComponentName(this, DefaultActivity.class);
-        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        setDefaultLauncher();
-        // terminate the activity.
-        finish();
-    }
-
-    private String getDefaultLauncherPkgName() {
-        final String path = &quot;/system/etc/defaultlauncher.dat&quot;;
-        System.out.println(&quot;in getDefaultLauncherPkgName&quot;);
-        String PackageName = null;
-        File f = new File(path);
-        if (!f.exists()) {
-            System.out.println(&quot;/system/etc/defaultlauncher.dat is not exit&quot;);
-            return null;
-        }
-        if (f == null) {
-            System.out.println(&quot;File f is null&quot;);
-            return null;
-        }
-        try {
-            FileReader r = new FileReader(f);
-            BufferedReader br = new BufferedReader(r);
-            String temp = null;
-            try {
-                while ((temp = br.readLine()) != null) {
-                    if (temp.indexOf(&quot;defaultlauncher&quot;) != -1) {
-                        Pattern p = Pattern.compile(&quot;\\s*|\t|\r|\n&quot;);
-                        Matcher m = p.matcher(temp);
-                        String dest = m.replaceAll(&quot;&quot;);
-                        PackageName = (dest).substring((dest).indexOf(&quot;=&quot;) + 1);
-                        break;
-                    }
-                }
-                br.close();
-                r.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        System.out.println(&quot;getDefaultLauncherPkgName PackageName = &quot; + PackageName);
-        return PackageName;
-    }
-
-    private boolean setDefaultLauncher() {
-        // get default component   
-        System.out.println(&quot;Come in setDefaultLauncher&quot;);
-        PackageManager pm = getPackageManager();
-        ArrayList&lt;IntentFilter&gt; LauncherIntentList = new ArrayList&lt;IntentFilter&gt;();
-        ArrayList&lt;ComponentName&gt; LauncherList = new ArrayList&lt;ComponentName&gt;();
-        //clear the current preferred launcher
-        ArrayList&lt;IntentFilter&gt; intentList = new ArrayList&lt;IntentFilter&gt;();
-        ArrayList&lt;ComponentName&gt; cnList = new ArrayList&lt;ComponentName&gt;();
-        pm.getPreferredActivities(intentList, cnList, null);
-        IntentFilter dhIF;
-        for (int i = 0; i &lt; cnList.size(); i++) {
-            dhIF = intentList.get(i);
-            if (dhIF.hasAction(Intent.ACTION_MAIN) &amp;&amp; dhIF.hasCategory(Intent.CATEGORY_HOME)) {
-                LauncherIntentList.add(intentList.get(i));
-                LauncherList.add(cnList.get(i));
-            }
-        }
-        if (LauncherList.size() == 1) {
-            System.out.println(&quot;Already have set default launcher&quot;);
-            return true;
-        }
-        if (LauncherList.size() &gt; 1) {
-            for (int i = 0; i &lt; LauncherList.size(); i++)
-                pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());
-        }
-        String defaultLauncherPkg = getDefaultLauncherPkgName();
-        if (defaultLauncherPkg == null) {
-            System.out.println(&quot;In ActivityManagerService setDefaultLauncher defaultLauncherPkg = null&quot;);
-            return false;
-        }
-        // get all Launcher activities     
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        List&lt;ResolveInfo&gt; list = new ArrayList&lt;ResolveInfo&gt;();
-        list = pm.queryIntentActivities(intent, 0);
-        // get all components and the best match   
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MAIN);
-        filter.addCategory(Intent.CATEGORY_HOME);
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
-        final int N = list.size();
-        ComponentName[] set = new ComponentName[N];
-        int bestMatch = IntentFilter.MATCH_CATEGORY_EMPTY;
-        int defaultLauncherIndex = -1;
-        for (int i = 0; i &lt; N; i++) {
-            ResolveInfo r = list.get(i);
-            set[i] = new ComponentName(r.activityInfo.packageName, r.activityInfo.name);
-            if (defaultLauncherPkg.equals(r.activityInfo.packageName))
-                defaultLauncherIndex = i;
-            System.out.println(&quot;SetDefaultLauncher: &quot; + set[i].getPackageName() + &quot; &quot; + set[i].getClassName());
-            //if (r.match &gt; bestMatch) bestMatch = r.match;  
-        }
-        // add the default launcher as the preferred launcher
-        if (defaultLauncherIndex == -1) {
-            return false;
-        }
-        ComponentName launcher = new ComponentName(set[defaultLauncherIndex].getPackageName(),
-                set[defaultLauncherIndex].getClassName());
-        pm.addPreferredActivity(filter, bestMatch, set, launcher);
-        return true;
-    }
-}
-`&lt;/pre&gt;
-这里需要重点说明的就是这两个方法：
-&lt;pre&gt;`//清除之前默认选择的Launcher
-pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());
-//添加默认Launcher
-pm.addPreferredActivity(filter, bestMatch, set, launcher);`&lt;/pre&gt;
-PS：这两句能够执行成功的前提是必须在AndroidManifest.xml文件中加入权限：
-&lt;pre&gt;`&amp;lt;!-- For miscellaneous settings --&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&amp;gt;
-    &amp;lt;!-- Konka Patch Start --&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.SET_PREFERRED_APPLICATIONS&quot;/&amp;gt;
-    &amp;lt;!-- Konka Patch End --&amp;gt;`&lt;/pre&gt;
-这样系统开机就会进入默认设置的Launcher了，用户可以在我这基础上修改默认Launcher的设置方式，或者在Provision程序中设置一些需要在启动Launcher之前进行的设置等等。
-
-网上还有其他一些设置默认Launcher的方式
-
-&lt;pre&gt;`readPermissions();
-String firstBoot = SystemProperties.get(&quot;persist.sys.preactivity&quot;); 
-if (&quot;0&quot;.equals(firstBoot)) {
-    addPreferredActivityForULauncher();
-}
-SystemProperties.set(&quot;persist.sys.preactivity&quot;, &quot;1&quot;);
-mRestoredSettings = mSettings.readLPw();
-private void addPreferredActivityForULauncher() {
-    IntentFilter filter = new IntentFilter();
-    filter.addAction(&quot;android.intent.action.MAIN&quot;);
-    filter.addCategory(&quot;android.intent.category.HOME&quot;); 
-    filter.addCategory(&quot;android.intent.category.DEFAULT&quot;);
-    ComponentName preActivity = new ComponentName(&quot;com.android.ulauncher&quot;
-        ,&quot;com.android.ulauncher.Launcher&quot;); 
-    ComponentName[] set = new ComponentName[] {
-        new ComponentName(&quot;com.android.launcher&quot;, 
-           &quot;com.android.launcher2.Launcher&quot;),preActivity
-    }; 
-    mSettings.mPreferredActivities.addFilter(
-            new PreferredActivity(filter,
-                IntentFilter.MATCH_CATEGORY_EMPTY, set, preActivity));
-    scheduleWriteSettingsLocked();
-}
-</code></pre><ol>
-<li>在startHomeActivityLocked方法中加入setDefaultLauncher方法<br>感兴趣的大家可以继续研究，亲身经历才会有大的收获。</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/01/18/谈谈Android管理任务栈的方式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1641,7 +1285,8 @@ output_config_file:
       
         
           
-            <div><br>&gt; 今年因为闰九月的缘故，自己的23岁生日好像晚来了一些，哈哈。今天生日,女朋友给送了一个机械键盘,感觉就是不一样,感谢.<br>&gt;<br>&gt;<br>&gt; 话说转眼都23周岁了,工作一年多了,很热爱编程这份工作,明年是关键的一年,加油.<br></div>
+            <p>今年因为闰九月的缘故，自己的23岁生日好像晚来了一些<br>今天生日，女朋友给送了一个机械键盘，第一次使用机械键盘，感觉就是不一样，非常感谢女朋友<br>话说转眼都23周岁了，工作一年多了，很热爱编程这份工作，加油</p>
+
           
         
       
@@ -2001,11 +1646,153 @@ output_config_file:
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2014/10/11/博客搬家/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/10/11/博客搬家/" itemprop="url">博客搬家</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-10-11T14:28:49+08:00">
+                2014-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Twitter/" itemprop="url" rel="index">
+                    <span itemprop="name">Twitter</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>将自己的博客从emlog搬到wordpress了，数据库导入真的是件复杂的事啊，头都大了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2055,7 +1842,7 @@ output_config_file:
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2066,7 +1853,7 @@ output_config_file:
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

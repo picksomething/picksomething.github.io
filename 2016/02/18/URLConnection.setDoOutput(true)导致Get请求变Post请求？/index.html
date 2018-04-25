@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="前言在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样： URL url = new URL(params[0]); HttpURLConnection connection = (HttpURLConnection) url.openConnection(); connection.setRequestMethod(&amp;quot;GET&amp;quot;); con">
+<meta name="description" content="前言在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样：1234567891011URL url = new URL(params[0]);HttpURLConnection connection = (HttpURLConnection) url.openConnection();connection.setRequestMethod(&quot;GET&quot;);conn">
 <meta name="keywords" content="Android,setDoOutput">
 <meta property="og:type" content="article">
 <meta property="og:title" content="URLConnection.setDoOutput(true)导致Get请求变Post请求？">
 <meta property="og:url" content="http://picksomething.cn/2016/02/18/URLConnection.setDoOutput(true)导致Get请求变Post请求？/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="前言在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样： URL url = new URL(params[0]); HttpURLConnection connection = (HttpURLConnection) url.openConnection(); connection.setRequestMethod(&amp;quot;GET&amp;quot;); con">
+<meta property="og:description" content="前言在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样：1234567891011URL url = new URL(params[0]);HttpURLConnection connection = (HttpURLConnection) url.openConnection();connection.setRequestMethod(&quot;GET&quot;);conn">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta property="og:updated_time" content="2018-04-25T10:30:54.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="URLConnection.setDoOutput(true)导致Get请求变Post请求？">
-<meta name="twitter:description" content="前言在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样： URL url = new URL(params[0]); HttpURLConnection connection = (HttpURLConnection) url.openConnection(); connection.setRequestMethod(&amp;quot;GET&amp;quot;); con">
+<meta name="twitter:description" content="前言在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样：1234567891011URL url = new URL(params[0]);HttpURLConnection connection = (HttpURLConnection) url.openConnection();connection.setRequestMethod(&quot;GET&quot;);conn">
 
 
 
@@ -354,43 +354,14 @@
       
 
       
-        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样：</p>
-<pre><code>URL url = new URL(params[0]);
-HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-connection.setRequestMethod(&quot;GET&quot;);
-connection.setDoOutput(true);
-connection.connect();
-
-String path = BeautifyUtil.getDownloadsWallpaperPath();
-File file = new File(path + &quot;/&quot; + mWallpaperInfo.getFileName());
-
-FileOutputStream fileOutput = new FileOutputStream(file);
-InputStream inputStream = connection.getInputStream();`&lt;/pre&gt;
-
-当时还特地看了一下`setDoOutput()`方法的源码说明
-
-&lt;!--more--&gt;
-
-&lt;pre&gt;`/**
- * Sets the flag indicating whether this {@code URLConnection} allows
- * output. It cannot be set after the connection is established.
- *
- * @param newValue
- *            the new value for the flag to be set.
- * @throws IllegalAccessError
- *             if this method attempts to change the value after the
- *             connection has been already established.
- * @see #doOutput
- */
-</code></pre><p>我需要将图片流写入到SDcard上，所以设置setDoOutput(true)再合理不过了。。</p>
-<hr>
-<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>然而运行却一直报<code>java.io.FileNotFoundException</code>这样的错误，好奇服务器怎么会返回<code>404 Not Found</code>呢，特定打开图片的连接，看看服务器确实有对应的图片啊，百思不得其解只能Google了，偶然撇到搜索结果有说将<code>setDoOutput()</code>方法的参数改为<code>false</code>就行了，我抱着不解的态度试试，居然真好了。</p>
-<h4 id="深入"><a href="#深入" class="headerlink" title="深入"></a>深入</h4><p>但是总不能到这就结束了啊，总要搞清楚为什么会这样啊，继续不懈的搜索，发现了这篇文章:<a href="http://webdiary.com/tag/httpurlconnection/" target="_blank" rel="noopener">Android 4.0 turns GET into POST</a></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在写一个服务器下载图片并保存到SDcard上的基本功能的时候，部分代码自然而然地写成这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">URL url = <span class="keyword">new</span> URL(params[<span class="number">0</span>]);</span><br><span class="line">HttpURLConnection connection = (HttpURLConnection) url.openConnection();</span><br><span class="line">connection.setRequestMethod(<span class="string">"GET"</span>);</span><br><span class="line">connection.setDoOutput(<span class="keyword">true</span>);</span><br><span class="line">connection.connect();</span><br><span class="line"></span><br><span class="line">String path = BeautifyUtil.getDownloadsWallpaperPath();</span><br><span class="line">File file = <span class="keyword">new</span> File(path + <span class="string">"/"</span> + mWallpaperInfo.getFileName());</span><br><span class="line"></span><br><span class="line">FileOutputStream fileOutput = <span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">InputStream inputStream = connection.getInputStream();</span><br></pre></td></tr></table></figure></p>
+<p>当时还特地看了一下<code>setDoOutput()</code>方法的源码说明<br><a id="more"></a><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Sets the flag indicating whether this &#123;<span class="doctag">@code</span> URLConnection&#125; allows</span></span><br><span class="line"><span class="comment">  * output. It cannot be set after the connection is established.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> newValue</span></span><br><span class="line"><span class="comment">  *            the new value for the flag to be set.</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@throws</span> IllegalAccessError</span></span><br><span class="line"><span class="comment">  *             if this method attempts to change the value after the</span></span><br><span class="line"><span class="comment">  *             connection has been already established.</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@see</span> #doOutput</span></span><br><span class="line"><span class="comment">  */</span></span><br></pre></td></tr></table></figure></p>
+<p>我需要将图片流写入到SDcard上，所以设置setDoOutput(true)再合理不过了。。</p>
+<h2 id="出现问题"><a href="#出现问题" class="headerlink" title="出现问题"></a>出现问题</h2><p>然而运行却一直报<code>java.io.FileNotFoundException</code>这样的错误，好奇服务器怎么会返回<code>404 Not Found</code>呢，特定打开图片的连接，看看服务器确实有对应的图片啊，百思不得其解只能Google了，偶然撇到搜索结果有说将<code>setDoOutput()</code>方法的参数改为<code>false</code>就行了，我抱着不解的态度试试，居然真好了。</p>
+<h2 id="寻找原因"><a href="#寻找原因" class="headerlink" title="寻找原因"></a>寻找原因</h2><p>但是总不能到这就结束了啊，总要搞清楚为什么会这样啊，继续不懈的搜索，发现了这篇文章:<a href="http://webdiary.com/tag/httpurlconnection/" target="_blank" rel="noopener">Android 4.0 turns GET into POST</a></p>
 <p>据说设置<code>setDoOutput(true)</code>之后，Android会认为这是一个POST请求，那么一旦服务器不支持POST请求，或者虽然支持，但是必须的参数你没有传过去，那么就会返回<code>404 NOT FOUND</code>，就有了上面的那个<code>FileNotFound</code>的异常了</p>
-<hr>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><ul>
-<li><p><a href="http://stackoverflow.com/questions/8587913/what-exactly-does-urlconnection-setdooutput-affect" target="_blank" rel="noopener">What exactly does URLConnection.setDoOutput() affect?</a></p>
-</li>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="http://stackoverflow.com/questions/8587913/what-exactly-does-urlconnection-setdooutput-affect" target="_blank" rel="noopener">What exactly does URLConnection.setDoOutput() affect?</a></li>
 <li><p><a href="http://comments.gmane.org/gmane.comp.handhelds.android.devel/195330" target="_blank" rel="noopener">Ice Cream Sandwich networking problems</a></p>
 </li>
 <li><p><a href="http://webdiary.com/tag/httpurlconnection/" target="_blank" rel="noopener">Android 4.0 turns GET into POST</a></p>
@@ -521,7 +492,7 @@ InputStream inputStream = connection.getInputStream();`&lt;/pre&gt;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -532,7 +503,7 @@ InputStream inputStream = connection.getInputStream();`&lt;/pre&gt;
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -583,7 +554,7 @@ InputStream inputStream = connection.getInputStream();`&lt;/pre&gt;
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#深入"><span class="nav-number">3.</span> <span class="nav-text">深入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#出现问题"><span class="nav-number">2.</span> <span class="nav-text">出现问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#寻找原因"><span class="nav-number">3.</span> <span class="nav-text">寻找原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

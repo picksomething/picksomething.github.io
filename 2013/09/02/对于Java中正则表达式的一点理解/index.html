@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,group,正则表达式," />
+  <meta name="keywords" content="Java,group,正则表达式,regex," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备。我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于">
-<meta name="keywords" content="Java,group,正则表达式">
+<meta name="description" content="因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备 我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于">
+<meta name="keywords" content="Java,group,正则表达式,regex">
 <meta property="og:type" content="article">
 <meta property="og:title" content="对于Java中正则表达式的一点理解">
 <meta property="og:url" content="http://picksomething.cn/2013/09/02/对于Java中正则表达式的一点理解/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备。我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于">
+<meta property="og:description" content="因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备 我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:updated_time" content="2018-04-25T09:55:50.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="对于Java中正则表达式的一点理解">
-<meta name="twitter:description" content="因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备。我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于">
+<meta name="twitter:description" content="因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备 我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于">
 
 
 
@@ -354,54 +354,15 @@
       
 
       
-        <p>因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备。<br>我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于正则表达式。<br>在使用正则表达式之前，我们需要导入<code>java.util.regex</code>这个库，你需要先使用<code>Pattern.compile()</code>方法编译正则表达式，注意这是一个静态方法(类方法，可以直接使用类名调用），它根据输入的字符串参数生成一个<code>Pattern</code>对象，例如：</p>
-<pre><code>private static Pattern p = Pattern.compile(&quot;\\w+\\.&quot;);`&lt;/pre&gt;
-&lt;!--more--&gt;
-在本例中，输入的参数是`&quot;\\w+\\.&quot;`,想要理解这个以及其他的正则表达式，你可以查看JDK文档中的`java.util.regex.Pattern`这里的\w代表一个构成词的字符`[a-zA-Z_0-9]`。+代表一个或者多个前述的表达式(关于其他字符的含义，大家可以查看正则表达式中的详细含义)，所以这个例子表示，一个或多个构成词的字符。`\.`产生一个字面常量的点号(不能直接用点号，那在正则表达式中代表&quot;任何字符&quot;)。所以这个表达式会匹配任何&quot;由一个或多个字符构成的单词，并且其后紧跟一个点号&quot;。
-在编译了一个`Pattern`对象之后，可以通过调用`matcher()`方法使用它，只需把你想要查找的字符串传递给它。matcher()方法生产一个Matcher对象，这个对象包含一组用来从目标对象中做选择的操作。
-下面我们来看一个例子：
-&lt;pre&gt;`import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class FindGroup {
-    private static int count;
-    public static void main(String[] args){
-        Matcher m = Pattern.compile(&quot;\\w+&quot;).matcher(&quot;Java isn&apos;t easy!&quot;);
-        //Matcher m = Pattern.compile(&quot;\\w+&quot;).matcher(&quot;Java is very easy!&quot;);
-        while(m.find()){
-            count++;
-            System.out.println(m.group());
-        }
-        System.out.println(count);
-    }
-}
-`&lt;/pre&gt;
-这个例子的输出是：
-&lt;pre&gt;`Java
-isn
-t
-easy
-4
-`&lt;/pre&gt;
-可能有些网友会觉得好奇，会认为到第一个空格的时候程序就应该停啊，应该是只匹配第一个空格之前的单词啊。其实并非如此，我们可以看一下`find()`函数的实现。
-&lt;pre&gt;`public boolean find() {
-    int nextSearchIndex = last;
-    if (nextSearchIndex == first)
-        nextSearchIndex++;
-
-    // If next search starts before region, start it at region
-    if (nextSearchIndex &amp;lt; from)
-        nextSearchIndex = from;
-
-    // If next search starts beyond region then it fails
-    if (nextSearchIndex &amp;gt; to) {
-        for (int i = 0; i &amp;lt; groups.length; i++)
-            groups[i] = -1;
-        return false;
-    }
-    return search(nextSearchIndex);
-}
-</code></pre><p><code>find()</code>像一个迭代器，从头到尾扫描一遍字符串。由于在上面的例子中，无法匹配空格和<code>‘</code>，所以在空格和<code>’</code>处会断开，于是输入结果就如上面所示。<code>group()</code>是返回匹配到的字符串。</p>
+        <p>因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备</p>
+<p>我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于正则表达式。<br>在使用正则表达式之前，我们需要导入<code>java.util.regex</code>这个库，你需要先使用<code>Pattern.compile()</code>方法编译正则表达式，注意这是一个静态方法(类方法，可以直接使用类名调用），它根据输入的字符串参数生成一个<code>Pattern</code>对象，例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Pattern p = Pattern.compile(<span class="string">"\\w+\\."</span>);</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>在本例中，输入的参数是<code>&quot;\\w+\\.&quot;</code>,想要理解这个以及其他的正则表达式，你可以查看JDK文档中的<code>java.util.regex.Pattern</code>这里的\w代表一个构成词的字符<code>[a-zA-Z_0-9]</code>。+代表一个或者多个前述的表达式(关于其他字符的含义，大家可以查看正则表达式中的详细含义)，所以这个例子表示，一个或多个构成词的字符。<code>\.</code>产生一个字面常量的点号(不能直接用点号，那在正则表达式中代表”任何字符”)。所以这个表达式会匹配任何”由一个或多个字符构成的单词，并且其后紧跟一个点号”</p>
+<p>在编译了一个<code>Pattern</code>对象之后，可以通过调用<code>matcher()</code>方法使用它，只需把你想要查找的字符串传递给它。matcher()方法生产一个Matcher对象，这个对象包含一组用来从目标对象中做选择的操作</p>
+<p>下面我们来看一个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.regex.Matcher;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FindGroup</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Matcher m = Pattern.compile(<span class="string">"\\w+"</span>).matcher(<span class="string">"Java isn't easy!"</span>);</span><br><span class="line">        <span class="comment">//Matcher m = Pattern.compile("\\w+").matcher("Java is very easy!");</span></span><br><span class="line">        <span class="keyword">while</span>(m.find())&#123;</span><br><span class="line">           count++;</span><br><span class="line">           System.out.println(m.group());</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个例子的输出是：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Java</span><br><span class="line">isn</span><br><span class="line">t</span><br><span class="line">easy</span><br><span class="line">4</span><br></pre></td></tr></table></figure></p>
+<p>可能有些网友会觉得好奇，会认为到第一个空格的时候程序就应该停啊，应该是只匹配第一个空格之前的单词啊？其实并非如此，我们可以看一下<code>find()</code>函数的实现<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">find</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nextSearchIndex = last;</span><br><span class="line">    <span class="keyword">if</span> (nextSearchIndex == first)</span><br><span class="line">        nextSearchIndex++;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If next search starts before region, start it at region</span></span><br><span class="line">    <span class="keyword">if</span> (nextSearchIndex &amp;lt; from)</span><br><span class="line">        nextSearchIndex = from;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If next search starts beyond region then it fails</span></span><br><span class="line">    <span class="keyword">if</span> (nextSearchIndex &amp;gt; to) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &amp;lt; groups.length; i++)</span><br><span class="line">            groups[i] = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> search(nextSearchIndex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>find()</code>像一个迭代器，从头到尾扫描一遍字符串。由于在上面的例子中，无法匹配空格和<code>‘</code>，所以在空格和<code>’</code>处会断开，于是输出结果就如上面所示。<code>group()</code>是返回匹配到的字符串</p>
 
       
     </div>
@@ -424,6 +385,8 @@ easy
             <a href="/tags/group/" rel="tag"># group</a>
           
             <a href="/tags/正则表达式/" rel="tag"># 正则表达式</a>
+          
+            <a href="/tags/regex/" rel="tag"># regex</a>
           
         </div>
       
@@ -520,7 +483,7 @@ easy
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -531,7 +494,7 @@ easy
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

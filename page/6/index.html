@@ -264,195 +264,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2013/09/02/对于Java中正则表达式的一点理解/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="picksomething">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/favicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一路追梦想">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/02/对于Java中正则表达式的一点理解/" itemprop="url">对于Java中正则表达式的一点理解</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2013-09-02T11:50:57+08:00">
-                2013-09-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>因为以后要搞安卓开发，以前又没怎么学习过Java，趁着现在没有正式进入部门之前就想先把Java在重新学习一下，为自己以后的职业道路做好充分准备。<br>我们都知道正则表达式在编程中是经常使用的，判断邮箱格式是否正确，判断某一个字符串是否包含某一个子串，字符串的分割和替换等等，正确地使用正则表达式在很多场合都会给我们带来很多方便和效率，我就根据自己看书和理解，以及到网上发帖询问获得的知识，来简单地谈一下关于正则表达式。<br>在使用正则表达式之前，我们需要导入<code>java.util.regex</code>这个库，你需要先使用<code>Pattern.compile()</code>方法编译正则表达式，注意这是一个静态方法(类方法，可以直接使用类名调用），它根据输入的字符串参数生成一个<code>Pattern</code>对象，例如：</p>
-<pre><code>private static Pattern p = Pattern.compile(&quot;\\w+\\.&quot;);`&lt;/pre&gt;
-&lt;!--more--&gt;
-在本例中，输入的参数是`&quot;\\w+\\.&quot;`,想要理解这个以及其他的正则表达式，你可以查看JDK文档中的`java.util.regex.Pattern`这里的\w代表一个构成词的字符`[a-zA-Z_0-9]`。+代表一个或者多个前述的表达式(关于其他字符的含义，大家可以查看正则表达式中的详细含义)，所以这个例子表示，一个或多个构成词的字符。`\.`产生一个字面常量的点号(不能直接用点号，那在正则表达式中代表&quot;任何字符&quot;)。所以这个表达式会匹配任何&quot;由一个或多个字符构成的单词，并且其后紧跟一个点号&quot;。
-在编译了一个`Pattern`对象之后，可以通过调用`matcher()`方法使用它，只需把你想要查找的字符串传递给它。matcher()方法生产一个Matcher对象，这个对象包含一组用来从目标对象中做选择的操作。
-下面我们来看一个例子：
-&lt;pre&gt;`import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class FindGroup {
-    private static int count;
-    public static void main(String[] args){
-        Matcher m = Pattern.compile(&quot;\\w+&quot;).matcher(&quot;Java isn&apos;t easy!&quot;);
-        //Matcher m = Pattern.compile(&quot;\\w+&quot;).matcher(&quot;Java is very easy!&quot;);
-        while(m.find()){
-            count++;
-            System.out.println(m.group());
-        }
-        System.out.println(count);
-    }
-}
-`&lt;/pre&gt;
-这个例子的输出是：
-&lt;pre&gt;`Java
-isn
-t
-easy
-4
-`&lt;/pre&gt;
-可能有些网友会觉得好奇，会认为到第一个空格的时候程序就应该停啊，应该是只匹配第一个空格之前的单词啊。其实并非如此，我们可以看一下`find()`函数的实现。
-&lt;pre&gt;`public boolean find() {
-    int nextSearchIndex = last;
-    if (nextSearchIndex == first)
-        nextSearchIndex++;
-
-    // If next search starts before region, start it at region
-    if (nextSearchIndex &amp;lt; from)
-        nextSearchIndex = from;
-
-    // If next search starts beyond region then it fails
-    if (nextSearchIndex &amp;gt; to) {
-        for (int i = 0; i &amp;lt; groups.length; i++)
-            groups[i] = -1;
-        return false;
-    }
-    return search(nextSearchIndex);
-}
-</code></pre><p><code>find()</code>像一个迭代器，从头到尾扫描一遍字符串。由于在上面的例子中，无法匹配空格和<code>‘</code>，所以在空格和<code>’</code>处会断开，于是输入结果就如上面所示。<code>group()</code>是返回匹配到的字符串。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2013/08/25/Ubuntu下git的配置和使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -850,140 +661,14 @@ easy
 
       
         
-          
-            <p>自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。<br>今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显示百度地图，直接把位置信息显示出来就行，刚开始接触百度SDK，很多知识都不是很熟悉，就从网上找，但是发现大部分获取的位置信息返回的都是null，最后才发现少了一句<code>option.setAddrType(&quot;all&quot;);</code><br>下面贴出代码，供网友参考，首先是布局文件：</p>
-<pre><code>&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&amp;gt;
-&amp;lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:layout_width=&quot;fill_parent&quot;
-    android:layout_height=&quot;fill_parent&quot;
-    android:orientation=&quot;vertical&quot; &amp;gt;
-&lt;!--more--&gt;
-    &amp;lt;Button
-        android:id=&quot;@+id/btn_start&quot;
-        android:layout_width=&quot;fill_parent&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:layout_marginTop=&quot;20dp&quot;
-        android:text=&quot;Start&quot;/&amp;gt;
-
-    &amp;lt;TextView
-        android:id=&quot;@+id/tv_loc_info&quot;
-        android:layout_width=&quot;fill_parent&quot;
-        android:layout_height=&quot;wrap_content&quot;
-        android:textSize=&quot;18sp&quot; /&amp;gt;
-
-&amp;lt;/LinearLayout&amp;gt;
-`&lt;/pre&gt;
-接着就是源码了
-&lt;pre&gt;`package com.zzu.picksomething.msfx;
-
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
-
-public class MyLocation extends Activity {
-    private TextView locationInfoTextView = null;
-    private Button startButton = null;
-    private LocationClient locationClient = null;
-    private static final int UPDATE_TIME = 5000;
-    private static int LOCATION_COUTNS = 0;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_mylocation);
-        locationInfoTextView = (TextView) this.findViewById(R.id.tv_loc_info);
-        startButton = (Button) this.findViewById(R.id.btn_start);
-        locationClient = new LocationClient(this);
-        //设置定位条件
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true);                                //是否打开GPS
-        option.setCoorType(&quot;bd09ll&quot;);                          //设置返回值的坐标类型。
-        option.setPriority(LocationClientOption.NetWorkFirst);  //设置定位优先级
-        option.setProdName(&quot;LocationDemo&quot;);                    //设置产品线名称。强烈建议您使用自定义的产品线名称，方便我们以后为您提供更高效准确的定位服务。
-        option.setScanSpan(UPDATE_TIME);                        //设置定时定位的时间间隔。单位毫秒
-        option.setAddrType(&quot;all&quot;);
-        locationClient.setLocOption(option);
-        //注册位置监听器
-        locationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                // TODO Auto-generated method stub
-                if (location == null) {
-                    return;
-                }
-                StringBuffer sb = new StringBuffer(256);
-                sb.append(&quot;Time : &quot;);
-                sb.append(location.getTime());
-                sb.append(&quot;\nError code : &quot;);
-                sb.append(location.getLocType());
-                sb.append(&quot;\nLatitude : &quot;);
-                sb.append(location.getLatitude());
-                sb.append(&quot;\nLontitude : &quot;);
-                sb.append(location.getLongitude());
-                sb.append(&quot;\nRadius : &quot;);
-                sb.append(location.getRadius());
-                if (location.getLocType() == BDLocation.TypeGpsLocation){
-                    sb.append(&quot;\nSpeed : &quot;);
-                    sb.append(location.getSpeed());
-                    sb.append(&quot;\nSatellite : &quot;);
-                    sb.append(location.getSatelliteNumber());
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                    sb.append(&quot;\nAddress : &quot;);
-                    sb.append(location.getAddrStr());
-                }
-                LOCATION_COUTNS ++;
-                sb.append(&quot;\n检查位置更新次数：&quot;);
-                sb.append(String.valueOf(LOCATION_COUTNS));
-                locationInfoTextView.setText(sb.toString());
-            }
-            @Override
-            public void onReceivePoi(BDLocation location) {
-            }
-        });
-        startButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (locationClient == null) {
-                    return;
-                }
-                if (locationClient.isStarted()) {
-                    startButton.setText(&quot;Start&quot;);
-                    locationClient.stop();
-                }else {
-                    startButton.setText(&quot;Stop&quot;);
-                    locationClient.start();
-                    /*
-                    *当所设的整数值大于等于1000（ms）时，定位SDK内部使用定时定位模式。
-                    *调用requestLocation( )后，每隔设定的时间，定位SDK就会进行一次定位。
-                    *如果定位SDK根据定位依据发现位置没有发生变化，就不会发起网络请求，
-                    *返回上一次定位的结果；如果发现位置改变，就进行网络请求进行定位，得到新的定位结果。
-                    *定时定位时，调用一次requestLocation，会定时监听到定位结果。
-                    */
-                    locationClient.requestLocation();
-                }
-            }
-        });
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (locationClient != null &amp;amp;&amp;amp; locationClient.isStarted()) {
-            locationClient.stop();
-            locationClient = null;
-        }
-    }
-}
-</code></pre><p>补充：使用百度的SDK获取位置信息，必须要去下载百度最新的SDK，官方网站有，然后放到对应的文件夹。另外需要在配置文件中加入一些权限。</p>
-
-          
+          <p>自己的毕业设计选择的是开发一个美食分享的客户端，由于也是刚开始接触安卓开发，所以在做毕设的过程中遇到了很多问题，不过每当解决一个问题的之后，感觉收获还是很大的，有很多问题自己都想些在博客里，供自己和网友参考，但是由于快答辩了，一直在完善毕设，所以就没有时间写，等答辩完，再一一整理，写在这里。<br>今天解决了关于使用百度SDK获取经纬度和位置信息这方面的内容，由于毕设有一点需要获取当前的位置，但是不需要显示百度地图，直接把位置信息显示出来就行，刚开始接触百度SDK，很多知识都不是很熟悉，就从网上找，但是发现大部分获取的位置信息返回的都是null，最后才发现少了一句<code>option.setAddrType(&quot;all&quot;);</code><br>下面贴出代码，供网友参考，首先是布局文件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Button</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/btn_start"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"20dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"Start"</span>/&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/tv_loc_info"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"fill_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"18sp"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2013/05/04/Android中使用百度SDK获得经纬度和位置信息/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1123,16 +808,9 @@ public class MyLocation extends Activity {
       
         
           
-            <p>最近做毕设，在写搜索这一功能模块的时候发现一个问题，我是从数据库将美食信息搜索出来并显示在<code>ListView</code>中。写完之后，测试的时候发现虽然搜索结果能够正常显示，但是当进行下一次搜索的时候，上一次的搜索结果还会显示，从网上搜了很多，但是大部分都是说清空<code>ListView</code>，问题就是如果选择清空<code>ListView</code>的话，一方面如果不判断就清空的话，你会发现搜索结果就不会显示出来。另一方面，如果判断ListView是否为空，再清空的话，结果一样无法显示。<br>我想原因是<code>ListView</code>只是一个控件。不应该对其进行判空，而应该先对填充其中的数据进行判断是否为空。如果不为空，先清空，然后再进行填充数据和显示。下面贴上我的代码。<br>我首先是声明了一个ArrayList来存放从数据库中取出的数据，同时也是ListView的数据源：</p>
-<pre><code>ArrayList&amp;lt;Map&amp;lt;String, Object&amp;gt;&amp;gt; SearchResults = new ArrayList&amp;lt;Map&amp;lt;String, Object&amp;gt;&amp;gt;();
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-ArrayList中是一个Map键值对类型的元素，用于存放数据库中相应字段的值。
-然后就是关键的判断了：
-&lt;pre&gt;`if(!(SearchResults.isEmpty())){
-        SearchResults.removeAll(SearchResults);
-}
-</code></pre><p>这个就会先判断<code>ArrayList</code>中的数据是否为空，如果不为空，就代表上一次搜索中的数据还在里面，我们就先进行一个清空操作，那样在进行下一次操作的时候就不会出现问题了。其它从数据库中获取，已经使用适配器显示到ListView中的代码网上有很多，我就不贴出来了，如果有需要的或者有什么问题的，可以留言。<br>小结：多思考，多想！</p>
+            <p>最近做毕设，在写搜索这一功能模块的时候发现一个问题，我是从数据库将美食信息搜索出来并显示在<code>ListView</code>中。写完之后，测试的时候发现虽然搜索结果能够正常显示，但是当进行下一次搜索的时候，上一次的搜索结果还会显示，从网上搜了很多，但是大部分都是说清空<code>ListView</code>，问题就是如果选择清空<code>ListView</code>的话，一方面如果不判断就清空的话，你会发现搜索结果就不会显示出来。另一方面，如果判断ListView是否为空，再清空的话，结果一样无法显示。<br>我想原因是<code>ListView</code>只是一个控件。不应该对其进行判空，而应该先对填充其中的数据进行判断是否为空。如果不为空，先清空，然后再进行填充数据和显示。下面贴上我的代码。<br>我首先是声明了一个ArrayList来存放从数据库中取出的数据，同时也是ListView的数据源：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Map&lt;String, Object&gt;&gt; SearchResults = <span class="keyword">new</span> ArrayList&lt;Map&lt;String, Object&gt;&gt;();</span><br></pre></td></tr></table></figure></p>
+<p>ArrayList中是一个Map键值对类型的元素，用于存放数据库中相应字段的值，然后就是关键的判断了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!(SearchResults.isEmpty()))&#123;</span><br><span class="line">    SearchResults.removeAll(SearchResults);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个就会先判断<code>ArrayList</code>中的数据是否为空，如果不为空，就代表上一次搜索中的数据还在里面，我们就先进行一个清空操作，那样在进行下一次操作的时候就不会出现问题了。其它从数据库中获取，已经使用适配器显示到ListView中的代码网上有很多，我就不贴出来了，如果有需要的或者有什么问题的，可以留言</p>
 
           
         
@@ -1181,7 +859,7 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2013/04/07/Android中关于Handler的总结/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2013/04/07/Android中关于Handler的简单总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -1200,7 +878,7 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/04/07/Android中关于Handler的总结/" itemprop="url">Android中关于Handler的总结</a></h1>
+                <a class="post-title-link" href="/2013/04/07/Android中关于Handler的简单总结/" itemprop="url">Android中关于Handler的简单总结</a></h1>
         
 
         <div class="post-meta">
@@ -1273,14 +951,20 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
 
       
         
-          <p><strong>一、Handler的定义:</strong><br>主要接受子线程发送的数据, 并用此数据配合主线程更新UI.<br>解释: 当应用程序启动时，Android首先会开启一个主线程 (也就是UI线程) , 主线程为管理界面中的UI控件，进行事件分发, 比如说, 你要是点击一个 Button ,Android会分发事件到Button上，来响应你的操作。如果此时需要一个耗时的操作，例如: 联网读取数据，或者读取本地较大的一个文件的时候，你不能把这些操作放在主线程中，如果你放在主线程中的话，界面会出现假死现象, 如果5秒钟还没有完成的话，会收到Android系统的一个错误提示 “强制关闭”. 这个时候我们需要把这些耗时的操作，放在一个子线程中,因为子线程涉及到UI更新，Android主线程是不安全的，也就是说，更新UI只能在主线程中更新，子线程中操作是危险的. 这个时候，Handler就出现了.,来解决这个复杂的问题 , 由于Handler运行在主线程中(UI线程中), 它与子线程可以通过Message对象来传递数据, 这个时候，Handler就承担着接受子线程传过来的(子线程用sedMessage()方法传递)Message对象，(里面包含数据) , 把这些消息放入主线程队列中，配合主线程进行更新UI。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2013/04/07/Android中关于Handler的总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+          
+            <h2 id="Handler的定义"><a href="#Handler的定义" class="headerlink" title="Handler的定义:"></a>Handler的定义:</h2><p>主要接受子线程发送的数据, 并用此数据配合主线程更新UI</p>
+<p>解释: 当应用程序启动时，Android首先会开启一个主线程 (也就是UI线程) , 主线程为管理界面中的UI控件，进行事件分发, 比如说, 你要是点击一个 Button ,Android会分发事件到Button上，来响应你的操作。如果此时需要一个耗时的操作，例如: 联网读取数据，或者读取本地较大的一个文件的时候，你不能把这些操作放在主线程中，如果你放在主线程中的话，界面会出现假死现象, 如果5秒钟还没有完成的话，会收到Android系统的一个错误提示 “强制关闭”. 这个时候我们需要把这些耗时的操作，放在一个子线程中,因为子线程涉及到UI更新，Android主线程是不安全的，也就是说，更新UI只能在主线程中更新，子线程中操作是危险的. 这个时候，Handler就出现了.,来解决这个复杂的问题 , 由于Handler运行在主线程中(UI线程中), 它与子线程可以通过Message对象来传递数据, 这个时候，Handler就承担着接受子线程传过来的(子线程用sedMessage()方法传递)Message对象，(里面包含数据) , 把这些消息放入主线程队列中，配合主线程进行更新UI</p>
+<h2 id="Handler一些特点"><a href="#Handler一些特点" class="headerlink" title="Handler一些特点"></a>Handler一些特点</h2><p>handler可以分发Message对象和Runnable对象到主线程中, 每个Handler实例,都会绑定到创建他的线程中(一般是位于主线程),<br>它有两个作用:</p>
+<ol>
+<li>安排消息或Runnable 在某个主线程中某个地方执行,</li>
+<li>安排一个动作在不同的线程中执行</li>
+</ol>
+<p>Handler中分发消息的一些方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">post(Runnable)</span><br><span class="line">postAtTime(Runnable,<span class="keyword">long</span>)</span><br><span class="line">postDelayed(Runnable <span class="keyword">long</span>)</span><br><span class="line">sendEmptyMessage(<span class="keyword">int</span>)</span><br><span class="line">sendMessage(Message)</span><br><span class="line">sendMessageAtTime(Message,<span class="keyword">long</span>)</span><br><span class="line">sendMessageDelayed(Message,<span class="keyword">long</span>)</span><br></pre></td></tr></table></figure></p>
+<p>以上post类方法允许你排列一个Runnable对象到主线程队列中，sendMessage类方法, 允许你安排一个带数据的Message对象到队列中，等待更新</p>
+<h2 id="Handler实例"><a href="#Handler实例" class="headerlink" title="Handler实例"></a>Handler实例</h2><p>子类需要继承Hendler类，并重写handleMessage(Message msg) 方法, 用于接受线程数据，以下为一个实例，它实现的功能是通过线程修改界面Button的内容<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHandlerActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    Button button;</span><br><span class="line">    MyHandler myHandler;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.handlertest);</span><br><span class="line"></span><br><span class="line">        button = (Button) findViewById(R.id.button);</span><br><span class="line">        myHandler = <span class="keyword">new</span> MyHandler();</span><br><span class="line">        <span class="comment">// 当创建一个新的Handler实例时, 它会绑定到当前线程和消息的队列中,开始分发数据</span></span><br><span class="line">        <span class="comment">// Handler有两个作用, (1) : 定时执行Message和Runnalbe 对象</span></span><br><span class="line">        <span class="comment">// (2): 让一个动作,在不同的线程中执行.</span></span><br><span class="line"></span><br><span class="line">        MyThread m = <span class="keyword">new</span> MyThread();</span><br><span class="line">        <span class="keyword">new</span> Thread(m).start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 接受消息,处理消息 ,此Handler会与当前主线程一块运行</span></span><br><span class="line"><span class="comment">     **/</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyHandler</span><span class="params">(Looper L)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(L);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 子类必须重写此方法,接受数据</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">            Log.d(<span class="string">"MyHandler"</span>, <span class="string">"handleMessage......"</span>);</span><br><span class="line">            <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">            <span class="comment">// 此处可以更新UI</span></span><br><span class="line">            Bundle b = msg.getData();</span><br><span class="line">            String color = b.getString(<span class="string">"color"</span>);</span><br><span class="line">            MyHandlerActivity.<span class="keyword">this</span>.button.append(color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Log.d(<span class="string">"thread......."</span>, <span class="string">"mThread........"</span>);</span><br><span class="line">            Message msg = <span class="keyword">new</span> Message();</span><br><span class="line">            Bundle b = <span class="keyword">new</span> Bundle();<span class="comment">// 存放数据</span></span><br><span class="line">            b.putString(<span class="string">"color"</span>, <span class="string">"我的"</span>);</span><br><span class="line">            msg.setData(b);</span><br><span class="line"></span><br><span class="line">            MyHandlerActivity.<span class="keyword">this</span>.myHandler.sendMessage(msg); <span class="comment">// 向Handler发送消息,更新UI</span></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>总结：这些都是安卓开发的难点，要多理解，多操作。</p>
+
+          
         
       
     </div>
@@ -1327,7 +1011,7 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2013/03/31/浅述java中创建线程到两种方法/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2013/03/31/Java中创建线程到两种方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -1346,7 +1030,7 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2013/03/31/浅述java中创建线程到两种方法/" itemprop="url">浅述java中创建线程到两种方法</a></h1>
+                <a class="post-title-link" href="/2013/03/31/Java中创建线程到两种方法/" itemprop="url">Java中创建线程到两种方法</a></h1>
         
 
         <div class="post-meta">
@@ -1419,75 +1103,18 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
 
       
         
-          
-            <p>首先，按照线程的模型，一个具体的线程也是由虚拟的<code>cpu</code>，代码与数据组成，其中代码与数据构成了线程体，线程体决定了线程到行为。虚拟的cpu是在创建线程时由系统自动封装进<code>Thread</code>类到实例中，而线程体要应用程序通过一个对象传递给<code>Thread</code>类的构造函数。Java中到线程体是由线程类的<code>run()</code>方法定义，在该方法中定义线程的具体行为。线程开始执行时，也是从它的run()方法开始执行。<br>下面看一下Thread类的构造方法。</p>
-<pre><code>public Thread(ThreadGroup group,Runnable target,String name);
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-其中`group`是指明该线程所属的线程组；`target`提供线程体的对象。`java.lang.Runnable`接口中定义了run()方法。实现该接口的类的对象可以提供线程体，线程启动时该对象的run()方法将被调用；name线程名称。
-言归正传，线程创建中，线程体的构造是关键。任何实现Runnable接口的对象都可以作为Thread类构造方法中的target参数，而Thread类本身也实现了Runnable接口，因此可以有两种方式提供run方法的实现：实现Runnable接口和继承Thread类。
-**a.通过实现Runnable接口创建线程**
-在java.lang中Runnable接口的定义为：
-&lt;pre&gt;`public interface Runnable{
-    void run();
-}
-`&lt;/pre&gt;
-使用这种方法创建线程的步骤是：
-1.定义一个线程类实现Runnable接口，即在该类中提供run()方法的实现。
-2.把Runnable的一个实例作为参数传递给Thread类的一个构造方法，该实例对象提供线程体run().
-下面给一个简单的例子:
-&lt;pre&gt;`public class ThreadTest {
-    public static void main(String args[]){
-    Thread t1 = new Thread( new Hello());
-    Thread t2 = new Thread(new Hello());
-    t1.start();
-    t2.start();
-    }
-}
-
-class Hello implements Runnable{
-    int i;
-    public void run(){
-        while(true){
-            System.out.println(&quot;Hello &quot;+i++);
-            if(i == 5)
-                break;
-        }
-    }
-}
-`&lt;/pre&gt;
-该例中，Hello类实现了Runnable接口，在ThreadTest类的main方法中，以Hello类的两个实例对象分别创建了t1,t2两个线程，并将线程启动。在创建的线程中，Hello类的run()方法就是线程体，int i是线程的数据，当t1,t2启动时，就从Hello类对象的run()方法开始执行。
-
-**b.通过继承Thread类创建线程**
-在java.lang包中，Thread类的声明如下：
-public class Thread extends Object implements Runnable
-因此，Thread类本身实现了Runnable接口，在Thread类的定义中可以发现run()方法。
-通过继承Thread类创建线程的步骤是：
-1.从Thread类派生子类，并重写其中的run()方法定义线程体。
-2.创建该子类的对象创建线程。
-下面给出一个简单的例子：
-&lt;pre&gt;`public class ThreadTest2 {
-    public static void main(String args[]){
-    Hello2 t1 = new Hello2();
-    Hello2 t2 = new Hello2();
-    t1.start();
-    t2.start();
-    }
-}
-
-class Hello2 extends Thread{
-    int i;
-    public void run(){
-        while(true){
-            System.out.println(&quot;Hello &quot;+i++);
-            if(i == 5)
-                break;
-        }
-    }
-}
-</code></pre><p>在例中，类Hello2继承了Thread类，并将Thread类的run()方法进行了重写，run()方法的功能与上个例子中的线程相同。<br><span style="color: #008000;">另外，新建的线程不会自动运行。必须调用线程的start()方法。该方法的调用把嵌入在线程中的虚拟CPU置为可运行状态，意味着它可被调度运行，但这并不意味着线程会立即运行。</span><br>小结：线程是java中很重要的一部分，线程的两种创建方法一定要熟悉。</p>
-
-          
+          <p>首先，按照线程的模型，一个具体的线程也是由虚拟的<code>cpu</code>、代码与数据组成，其中代码与数据构成了线程体，线程体决定了线程到行为。虚拟的cpu是在创建线程时由系统自动封装进<code>Thread</code>类到实例中，而线程体要应用程序通过一个对象传递给<code>Thread</code>类的构造函数。Java中到线程体是由线程类的<code>run()</code>方法定义，在该方法中定义线程的具体行为。线程开始执行时，也是从它的run()方法开始执行。<br>下面看一下Thread类的构造方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Thread</span><span class="params">(ThreadGroup group,Runnable target,String name)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>group</code>是指明该线程所属的线程组；<code>target</code>提供线程体的对象。<code>java.lang.Runnable</code>接口中定义了run()方法。实现该接口的类的对象可以提供线程体，线程启动时该对象的run()方法将被调用；name线程名称。</p>
+<p>言归正传，线程创建中，线程体的构造是关键。任何实现Runnable接口的对象都可以作为Thread类构造方法中的target参数，而Thread类本身也实现了Runnable接口，因此可以有两种方式提供run方法的实现：实现Runnable接口和继承Thread类。</p>
+<h2 id="通过实现Runnable接口创建线程"><a href="#通过实现Runnable接口创建线程" class="headerlink" title="通过实现Runnable接口创建线程"></a>通过实现Runnable接口创建线程</h2><p>在java.lang中Runnable接口的定义为：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用这种方法创建线程的步骤是：<br>1.定义一个线程类实现Runnable接口，即在该类中提供run()方法的实现。<br>2.把Runnable的一个实例作为参数传递给Thread类的一个构造方法，该实例对象提供线程体run().<br>下面给一个简单的例子:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">    Thread t1 = <span class="keyword">new</span> Thread( <span class="keyword">new</span> Hello());</span><br><span class="line">    Thread t2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Hello());</span><br><span class="line">    t1.start();</span><br><span class="line">    t2.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">"Hello "</span>+i++);</span><br><span class="line">            <span class="keyword">if</span>(i == <span class="number">5</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2013/03/31/Java中创建线程到两种方法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1628,9 +1255,7 @@ class Hello2 extends Thread{
         
           
             <p>今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk、<code>xface</code>之类的下面的内容就对你不适合了<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gnome-screenshot -a</span><br><span class="line">//是局部截图,自己选择区域</span><br><span class="line">gnome-screenshot -w</span><br><span class="line">//全屏截图,相当于快捷键print screen。</span><br></pre></td></tr></table></figure></p>
-<p>下面是常用的截屏命令。<br><code>`</code>Shell<br>gnome-screenshot</p>
-<p>gnome-screenshot -help<br>Usage: gnome-screenshot [OPTION…] Take a picture of the screen<br>Help Options:<br>    -h, –help                    Show help options<br>    –help-all                    Show all help options<br>    –help-gtk                    Show GTK+ Options</p>
-<p>Application Options:<br>    -w, –window                  Grab a window instead of the entire screen<br>    -a, –area                    Grab an area of the screen instead of the entire screen<br>    -b, –include-border          Include the window border with the screenshot<br>    -B, –remove-border            Remove the window border from the screenshot<br>    -d, –delay=seconds            Take screenshot after specified delay [in seconds]<br>    -e, –border-effect=effect    Effect to add to the border (shadow, border or none)<br>    -i, –interactive              Interactively set options<br>    –display=DISPLAY              X display to use</p>
+<p>下面是常用的截屏命令。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">gnome-screenshot</span><br><span class="line"></span><br><span class="line">gnome-screenshot -help</span><br><span class="line">Usage: gnome-screenshot [OPTION...] Take a picture of the screen</span><br><span class="line">Help Options:</span><br><span class="line">    -h, --help                    Show help options</span><br><span class="line">    --help-all                    Show all help options</span><br><span class="line">    --help-gtk                    Show GTK+ Options</span><br><span class="line"></span><br><span class="line">Application Options:</span><br><span class="line">    -w, --window                  Grab a window instead of the entire screen</span><br><span class="line">    -a, --area                    Grab an area of the screen instead of the entire screen</span><br><span class="line">    -b, --include-border          Include the window border with the screenshot</span><br><span class="line">    -B, --remove-border            Remove the window border from the screenshot</span><br><span class="line">    -d, --delay=seconds            Take screenshot after specified delay [in seconds]</span><br><span class="line">    -e, --border-effect=effect    Effect to add to the border (shadow, border or none)</span><br><span class="line">    -i, --interactive              Interactively set options</span><br><span class="line">    --display=DISPLAY              X display to use</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1733,8 +1358,8 @@ class Hello2 extends Thread{
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-C/" itemprop="url" rel="index">
-                    <span itemprop="name">C/C++</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
                   </a>
                 </span>
 
@@ -1771,65 +1396,14 @@ class Hello2 extends Thread{
 
       
         
-          
-            <p><div>动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：</div></p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstring&amp;gt;
-#include&amp;lt;malloc.h&amp;gt;
-using namespace std;
-
-void GetMemory(char *p,int num)
-{
-    p = (char *)malloc(sizeof(char)*num);
-};
-
-int main(void)
-{
-    char *str = NULL;
-    GetMemory(str,100);
-    strcpy(str,&quot;hello&quot;);
-    return 0;
-}
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-咋一看，好像没有什么错误，其实这个程序是不能编译通过的，它是有错误的。
-毛病出在函数`GetMemory`中，`void GetMemory(char *p,int num)`中的`*p`实际上是主函数中的str的一个副本，编译器总是要为函数的每一个参数制作临时副本。在本例中，p申请了新的内存，只是把p所指的内存地址改变了，但是str丝毫没有改变，还是指向NULL 的地址，因为函数GetMemory没有返回值，因此str并不指向p所申请的那段内存，所以函数GetMemory 并不能输出任何东西。最终会造成内存泄漏。
-如果一定要用指针参数去申请内存，那么应该采用指向指针的指针，传str的地址给函数GetMemory函数。代码如下：
-&lt;pre&gt;`#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstring&amp;gt;
-#include&amp;lt;malloc.h&amp;gt;
-using namespace std;
-
-void GetMemory(char **p,int num)
-{
-    *p = (char *)malloc(sizeof(char)*num);
-};
-
-int main(void)
-{
-    char *str = NULL;
-    GetMemory(&amp;amp;str,100);
-    strcpy(str,&quot;hello&quot;);
-    return 0;
-}`&lt;/pre&gt;
-此时是将指向NULL地址的指针传递给了参数`char **p`那么`*p`也就可以表示`NULL`的地址了，对于的str也就是字符串的值。这样才可以真正意义上实现地址的同步改变。
-我们再看一个例子：
-&lt;pre&gt;`#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstring&amp;gt;
-void GetMemory2(int *z)
-{
-    *z=5;
-};
-int main()
-{
-    int v;
-    GetMemory2(&amp;amp;v);
-    cout&amp;lt;&amp;lt;v&amp;lt;&amp;lt;endl;
-    return 0;
-}
-</code></pre><p><code>GetMemory2</code>把v的地址传了进来，<code>*z</code>是地址里的值，是v的副本，通过直接修改地址里面的值，不需要有返回值，也把v给修改了，因为v所指向地址的值发生了改变。<br><span style="color: #008000;">其实第一个函数只是改的p的值，并未影响str，而第三个改变的是传递进来的指针指向的值，其实还可以通过返回值来用第一个函数。而第二个函数使用指向指针的指针作为参数，修改的是*p也就是传递进来的str的地址。所以可以更改成功。原理同第三个函数。</span><br>小结：动态传递这类问题比较复杂，具体还需要大家平时多注意，多揣摩，多实践。</p>
-
-          
+          <p>动态内存传递一直都是一个难点，稍不留神就会掉到陷阱中去，最近正好学到动态内存传递的知识，就记下来了。首先看看下面的代码：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetMemory</span><span class="params">(<span class="keyword">char</span> *p,<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    p = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">char</span>)*num);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *str = <span class="literal">NULL</span>;</span><br><span class="line">    GetMemory(str,<span class="number">100</span>);</span><br><span class="line">    <span class="built_in">strcpy</span>(str,<span class="string">"hello"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/10/15/关于动态内存传递的一些知识/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1876,7 +1450,7 @@ int main()
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2012/09/13/关于泛型编程中的remove方法/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2012/09/13/泛型编程中的remove方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -1895,7 +1469,7 @@ int main()
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2012/09/13/关于泛型编程中的remove方法/" itemprop="url">关于泛型编程中的remove方法</a></h1>
+                <a class="post-title-link" href="/2012/09/13/泛型编程中的remove方法/" itemprop="url">泛型编程中的remove方法</a></h1>
         
 
         <div class="post-meta">
@@ -1930,8 +1504,8 @@ int main()
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C-C/" itemprop="url" rel="index">
-                    <span itemprop="name">C/C++</span>
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
                   </a>
                 </span>
 
@@ -1968,76 +1542,162 @@ int main()
 
       
         
+          <p>最近看模板类的时候，用到了泛型编程中的remove方法，搜索了一下，自己折腾了一番，总算搞清楚了remove方法，写下来和大家一起分享，同时也可以增加一下记忆</p>
+<p>关于泛型编程中的remove方法，官方给的模版类定义如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">T</span> &gt;</span></span><br><span class="line"><span class="class"><span class="title">ForwardIterator</span> <span class="title">remove</span> ( <span class="title">ForwardIterator</span> <span class="title">first</span>, <span class="title">ForwardIterator</span> <span class="title">last</span>,<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">value</span> );</span></span><br></pre></td></tr></table></figure></p>
+<p>说简单点就是<code>remove</code>接受三个参数，前两个迭代器或者指针表示一个范围，最后一个数，代表要从前面的范围中“移除”的值，这个方法不难理解，看一段代码：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/09/13/泛型编程中的remove方法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2012/08/08/C++中关于fstream和sstream的困惑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/08/08/C++中关于fstream和sstream的困惑/" itemprop="url">C++中关于fstream和sstream的困惑</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-08-08T20:16:14+08:00">
+                2012-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-            <p>最近看模板类的时候，用到了泛型编程中的remove方法，搜索了一下，自己折腾了一番，总算搞清楚了remove方法，写下来和大家一起分享，同时也可以增加一下记忆。<br>关于泛型编程中的remove方法，官方给的模版类定义如下：</p>
-<pre><code>template &amp;lt; class ForwardIterator, class T &amp;gt;
-ForwardIterator remove ( ForwardIterator first, ForwardIterator last,const T&amp;amp; value );`&lt;/pre&gt;
-说简单点就是`remove`接受三个参数，前两个迭代器或者指针表示一个范围，最后一个数，代表要从前面的范围中“移除”的值，这个方法不难理解，看一段代码：
-&lt;!--more--&gt;
-&lt;pre&gt;`#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;algorithm&amp;gt;
-#include&amp;lt;vector&amp;gt;
-using namespace std;
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C</span>
+                  </a>
+                </span>
 
-void print(vector&amp;lt;int&amp;gt;);
-
-int main()
-{
-    vector&amp;lt;int&amp;gt; array;
-    array.push_back(1);
-    array.push_back(6);
-    array.push_back(6);
-    array.push_back(3);
-
-    //删除array中的所有6
-    vector&amp;lt;int&amp;gt;::iterator itor;
-    itor=array.begin();
-    array.erase(remove(array.begin(),array.end(),6),array.end());
-
-    print(array);
-    return 0;
-}
-void print(vector&amp;lt;int&amp;gt; v)
-{
-    cout&amp;lt;&amp;lt;&quot;vector size is:&quot;&amp;lt;&amp;lt;v.size()&amp;lt;&amp;lt;endl;
-    vector&amp;lt;int&amp;gt;::iterator p = v.begin();
-    for(;p!=v.end();p++)
-        cout&amp;lt;&amp;lt;*p&amp;lt;&amp;lt;endl;
-}
-`&lt;/pre&gt;
-需要注意的是`remove`不是容器模版类vector专有的方法，而是泛型方法，所以需要加入头文件`#include&amp;lt;algorithm&amp;gt;`这个容器的输出结果是
-主要是因为erase方法把后面的元素真正删除了。
-那么我们再看一下下面的代码：
-&lt;pre&gt;`#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;algorithm&amp;gt;
-#include&amp;lt;vector&amp;gt;
-using namespace std;
-
-int main()
-{
-        vector&amp;lt;int&amp;gt; array;
-        array.push_back(1);
-        array.push_back(6);
-        array.push_back(6);
-        array.push_back(3);
-
-        vector&amp;lt;int&amp;gt;::iterator itor;
-        vector&amp;lt;int&amp;gt;::iterator itor2;
-        itor=array.begin();
-        itor2=array.begin();
-        for(;itor!=array.end();itor++)
-            cout&amp;lt;&amp;lt;*itor&amp;lt;&amp;lt;&quot; &quot;;
-        cout&amp;lt;&amp;lt;endl;
-        remove(array.begin(),array.end(),6);
-        for(;itor2!=array.end();itor2++)
-            cout&amp;lt;&amp;lt;*itor2&amp;lt;&amp;lt;&quot; &quot;;
-        cout&amp;lt;&amp;lt;endl;
-        cout&amp;lt;&amp;lt;&quot;vector size is:&quot;&amp;lt;&amp;lt;array.size()&amp;lt;&amp;lt;endl;
-        return 0;
-}
-</code></pre><p>执行之后我们发现，remove并没有把元素真正删除，只是被后面的元素覆盖了，首先遇到第一个6的时候，然后3将6覆盖，后面因为除了6就没有其它元素了，所以后面的元素就不再处理由于第一个6被覆盖，所以后面的两个元素仍然是6和3，而且remove返回的是指向后面那些被移除的元素的首元素，本例中指向6，于是上面的一个例子，删除remove的返回值和array.end()中的数，就把后面的6和3删除了，于是输出的是1 3</p>
+                
+                
+              
+            </span>
+          
 
           
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>看C++ premier的时候遇到一个习题，不是很懂，最后经过查询资料似乎明白了，写下来留着以后不懂的时候再看看<br>先上代码吧：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//8-16.cpp</span></span><br><span class="line"><span class="comment">//将文件中的每一行存储在vector容器对象中</span></span><br><span class="line"><span class="comment">//然后使用istringstream</span></span><br><span class="line"><span class="comment">//从vector里以每次读一个单词的形式读取所存储的行</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fileToVector</span><span class="params">(<span class="built_in">string</span> fileName, <span class="built_in">vector</span>&amp; svec)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//创建ifstream对象inFile并绑定到由形参fileName指定的文件</span></span><br><span class="line">    ifstream inFile(fileName.c_str());</span><br><span class="line">    <span class="keyword">if</span> (!inFile) <span class="comment">//打开文件失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//将文件内容读入到string类型的vector容器</span></span><br><span class="line">    <span class="comment">//每一行存储为该容器对象的一个元素</span></span><br><span class="line">    <span class="built_in">string</span> s;</span><br><span class="line">    <span class="keyword">while</span> (getline(inFile, s))</span><br><span class="line">        svec.push_back(s);</span><br><span class="line">    inFile.close();<span class="comment">//关闭文件</span></span><br><span class="line">    <span class="keyword">if</span> (inFile.eof())<span class="comment">//遇到文件结束符</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">if</span> (inFile.bad())<span class="comment">//发生系统级故障</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (inFile.fail())<span class="comment">//读入数据失败</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( <span class="keyword">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span> svec;</span><br><span class="line">    <span class="built_in">string</span> fileName, s;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//读入文件名</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter filename :"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; fileName;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//处理文件</span></span><br><span class="line">    <span class="keyword">switch</span> (fileToVector(fileName, svec))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"error: can not to open file: "</span>&lt;&lt; fileName &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"error: system failure "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; <span class="string">"error: read failure "</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用istringstream从vector里每次读一个单词的形式读取所存储的行</span></span><br><span class="line">    <span class="built_in">string</span> word;</span><br><span class="line">    <span class="built_in">istringstream</span> isstream;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">vector</span>::iterator iter = svec.begin();iter != svec.end(); ++iter)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//将vector对象的当前元素复制给istringstream对象</span></span><br><span class="line">        isstream.str(*iter);</span><br><span class="line">        <span class="comment">//从istringstream对象中读取单词并输出</span></span><br><span class="line">        <span class="keyword">while</span> (isstream &gt;&gt; word)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; word &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        isstream.clear();<span class="comment">//将istringstream流设置为有效状态</span></span><br><span class="line">    &#125;</span><br><span class="line">    system(<span class="string">"pause"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2012/08/08/C++中关于fstream和sstream的困惑/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2075,7 +1735,7 @@ int main()
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
   </nav>
 
 
@@ -2125,7 +1785,7 @@ int main()
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2136,7 +1796,7 @@ int main()
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

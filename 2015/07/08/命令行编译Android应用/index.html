@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式">
+<meta name="description" content="现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。 我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正">
 <meta name="keywords" content="Android,Gradle,assembleRelease,release">
 <meta property="og:type" content="article">
 <meta property="og:title" content="命令行编译Android应用">
 <meta property="og:url" content="http://picksomething.cn/2015/07/08/命令行编译Android应用/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式">
+<meta property="og:description" content="现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。 我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.426Z">
+<meta property="og:updated_time" content="2018-04-25T10:02:19.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="命令行编译Android应用">
-<meta name="twitter:description" content="现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式">
+<meta name="twitter:description" content="现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。 我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正">
 
 
 
@@ -354,32 +354,21 @@
       
 
       
-        <p>现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。<br>我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式的apk，然后签名发布。<br>事实上无论使用哪种模式编译你的Android应用，在安装到设备或者模拟器之前你都需要先签名，debug模式有debug key，release模式有你自己私有的key。<br>大家都知道，通过Android studio编译我们的应用模块的时候，会生成可以安装到手机上的.apk文件，当在我们使用debug模式编译的时候，sdk tool会带一个debug key根据你在build.gradle文件中的<code>debuggable true</code>的设置自动给应用签名，但是你不能发布一个使用debug key签名的应用，当你使用release编译类型编译出一个未签名的apk文件时，你必须用你的私有key手动给它签名，可以使用模块的build.gradle文件中的Keytool和Jarsigner，下面就讲讲怎么在命令行中通过release模式编译出一个未签名的apk，然后手动签名的过程(下文讲解都是基于mac环境)。<br><a id="more"></a></p>
-<ol>
-<li>设置环境变量</li>
-</ol>
-<p>此步略过2.  命令行执行命令进行release模式编译出未签名的apk</p>
-<p>命令如下</p>
-<pre><code>./gradlew assembleRelease`&lt;/pre&gt;
-如果不成功，试着将gradlew脚本改成可执行，命令如下
-&lt;pre&gt;`chmod +x gradlew`&lt;/pre&gt;
-如果你用点心，你就会问`./gradle assembleRelease`安装release模式编译，那么`./gradlew assembleDebug`是不是安装debug模式编译，完全正确。
-你可以通过如下命令，查看gradlew脚本可以传入哪些参数以及他们的含义
-&lt;pre&gt;`./gradlew tasks`&lt;/pre&gt;
-附上一张执行上面命令的结果部分截图
-[![tasks](http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150708-1@2x-744x442.png)](http://www.picksomething.cn/wp-content/uploads/2015/07/QQ20150708-1@2x.png)3.  生成一个签名
-
-执行玩上面的`./gradle assembleRelease`会在module_name/build/outputs/apk目下生成一个未签名的module-release-unsigned.apk文件，下面就是需要生成一个私有的签名，然后进行签名了，生成签名命令如下：
-&lt;pre&gt;`keytool -genkey -v -keystore release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000`&lt;/pre&gt;
-执行玩改命令之后会让你填入一些信息，包括密码，自己一定要记住密码，最终上面的命令会生成一个release-key.keystore的签名文件，这个文件名字你可以自己定义4.  在命令行里面进行签名
-
-将签名文件keystore和之前生成的未签名的apk文件放到一个目录，然后执行下面命令
-&lt;pre&gt;`jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore release-key.keystore module-release-unsigned.apk alias_name`&lt;/pre&gt;
-这样就签名完成了5.  校验签名
-
-&lt;pre&gt;`jarsigner -verify -verbose -certs module-release-unsigned.apk`&lt;/pre&gt;
-你可以看到输出的一些签名信息6.  使用zipalign命令对齐最终的apk文件
-</code></pre><p>这样就OK了，上面主要讲的是手动签名的过程，大家也可以通过在build.gradle里面配置签名信息这种方式进行签名<br>PS:附上之前写的一个用于获取单个apk的签名md5或者是比较两个apk的签名md5是否相等的脚本，<a href="https://github.com/picksomething/python-tools/blob/master/getSignedInfo.org" target="_blank" rel="noopener">点击访问</a></p>
+        <p>现在Android开发基本都是使用Android studio，Google不久前也宣布不再支持Eclipse了，所以熟悉使用Android studio的常用功能还是很有必要的。</p>
+<p>我们知道Android应用通过gradle构建系统编译出来默认有两种模式：一种是debug模式，一种是最终的release模式，通常debug模式都是用在测试的时候，我们发布应用的时候都是使用release模式编译出正式的apk，然后签名发布<br>事实上无论使用哪种模式编译你的Android应用，在安装到设备或者模拟器之前你都需要先签名，debug模式有debug key，release模式有你自己私有的key。</p>
+<p>大家都知道，通过AS编译我们的应用模块的时候，会生成可以安装到手机上的.apk文件，当在我们使用debug模式编译的时候，sdk tool会带一个debug key根据你在build.gradle文件中的<code>debuggable true</code>的设置自动给应用签名，但是你不能发布一个使用debug key签名的应用，当你使用release编译类型编译出一个未签名的apk文件时，你必须用你的私有key手动给它签名，可以使用模块的build.gradle文件中的Keytool和Jarsigner，下面就讲讲怎么在命令行中通过release模式编译出一个未签名的apk，然后手动签名的过程(下文讲解都是基于mac环境)。<br><a id="more"></a></p>
+<h2 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h2><p>此步略过</p>
+<h2 id="执行命令进行release模式编译出未签名的apk"><a href="#执行命令进行release模式编译出未签名的apk" class="headerlink" title="执行命令进行release模式编译出未签名的apk"></a>执行命令进行release模式编译出未签名的apk</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew assembleRelease</span><br></pre></td></tr></table></figure>
+<p>如果不成功，试着将gradlew脚本改成可执行，命令如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x gradlew</span><br></pre></td></tr></table></figure></p>
+<p>如果你稍微留点心，你就会发现<code>./gradle assembleRelease</code>安装release模式编译，那么<code>./gradlew assembleDebug</code>是不是安装debug模式编译</p>
+<p>你可以通过如下命令，查看gradlew脚本可以传入哪些参数以及他们的含义<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew tasks`</span><br></pre></td></tr></table></figure></p>
+<h2 id="生成一个签名"><a href="#生成一个签名" class="headerlink" title="生成一个签名"></a>生成一个签名</h2><p>执行玩上面的<code>./gradle assembleRelease</code>会在module_name/build/outputs/apk目下生成一个未签名的module-release-unsigned.apk文件，下面就是需要生成一个私有的签名，然后进行签名了，生成签名命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -v -keystore release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000</span><br></pre></td></tr></table></figure></p>
+<p>执行玩改命令之后会让你填入一些信息，包括密码，自己一定要记住密码，最终上面的命令会生成一个release-key.keystore的签名文件，这个文件名字你可以自己定义</p>
+<h2 id="在命令行里面进行签名"><a href="#在命令行里面进行签名" class="headerlink" title="在命令行里面进行签名"></a>在命令行里面进行签名</h2><p>将签名文件keystore和之前生成的未签名的apk文件放到一个目录，然后执行下面命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore release-key.keystore module-release-unsigned.apk alias_name</span><br></pre></td></tr></table></figure></p>
+<p>这样就签名完成了</p>
+<h2 id="校验签名"><a href="#校验签名" class="headerlink" title="校验签名"></a>校验签名</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jarsigner -verify -verbose -certs module-release-unsigned.apk</span><br></pre></td></tr></table></figure>
+<p>你可以看到输出的一些签名信息</p>
+<h2 id="使用zipalign命令对齐最终的apk文件"><a href="#使用zipalign命令对齐最终的apk文件" class="headerlink" title="使用zipalign命令对齐最终的apk文件"></a>使用zipalign命令对齐最终的apk文件</h2><p>这样就OK了，上面主要讲的是手动签名的过程，大家也可以通过在build.gradle里面配置签名信息这种方式进行签名<br>PS:附上之前写的一个用于获取单个apk的签名md5或者是比较两个apk的签名md5是否相等的脚本，<a href="https://github.com/picksomething/python-tools/blob/master/getSignedInfo.org" target="_blank" rel="noopener">点击访问</a></p>
 
       
     </div>
@@ -480,8 +469,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -500,7 +498,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -511,7 +509,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -552,6 +550,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设置环境变量"><span class="nav-number">1.</span> <span class="nav-text">设置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行命令进行release模式编译出未签名的apk"><span class="nav-number">2.</span> <span class="nav-text">执行命令进行release模式编译出未签名的apk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成一个签名"><span class="nav-number">3.</span> <span class="nav-text">生成一个签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在命令行里面进行签名"><span class="nav-number">4.</span> <span class="nav-text">在命令行里面进行签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#校验签名"><span class="nav-number">5.</span> <span class="nav-text">校验签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用zipalign命令对齐最终的apk文件"><span class="nav-number">6.</span> <span class="nav-text">使用zipalign命令对齐最终的apk文件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

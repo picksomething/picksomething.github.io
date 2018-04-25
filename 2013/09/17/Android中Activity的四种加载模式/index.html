@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Android,Activiy,加载模式," />
+  <meta name="keywords" content="Android,Activiy,LaunchMode," />
 
 
 
@@ -82,14 +82,14 @@
 
 
 <meta name="description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
-<meta name="keywords" content="Android,Activiy,加载模式">
+<meta name="keywords" content="Android,Activiy,LaunchMode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android中Activity的四种加载模式">
 <meta property="og:url" content="http://picksomething.cn/2013/09/17/Android中Activity的四种加载模式/index.html">
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:updated_time" content="2018-04-25T08:06:11.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中Activity的四种加载模式">
 <meta name="twitter:description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
@@ -356,33 +356,37 @@
       
         <p>之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式<code>android:launchMode</code>属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的时候再过来看看。<br>配置Activity的时候可以为其指定加载模式，Activity有四种加载模式：</p>
 <ul>
-<li><p>standard：标准模式，这是默认的加载模式。</p>
+<li><p>standard：标准模式，这是默认的加载模式</p>
 </li>
-<li><p>singleTop：Task顶单例模式。</p>
+<li><p>singleTop：Task顶单例模式</p>
 </li>
-<li><p>singleTask：Task内单例模式。</p>
+<li><p>singleTask：Task内单例模式</p>
 </li>
-<li><p>singleInstance：全局单例模式。<br>介绍加载模式之前先介绍Android对Activity的管理：Android采用Task来管理多个Activity，当我们启动一个应用时，Android就会为之创建一个Task，然后启动这个应用的入口Activity。</p>
-<a id="more"></a>
-<p>Task是一个有点复杂的概念，并不是真实存在的类或者接口，我们无法真正去访问它，但是可以调用Activity的getTaskId()方法来获取它所在的Task的ID。我们可以把Task理解成Activity栈，Task以栈的形式来管理Activity：先启动的Activity被放在Task栈底，后启动的Activity被放在Task栈顶。<br>加载模式就复杂管理实例化，加载Activity的方式，并可以控制Activity与Task之间的加载关系。言归正传，介绍四种加载模式<br><strong>standard模式</strong><br>每次通过这种模式来启动目标Activity时，Android总会为目标Activity创建一个新的实例，并将该Activity添加到当前的Task栈中——这种模式不会启动新的Task，新Activity将被添加到原来的Task中。<br>看下面的代码片段：</p>
-<p>Intent intent = new Intent(StandardTest.this, StandardTest.class);<br>startActivity(intent);</p>
+<li><p>singleInstance：全局单例模式</p>
 </li>
 </ul>
-<p>这个代码片段就是通过点击按钮让其再次启动自身这个<code>Activity</code>，程序将会不断启动新的StandardTest实例，(因为不同的Activity实例其hashCode是不同的)，但它们所在的TaskID总是相同的，这表明这种加载模式不会使用全新的Task。<br>当用户单击手机的返回键的时候，系统会逐一从Activity栈顶删除Activity实例。<br><strong>singlTop模式</strong><br>这种模式与standar模式基本相似，不同点是：当将要被启动的Activity已经位于Task栈顶时，系统就不会重新创建目标Activity的实例，而是直接复用已有的Activity实例。<br>如果将上面实例中的StandardTest Activity的加载模式改成standard加载模式，无论用户点击多少次按钮，界面上的程序将不会有任何变化。<br>如果将要被启动的目标Activity没有位于Task栈顶，此时系统会重新创建目标Activity的实例，并将它加载到Task的栈顶。<br><strong>singleTask模式</strong><br>采用这种加载模式的Activity在同一个Task内只有一个实例，当系统采用singleTask模式启动目标Activity是，可分为以下三种情况</p>
+<p>介绍加载模式之前先介绍Android对Activity的管理：Android采用Task来管理多个Activity，当我们启动一个应用时，Android就会为之创建一个Task，然后启动这个应用的入口Activity<br><a id="more"></a></p>
+<p>Task是一个有点复杂的概念，并不是真实存在的类或者接口，我们无法真正去访问它，但是可以调用Activity的getTaskId()方法来获取它所在的Task的ID。我们可以把Task理解成Activity栈，Task以栈的形式来管理Activity：先启动的Activity被放在Task栈底，后启动的Activity被放在Task栈顶</p>
+<p>加载模式就复杂管理实例化，加载Activity的方式，并可以控制Activity与Task之间的加载关系。言归正传，介绍四种加载模式:</p>
+<h2 id="standard模式"><a href="#standard模式" class="headerlink" title="standard模式"></a>standard模式</h2><p>每次通过这种模式来启动目标Activity时，Android总会为目标Activity创建一个新的实例，并将该Activity添加到当前的Task栈中——这种模式不会启动新的Task，新Activity将被添加到原来的Task中。<br>看下面的代码片段：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Intent intent = <span class="keyword">new</span> Intent(StandardTest.<span class="keyword">this</span>, StandardTest.class);</span><br><span class="line">startActivity(intent);</span><br></pre></td></tr></table></figure></p>
+<p>这个代码片段就是通过点击按钮让其再次启动自身这个<code>Activity</code>，程序将会不断启动新的StandardTest实例，(因为不同的Activity实例其hashCode是不同的)，但它们所在的TaskID总是相同的，这表明这种加载模式不会使用全新的Task。<br>当用户单击手机的返回键的时候，系统会逐一从Activity栈顶删除Activity实例</p>
+<h2 id="singlTop模式"><a href="#singlTop模式" class="headerlink" title="singlTop模式"></a>singlTop模式</h2><p>这种模式与standar模式基本相似，不同点是：当将要被启动的Activity已经位于Task栈顶时，系统就不会重新创建目标Activity的实例，而是直接复用已有的Activity实例</p>
+<p>如果将上面实例中的StandardTest Activity的加载模式改成standard加载模式，无论用户点击多少次按钮，界面上的程序将不会有任何变化，如果将要被启动的目标Activity没有位于Task栈顶，此时系统会重新创建目标Activity的实例，并将它加载到Task的栈顶</p>
+<h2 id="singleTask模式"><a href="#singleTask模式" class="headerlink" title="singleTask模式"></a>singleTask模式</h2><p>采用这种加载模式的Activity在同一个Task内只有一个实例，当系统采用singleTask模式启动目标Activity是，可分为以下三种情况</p>
 <ol>
 <li><p>将要启动的Activity不存在，系统将会创建目标Activity的实例，并将它加入Task栈顶。</p>
 </li>
 <li><p>如果将要启动的Activity已经位于Task栈顶，此时与singleTop模式的行为相同。</p>
 </li>
-<li><p>如果将要启动的Activity已经存在，但没有位于Task栈顶，系统将会把位于该Activity上面的所有Activity移出Task栈，从而使目标Activity转入栈顶。<br><strong>singleInstance模式</strong><br>在这种加载模式下，系统保证无论从哪个Task中启动目标Activity，只会创建一个目标Activity实例，并会使用一个全新的Task栈来装载该Activity实例。<br>当系统采用该模式启动Activity时，可分为以下两种情况：</p>
+<li><p>如果将要启动的Activity已经存在，但没有位于Task栈顶，系统将会把位于该Activity上面的所有Activity移出Task栈，从而使目标Activity转入栈顶</p>
 </li>
 </ol>
+<h1 id="singleInstance模式"><a href="#singleInstance模式" class="headerlink" title="singleInstance模式"></a>singleInstance模式</h1><p>在这种加载模式下，系统保证无论从哪个Task中启动目标Activity，只会创建一个目标Activity实例，并会使用一个全新的Task栈来装载该Activity实例。<br>当系统采用该模式启动Activity时，可分为以下两种情况：</p>
 <ul>
-<li><p>如果将要启动的目标Activity不存在，系统会先创建一个全新的Task，再创建一个目标Activity的实例，并将它加载到新的Task的栈顶。</p>
-</li>
-<li><p>如果目标Activity已经存在，无论它在哪个应用程序中，无论它位于哪个Task中，系统将会把该Activity所在的Task转到前台，从而使该Activity显示出来。<br>需要指出的是，采用<code>singleInstance</code>模式加载Activity总是位于Task栈顶，采用singleInstance模式加载Activity所在的Task只包含该Activity。</p>
-</li>
+<li>如果将要启动的目标Activity不存在，系统会先创建一个全新的Task，再创建一个目标Activity的实例，并将它加载到新的Task的栈顶。</li>
+<li>如果目标Activity已经存在，无论它在哪个应用程序中，无论它位于哪个Task中，系统将会把该Activity所在的Task转到前台，从而使该Activity显示出来</li>
 </ul>
+<p>需要指出的是，采用<code>singleInstance</code>模式加载Activity总是位于Task栈顶，采用singleInstance模式加载Activity所在的Task只包含该Activity。</p>
 
       
     </div>
@@ -404,7 +408,7 @@
           
             <a href="/tags/Activiy/" rel="tag"># Activiy</a>
           
-            <a href="/tags/加载模式/" rel="tag"># 加载模式</a>
+            <a href="/tags/LaunchMode/" rel="tag"># LaunchMode</a>
           
         </div>
       
@@ -481,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -501,7 +514,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -512,7 +525,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -553,6 +566,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#standard模式"><span class="nav-number">1.</span> <span class="nav-text">standard模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singlTop模式"><span class="nav-number">2.</span> <span class="nav-text">singlTop模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTask模式"><span class="nav-number">3.</span> <span class="nav-text">singleTask模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#singleInstance模式"><span class="nav-number"></span> <span class="nav-text">singleInstance模式</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

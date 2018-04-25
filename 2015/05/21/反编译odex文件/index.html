@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="今天使用某加密加密应用之后，发现应用安装之后在/data/data/package/目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过adb pull到本地了。接着就想用dex2jar工具转换成jar文件，发现居然报错了： com.googlecode.dex2jar.DexException: dex-trans">
+<meta name="description" content="今天使用某加密加密应用之后，发现应用安装之后在/data/data/package/目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过adb pull到本地了。接着就想用dex2jar工具转换成jar文件，发现居然报错了：123com.googlecode.dex2jar.DexException: dex-tra">
 <meta name="keywords" content="decompile,dex,dex2jar,odex">
 <meta property="og:type" content="article">
 <meta property="og:title" content="反编译odex文件">
 <meta property="og:url" content="http://picksomething.cn/2015/05/21/反编译odex文件/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="今天使用某加密加密应用之后，发现应用安装之后在/data/data/package/目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过adb pull到本地了。接着就想用dex2jar工具转换成jar文件，发现居然报错了： com.googlecode.dex2jar.DexException: dex-trans">
+<meta property="og:description" content="今天使用某加密加密应用之后，发现应用安装之后在/data/data/package/目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过adb pull到本地了。接着就想用dex2jar工具转换成jar文件，发现居然报错了：123com.googlecode.dex2jar.DexException: dex-tra">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/05/smali_list-744x270.png">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/05/dir_list-744x176.png">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.426Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/05/smali_list.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/05/dir_list.png">
+<meta property="og:updated_time" content="2018-04-25T10:09:03.333Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="反编译odex文件">
-<meta name="twitter:description" content="今天使用某加密加密应用之后，发现应用安装之后在/data/data/package/目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过adb pull到本地了。接着就想用dex2jar工具转换成jar文件，发现居然报错了： com.googlecode.dex2jar.DexException: dex-trans">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2015/05/smali_list-744x270.png">
+<meta name="twitter:description" content="今天使用某加密加密应用之后，发现应用安装之后在/data/data/package/目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过adb pull到本地了。接着就想用dex2jar工具转换成jar文件，发现居然报错了：123com.googlecode.dex2jar.DexException: dex-tra">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/05/smali_list.png">
 
 
 
@@ -357,30 +357,44 @@
       
 
       
-        <p>今天使用某加密加密应用之后，发现应用安装之后在<code>/data/data/package/</code>目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过<code>adb pull</code>到本地了。<br>接着就想用<code>dex2jar</code>工具转换成jar文件，发现居然报错了：</p>
-<pre><code>com.googlecode.dex2jar.DexException: dex-translator not 
-support translate an odex file, please refere smali 
-http://code.google.com/p/smali/ to convert odex to dex
-`&lt;/pre&gt;
-错误信息很明了，虽然这个文件后缀是.dex，但是这是一个odex文件，dex2jar工具不支持转换，需要先将odex转换成dex文件才行。
-根据提示到`http://code.google.com/p/smali/`下载对应的工具，以下是反编译odex文件的步骤：
-&lt;!--more--&gt;
-</code></pre><ol>
-<li>下载smali工具(<a href="http://code.google.com/p/smali/" target="_blank" rel="noopener">http://code.google.com/p/smali/</a>)<br>将下面列表中的四个文件都下载下来<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/05/smali_list.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/05/smali_list-744x270.png" alt="smali_list"></a></li>
-<li>新建一个目录，我这里建的目录名叫做baksmali<br>将第一步下载的四个文件移到baksmali文件夹里面</li>
-<li>在baksmali文件夹中再新建一个system文件夹</li>
-<li>在system文件夹下再新建一个framework文件夹<br>因为后面在运行baksmali反编译命令的时候需要比如<code>core.jar</code>,<code>framework.jar</code>,<code>ext.jar</code>,<code>android.policy.jar</code>等jar包的支持，这些jar包在apk安装对应的rom的/system/framework文件夹里面都有,所以我们在本地建一个对应的目录，然后通过<code>adb pull</code>命令讲这些jar包pull到本地的<code>baksmali/system/framework</code>目录下<br>当然3、4步并不是必须的，你完全可以选择将baksmali命令所需的jar包pull下来之后放到和baksmali工具同一个目录里面，这样也是完全可以的，支持比较混乱。<br>建好之后的目录结构是这样的：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/05/dir_list.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/05/dir_list-744x176.png" alt="dir_list"></a></li>
-<li>下载所需jar包<br>切换到本地的<code>baksmali/system/framework</code>目录,执行<br><pre><code>adb pull /system/framework</code></pre><br>这样就把rom里面<code>/system/framework</code>目录下所有的jar包下载到本地<code>framework</code>目录了。</li>
-<li>开始反编译<code>odex</code>文件<br>切换到本地的<code>baksmali</code>目录下，执行如下命令：<br><pre><code>java -jar baksmali-2.0.3.jar -d system/framework -x xxx.odex</code></pre><br><code>-d</code>参数就是指定到那个目录下寻找那些所需的jar文件，如果所需的jar包就在当前目录，那么就不需要指定该目录了。<br>命令执行完成之后就会在当前目录下生成一个out目录，该目录里面就是对应的smali文件</li>
-<li>生成<code>dex</code>文件<br>我们需要将生成的out目录转换成dex文件，执行如下命令：<br><pre><code>java -jar smali-2.0.3.jar  -o classes.dex out</code></pre><br>该命令就是根据out目录生成一个dex文件，-o是指定生成的dex文件的别名<br>执行完成之后就会生成一个<code>classes.dex</code>的真正dex文件<br>接下来就轻松了</li>
+        <p>今天使用某加密加密应用之后，发现应用安装之后在<code>/data/data/package/</code>目录下有一个xxx(apk名).dex文件，好奇想看看加密之后到底什么效果，是不是还可以看到源码之类的，就把这个xxx.dex文件通过<code>adb pull</code>到本地了。<br>接着就想用<code>dex2jar</code>工具转换成jar文件，发现居然报错了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">com.googlecode.dex2jar.DexException: dex-translator not</span><br><span class="line">support translate an odex file, please refere smali</span><br><span class="line">http://code.google.com/p/smali/ to convert odex to dex</span><br></pre></td></tr></table></figure></p>
+<p>错误信息很明了，虽然这个文件后缀是.dex，但是这是一个odex文件，dex2jar工具不支持转换，需要先将odex转换成dex文件才行</p>
+<p>根据提示到<code>http://code.google.com/p/smali/</code>下载对应的工具，以下是反编译odex文件的步骤：<br><a id="more"></a></p>
+<ol>
+<li><p>下载smali工具(<a href="http://code.google.com/p/smali/" target="_blank" rel="noopener">http://code.google.com/p/smali/</a>)<br>将下面列表中的四个文件都下载下来<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/05/smali_list.png"></p>
+</li>
+<li><p>新建一个目录<br>我这里建的目录名叫做baksmali，将第一步下载的四个文件移到baksmali文件夹里面</p>
+</li>
+<li><p>在baksmali文件夹中再新建一个system文件夹</p>
+</li>
+<li><p>在system文件夹下再新建一个framework文件夹<br>因为后面在运行baksmali反编译命令的时候需要比如<code>core.jar</code>,<code>framework.jar</code>,<code>ext.jar</code>,<code>android.policy.jar</code>等jar包的支持，这些jar包在apk安装对应的rom的/system/framework文件夹里面都有,所以我们在本地建一个对应的目录，然后通过<code>adb pull</code>命令讲这些jar包pull到本地的<code>baksmali/system/framework</code>目录下</p>
+</li>
 </ol>
-<ul>
-<li>下载安装<code>dex2jar</code>工具，下载地址:<a href="https://github.com/pxb1988/dex2jar" target="_blank" rel="noopener">https://github.com/pxb1988/dex2jar</a><br>mac下直接执行如下命令即可<br><pre><code>brew install dex2jar</code></pre><br>安装完成之后执行:<br><pre>`d2j-dex2jar classes.dex</pre></li>
-</ul>
+<p>当然3、4步并不是必须的，你完全可以选择将baksmali命令所需的jar包pull下来之后放到和baksmali工具同一个目录里面，这样也是完全可以的，支持比较混乱</p>
+<p>建好之后的目录结构是这样的：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/05/dir_list.png"></p>
+<ol start="5">
+<li><p>下载所需jar包<br>切换到本地的<code>baksmali/system/framework</code>目录，执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb pull /system/framework</span><br></pre></td></tr></table></figure>
+<p>这样就把rom里面<code>/system/framework</code>目录下所有的jar包下载到本地<code>framework</code>目录了。</p>
+</li>
+<li><p>开始反编译<code>odex</code>文件<br>切换到本地的<code>baksmali</code>目录下，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar baksmali-2.0.3.jar -d system/framework -x xxx.odex</span><br></pre></td></tr></table></figure>
+<p><code>-d</code>参数就是指定到那个目录下寻找那些所需的jar文件，如果所需的jar包就在当前目录，那么就不需要指定该目录了。<br>命令执行完成之后就会在当前目录下生成一个out目录，该目录里面就是对应的smali文件</p>
+</li>
+<li><p>生成<code>dex</code>文件<br>我们需要将生成的out目录转换成dex文件，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar smali-2.0.3.jar  -o classes.dex out</span><br></pre></td></tr></table></figure>
+<p>该命令就是根据out目录生成一个dex文件，-o是指定生成的dex文件的别名，执行完成之后就会生成一个<code>classes.dex</code>的真正dex文件，接下来就轻松了</p>
+</li>
+<li><p>下载安装<code>dex2jar</code>工具，下载地址:<a href="https://github.com/pxb1988/dex2jar" target="_blank" rel="noopener">https://github.com/pxb1988/dex2jar</a><br>mac下直接执行如下命令即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install dex2jar</span><br></pre></td></tr></table></figure>
+<p>安装完成之后执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d2j-dex2jar classes.dex</span><br></pre></td></tr></table></figure>
 <p>命令执行后会生成一个classes-dex2jar.jar文件</p>
-<ul>
-<li>下载安装JD-GUI查看java代码,下载地址:<a href="http://jd.benow.ca/" target="_blank" rel="noopener">http://jd.benow.ca/</a><br>就是这么简单，odex挡住了dex2jar，却没挡住baksmali，不过有些加密你会发现你反编译odex之后看到的也只是一个空壳而已，可能需要高级的内存dump工具来获取内存中的代码文件进行分析。</li>
-</ul>
+</li>
+<li><p>下载安装JD-GUI查看java代码,下载地址:<a href="http://jd.benow.ca/" target="_blank" rel="noopener">http://jd.benow.ca/</a></p>
+</li>
+</ol>
+<p>就是这么简单，odex挡住了dex2jar，却没挡住baksmali，不过有些加密你会发现你反编译odex之后看到的也只是一个空壳而已，可能需要高级的内存dump工具来获取内存中的代码文件进行分析。</p>
 
       
     </div>
@@ -501,7 +515,7 @@ http://code.google.com/p/smali/ to convert odex to dex
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -512,7 +526,7 @@ http://code.google.com/p/smali/ to convert odex to dex
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>

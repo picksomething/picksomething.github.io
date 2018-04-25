@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="最近做毕设，在写搜索这一功能模块的时候发现一个问题，我是从数据库将美食信息搜索出来并显示在ListView中。写完之后，测试的时候发现虽然搜索结果能够正常显示，但是当进行下一次搜索的时候，上一次的搜索结果还会显示，从网上搜了很多，但是大部分都是说清空ListView，问题就是如果选择清空ListView的话，一方面如果不判断就清空的话，你会发现搜索结果就不会显示出来。另一方面，如果判断ListVi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:updated_time" content="2018-04-25T08:08:14.710Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中Listview重复显示搜索结果">
 <meta name="twitter:description" content="最近做毕设，在写搜索这一功能模块的时候发现一个问题，我是从数据库将美食信息搜索出来并显示在ListView中。写完之后，测试的时候发现虽然搜索结果能够正常显示，但是当进行下一次搜索的时候，上一次的搜索结果还会显示，从网上搜了很多，但是大部分都是说清空ListView，问题就是如果选择清空ListView的话，一方面如果不判断就清空的话，你会发现搜索结果就不会显示出来。另一方面，如果判断ListVi">
@@ -354,16 +354,9 @@
       
 
       
-        <p>最近做毕设，在写搜索这一功能模块的时候发现一个问题，我是从数据库将美食信息搜索出来并显示在<code>ListView</code>中。写完之后，测试的时候发现虽然搜索结果能够正常显示，但是当进行下一次搜索的时候，上一次的搜索结果还会显示，从网上搜了很多，但是大部分都是说清空<code>ListView</code>，问题就是如果选择清空<code>ListView</code>的话，一方面如果不判断就清空的话，你会发现搜索结果就不会显示出来。另一方面，如果判断ListView是否为空，再清空的话，结果一样无法显示。<br>我想原因是<code>ListView</code>只是一个控件。不应该对其进行判空，而应该先对填充其中的数据进行判断是否为空。如果不为空，先清空，然后再进行填充数据和显示。下面贴上我的代码。<br>我首先是声明了一个ArrayList来存放从数据库中取出的数据，同时也是ListView的数据源：</p>
-<pre><code>ArrayList&amp;lt;Map&amp;lt;String, Object&amp;gt;&amp;gt; SearchResults = new ArrayList&amp;lt;Map&amp;lt;String, Object&amp;gt;&amp;gt;();
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-ArrayList中是一个Map键值对类型的元素，用于存放数据库中相应字段的值。
-然后就是关键的判断了：
-&lt;pre&gt;`if(!(SearchResults.isEmpty())){
-        SearchResults.removeAll(SearchResults);
-}
-</code></pre><p>这个就会先判断<code>ArrayList</code>中的数据是否为空，如果不为空，就代表上一次搜索中的数据还在里面，我们就先进行一个清空操作，那样在进行下一次操作的时候就不会出现问题了。其它从数据库中获取，已经使用适配器显示到ListView中的代码网上有很多，我就不贴出来了，如果有需要的或者有什么问题的，可以留言。<br>小结：多思考，多想！</p>
+        <p>最近做毕设，在写搜索这一功能模块的时候发现一个问题，我是从数据库将美食信息搜索出来并显示在<code>ListView</code>中。写完之后，测试的时候发现虽然搜索结果能够正常显示，但是当进行下一次搜索的时候，上一次的搜索结果还会显示，从网上搜了很多，但是大部分都是说清空<code>ListView</code>，问题就是如果选择清空<code>ListView</code>的话，一方面如果不判断就清空的话，你会发现搜索结果就不会显示出来。另一方面，如果判断ListView是否为空，再清空的话，结果一样无法显示。<br>我想原因是<code>ListView</code>只是一个控件。不应该对其进行判空，而应该先对填充其中的数据进行判断是否为空。如果不为空，先清空，然后再进行填充数据和显示。下面贴上我的代码。<br>我首先是声明了一个ArrayList来存放从数据库中取出的数据，同时也是ListView的数据源：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Map&lt;String, Object&gt;&gt; SearchResults = <span class="keyword">new</span> ArrayList&lt;Map&lt;String, Object&gt;&gt;();</span><br></pre></td></tr></table></figure></p>
+<p>ArrayList中是一个Map键值对类型的元素，用于存放数据库中相应字段的值，然后就是关键的判断了：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!(SearchResults.isEmpty()))&#123;</span><br><span class="line">    SearchResults.removeAll(SearchResults);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个就会先判断<code>ArrayList</code>中的数据是否为空，如果不为空，就代表上一次搜索中的数据还在里面，我们就先进行一个清空操作，那样在进行下一次操作的时候就不会出现问题了。其它从数据库中获取，已经使用适配器显示到ListView中的代码网上有很多，我就不贴出来了，如果有需要的或者有什么问题的，可以留言</p>
 
       
     </div>
@@ -396,8 +389,8 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2013/04/07/Android中关于Handler的总结/" rel="next" title="Android中关于Handler的总结">
-                <i class="fa fa-chevron-left"></i> Android中关于Handler的总结
+              <a href="/2013/04/07/Android中关于Handler的简单总结/" rel="next" title="Android中关于Handler的简单总结">
+                <i class="fa fa-chevron-left"></i> Android中关于Handler的简单总结
               </a>
             
           </div>
@@ -480,7 +473,7 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -491,7 +484,7 @@ ArrayList中是一个Map键值对类型的元素，用于存放数据库中相�
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
