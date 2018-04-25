@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="Android上定时任务这个需求肯定是经常有的，之前一遇到定时任务，就首选Timer，也没觉得有什么不好的。后来有一次我测试的时候无意间把系统时间往前调(系统时间调早一点)了一些，发现定时任务的打印停止了，觉得很好奇，以为是进程被干掉了，也就没有在意，又重启了一下应用进程，但是后来再一次出现了这样的事，于是就不淡定了，然后就看了一下Android官方网站上关于Timer的说明，又顺便Google了">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.426Z">
+<meta property="og:updated_time" content="2018-04-25T15:01:43.393Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android定时任务Timer失效？">
 <meta name="twitter:description" content="Android上定时任务这个需求肯定是经常有的，之前一遇到定时任务，就首选Timer，也没觉得有什么不好的。后来有一次我测试的时候无意间把系统时间往前调(系统时间调早一点)了一些，发现定时任务的打印停止了，觉得很好奇，以为是进程被干掉了，也就没有在意，又重启了一下应用进程，但是后来再一次出现了这样的事，于是就不淡定了，然后就看了一下Android官方网站上关于Timer的说明，又顺便Google了">
@@ -356,43 +356,20 @@
       
         <p>Android上定时任务这个需求肯定是经常有的，之前一遇到定时任务，就首选<code>Timer</code>，也没觉得有什么不好的。<br>后来有一次我测试的时候无意间把系统时间往前调(系统时间调早一点)了一些，发现定时任务的打印停止了，觉得很好奇，以为是进程被干掉了，也就没有在意，又重启了一下应用进程，但是后来再一次出现了这样的事，于是就不淡定了，然后就看了一下Android官方网站上关于Timer的说明，又顺便Google了一下，发现原来是这样的：</p>
 <blockquote>
-<p>在Timer定时器中是以<code>System.currentTimeMillis()</code>来获取当前时间，然后和<code>TimerTask</code>任务下次要执行的时间进行比较，如果时间到了就执行下一次重复任务，比如我用Timer设定的是每隔1s执行一次定时任务，如果你把时间往前调了1个小时，那么Timer定时器在准备执行下次任务的时候获取到的当前时间就比定时器的间隔时间1s大了很多，这样定时器就会等到1个小时零1s才会执行下一次的定时任务，如果你将时间往后调肯定不所以这就是为什么时间往前调Timer定时器会”失效”而往后调不会”失效”的原因<br><a id="more"></a><br>这个是我遇到的Timer定时器的缺陷，网上网友遇到的的Timer的缺陷我总结了一下大致是下面三条(欢迎补充):</p>
+<p>在Timer定时器中是以<code>System.currentTimeMillis()</code>来获取当前时间，然后和<code>TimerTask</code>任务下次要执行的时间进行比较，如果时间到了就执行下一次重复任务，比如我用Timer设定的是每隔1s执行一次定时任务，如果你把时间往前调了1个小时，那么Timer定时器在准备执行下次任务的时候获取到的当前时间就比定时器的间隔时间1s大了很多，这样定时器就会等到1个小时零1s才会执行下一次的定时任务，如果你将时间往后调肯定不所以这就是为什么时间往前调Timer定时器会”失效”而往后调不会”失效”的原因</p>
 </blockquote>
+<a id="more"></a>
+<p>这个是我遇到的Timer定时器的缺陷，网上网友遇到的的Timer的缺陷我总结了一下大致是下面三条(欢迎补充):</p>
+<h2 id="时间计算不准"><a href="#时间计算不准" class="headerlink" title="时间计算不准"></a>时间计算不准</h2><p>Timer对调度的支持是基于绝对时间,而不是相对时间的，由此，任务对系统时钟的改变是敏感的，更改了系统时间，会导致时间计算不准确，定时任务没有按时完成。</p>
+<h2 id="未检查的异常会导致Timer线程终止"><a href="#未检查的异常会导致Timer线程终止" class="headerlink" title="未检查的异常会导致Timer线程终止"></a>未检查的异常会导致Timer线程终止</h2><p>如果<code>TimerTask</code>抛出一个未检查的异常，因为Timer不捕获异常，所以会导致整个Timer线程的终止，而且Timer还不会恢复线程的执行，当前的TimerTask和新的任务都不会再执行了</p>
+<h2 id="单任务执行"><a href="#单任务执行" class="headerlink" title="单任务执行"></a>单任务执行</h2><p>Timer一次只能执行一个任务，后面的任务必须要等前一个任务执行完成之后才可以执行，这样如果前面一个任务耗时超过Timer设定的任务间隔时间，那么后面的一个任务执行时间就会受到影响。<br>那么既然Timer有这么多缺陷，肯定是还有别的方法来实现定时任务的，那就是<a href="http://developer.android.com/reference/java/util/Timer.html" target="_blank" rel="noopener">Timer</a>的替代者<code>ScheduledThreadPoolExecutor</code>，为什么要说事Timer的替代者呢，我们可以打开Android官网关于Timer类的说明,<br>可以看到这么一句话:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Timers schedule one-shot or recurring tasks for execution.</span><br><span class="line">Prefer ScheduledThreadPoolExecutor for new code.</span><br></pre></td></tr></table></figure></p>
+<p><code>ScheduledThreadPoolExecutor</code>相对于<code>Timer</code>而言优点在于:</p>
 <ul>
-<li><p>时间计算不准<br>Timer对调度的支持是基于绝对时间,而不是相对时间的，由此，任务对系统时钟的改变是敏感的，更改了系统时间，会导致时间计算不准确，定时任务没有按时完成。</p>
-</li>
-<li><p>未检查的异常会导致Timer线程终止<br>如果<code>TimerTask</code>抛出一个未检查的异常，因为Timer不捕获异常，所以会导致整个Timer线程的终止，而且Timer还不会恢复线程的执行，当前的TimerTask和新的任务都不会再执行了</p>
-</li>
-<li><p>单任务执行<br>Timer一次只能执行一个任务，后面的任务必须要等前一个任务执行完成之后才可以执行，这样如果前面一个任务耗时超过Timer设定的任务间隔时间，那么后面的一个任务执行时间就会受到影响。<br>那么既然Timer有这么多缺陷，肯定是还有别的方法来实现定时任务的，那就是<a href="http://developer.android.com/reference/java/util/Timer.html" target="_blank" rel="noopener">Timer</a>的替代者<code>ScheduledThreadPoolExecutor</code>，为什么要说事Timer的替代者呢，我们可以打开Android官网关于Timer类的说明,<br>可以看到这么一句话:</p>
-<p>Timers schedule one-shot or recurring tasks for execution.<br>Prefer ScheduledThreadPoolExecutor for new code.<code>&lt;/pre&gt;</code>ScheduledThreadPoolExecutor<code>相对于</code>Timer`而言优点在于:</p>
-</li>
-</ul>
-<ol>
 <li>可以指定执行定时任务的工作线程(worker threads)数，不再受限于单任务执行</li>
 <li><code>ScheduledThreadPoolExecutor</code>使用的是相对时间，是基于时间的延迟，不再受限于调系统时间的问题</li>
-<li><p><code>ScheduledThreadPoolExecutor</code>一个任务发生异常不会影响下一个定时任务的执行<br>其实看到这里，以后再遇到定时任务的时候用哪个大家应该都很明白了，如果有更好的方案，欢迎大家提出。<br>因为自己公司的代码不方便贴出，就从网上贴一个简单的<code>ScheduledThreadPoolExecutor</code>的用法:<br><pre>`public class ScheduledThreadPoolExecutorTest {</pre></p>
-<pre><code>public static void main(String[] args) {
-    ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
-    BusinessTask task = new BusinessTask();
-    //1秒后开始执行任务，以后每隔2秒执行一次
-    executorService.scheduleWithFixedDelay(task, 1000, 2000,TimeUnit.MILLISECONDS);
-}
-
-private static class BusinessTask implements Runnable{
-    @Override
-    public void run() { 
-        try{
-            System.out.println(&quot;任务开始...&quot;);
-            doSomething();
-            System.out.println(&quot;任务结束...&quot;);
-        }catch (Throwable e) {
-            catchException();
-        }
-    }
-}
-</code></pre><p>}</p>
+<li><code>ScheduledThreadPoolExecutor</code>一个任务发生异常不会影响下一个定时任务的执行<br>其实看到这里，以后再遇到定时任务的时候用哪个大家应该都很明白了，因为自己公司的代码不方便贴出，就从网上贴一个简单的<code>ScheduledThreadPoolExecutor</code>的用法:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScheduledThreadPoolExecutorTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ScheduledExecutorService executorService = <span class="keyword">new</span> ScheduledThreadPoolExecutor(<span class="number">2</span>);</span><br><span class="line">        BusinessTask task = <span class="keyword">new</span> BusinessTask();</span><br><span class="line">        <span class="comment">//1秒后开始执行任务，以后每隔2秒执行一次</span></span><br><span class="line">        executorService.scheduleWithFixedDelay(task, <span class="number">1000</span>, <span class="number">2000</span>,TimeUnit.MILLISECONDS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">BusinessTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">try</span>&#123;</span><br><span class="line">                System.out.println(<span class="string">"任务开始..."</span>);</span><br><span class="line">                doSomething();</span><br><span class="line">                System.out.println(<span class="string">"任务结束..."</span>);</span><br><span class="line">            &#125;<span class="keyword">catch</span> (Throwable e) &#123;</span><br><span class="line">                catchException();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+</ul>
 
       
     </div>
@@ -489,8 +466,17 @@ private static class BusinessTask implements Runnable{
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -561,6 +547,22 @@ private static class BusinessTask implements Runnable{
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#时间计算不准"><span class="nav-number">1.</span> <span class="nav-text">时间计算不准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未检查的异常会导致Timer线程终止"><span class="nav-number">2.</span> <span class="nav-text">未检查的异常会导致Timer线程终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单任务执行"><span class="nav-number">3.</span> <span class="nav-text">单任务执行</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

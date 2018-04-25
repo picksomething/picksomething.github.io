@@ -1161,16 +1161,9 @@ mItems.add(new SinglePressAction(
       
         
           
-            <p>我们都知道Android应用的所有UI组件都继承了View类，View组件非常类似于Swing编程中的JPanel，它代表一个空白的矩形区域。View类还有一个重要的子类：ViewGroup，但ViewGroup通常作为其他组件的容器使用。Android的所有UI组件都是建立在View,ViewGroup基础之上的。<br>对于一个Android应用的图形用户界面来说，ViewGroup作为容器来盛装其他组件，当我们往ViewGroup中调用addView方法添加组件的时候，不重写addView方法的话，默认父控件就会按照添加顺序依次绘制加入的控件，而且默认后加入的子控件会覆盖新加入的子控件，如果我们想自己控制子控件的显示顺序的话，一方面可以自己重写addView方法，另一方便通过查阅ViewGroup源码我们可以看到有一个这样的方法</p>
-<pre><code>public void bringChildToFront(View child) {
-    int index = indexOfChild(child);
-    if (index != 0) {
-        removeFromArray(index);
-        addInArray(child, mChildrenCount);
-        child.mParent = this;
-    }
-}
-</code></pre><p>从名字我们就可以看到这个方法是将指定的子控件带到最前面，从实现方法可以看出，先得到子控件的index，然后将对应index的子控件从控件顺序数组中一处，然后再重新加入到数组，这样一来，该子控件就到数组的结尾了，也就是到最前面了。<br>最后一步很重要，就是不要忘了要调用<code>postInvalidate()</code>方法来刷新。<br>小结：沉下去，遇到问题学会分析源码。</p>
+            <p>我们都知道Android应用的所有UI组件都继承了View类，View组件非常类似于Swing编程中的JPanel，它代表一个空白的矩形区域，View类还有一个重要的子类：ViewGroup，但ViewGroup通常作为其他组件的容器使用。Android的所有UI组件都是建立在View,ViewGroup基础之上的</p>
+<p>对于一个Android应用的图形用户界面来说，ViewGroup作为容器来盛装其他组件，当我们往ViewGroup中调用addView方法添加组件的时候，不重写addView方法的话，默认父控件就会按照添加顺序依次绘制加入的控件，而且默认后加入的子控件会覆盖新加入的子控件，如果我们想自己控制子控件的显示顺序的话，一方面可以自己重写addView方法，另一方便通过查阅ViewGroup源码我们可以看到有一个这样的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bringChildToFront</span><span class="params">(View child)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> index = indexOfChild(child);</span><br><span class="line">    <span class="keyword">if</span> (index != <span class="number">0</span>) &#123;</span><br><span class="line">        removeFromArray(index);</span><br><span class="line">        addInArray(child, mChildrenCount);</span><br><span class="line">        child.mParent = <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从名字我们就可以看到这个方法是将指定的子控件带到最前面，从实现方法可以看出，先得到子控件的index，然后将对应index的子控件从控件顺序数组中一处，然后再重新加入到数组，这样一来，该子控件就到数组的结尾了，也就是到最前面了。<br>最后一步很重要，就是不要忘了要调用<code>postInvalidate()</code>方法来刷新</p>
 
           
         
@@ -1312,41 +1305,22 @@ mItems.add(new SinglePressAction(
       
         
           
-            <p>因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子</p>
-<pre><code>public enum Color{
-    RED,BLUE,BLACK,YELLOW,GREEN
-}
-`&lt;/pre&gt;
-事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum&amp;lt;E&amp;gt;)。它们会继承Enum中的方法，通常这些方法能帮助我们更好地操作枚举类。上述Color就是一个枚举类，而且是一个不可被继承的final类。其枚举值(RED,BLUE...)都是Color类型的类静态常量，可以通过下面的方式来得到Color枚举类的一个实例
-&lt;pre&gt;`Color c=Color.RED;
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-注意：这些枚举值都是`public static final`的，也就是我们经常所定义的常量方式，因此枚举类中的枚举值一般都是大写。
-既然枚举类也是类，当然也会有构造器，方法和数据域，但是，枚举类的构造器和普通类的构造器有很大的不同：
-</code></pre><ol>
+            <p>因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color&#123;</span><br><span class="line">    RED,BLUE,BLACK,YELLOW,GREEN</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum<e>)。它们会继承Enum中的方法，通常这些方法能帮助我们更好地操作枚举类。上述Color就是一个枚举类，而且是一个不可被继承的final类。其枚举值(RED,BLUE…)都是Color类型的类静态常量，可以通过下面的方式来得到Color枚举类的一个实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Color c=Color.RED;</span><br></pre></td></tr></table></figure></e></p>
+<p>注意：这些枚举值都是<code>public static final</code>的，也就是我们经常所定义的常量方式，因此枚举类中的枚举值一般都是大写，既然枚举类也是类，当然也会有构造器，方法和数据域，但是，枚举类的构造器和普通类的构造器有很大的不同：</p>
+<p>##枚举构造器的不同</p>
+<ul>
 <li>构造器只是在构造枚举值的时候被调用</li>
-<li>构造器只能是私有的private，不允许有public构造器，这样可以保证外部代码无法新构造枚举类实例，因为我们知道枚举值是public static final的常量而已。但枚举值的方法和数据域允许外部访问。</li>
-<li>枚举类可以在switch中使用<br><pre>`Color color=Color.RED;<br>switch(color){<pre><code>case RED:
-    System.out.println(&quot;it&apos;s red&quot;);break;
-case BLUE:
-    System.out.println(&quot;it&apos;s blue&quot;);break;
-case BLACK:
-    System.out.println(&quot;it&apos;s blue&quot;);break;
-</code></pre>}<br><code>&lt;/pre&gt;
-以下是继承Enum中的一些方法，华丽丽的分割线=
-(1)  ordinal()方法: 返回枚举值在枚举类种的顺序。这个顺序根据枚举值声明的顺序而定。
-&lt;pre&gt;</code>Color.RED.ordinal();  //返回结果：0<br>Color.BLUE.ordinal();  //返回结果：1<br><code>&lt;/pre&gt;
-(2)  compareTo()方法: Enum实现了java.lang.Comparable接口，因此可以比较象与指定对象的顺序。Enum中的</code>compareTo<code>返回的是两个枚举值的顺序之差。当然，前提是两个枚举值必须属于同一个枚举类，否则会抛出</code>ClassCastException()<code>异常。(具体可见源代码)
-&lt;pre&gt;</code>Color.RED.compareTo(Color.BLUE);  //返回结果 -1<code>&lt;/pre&gt;
-(3)  values()方法： 静态方法，返回一个包含全部枚举值的数组。
-&lt;pre&gt;</code>Color[] colors=Color.values();<br>for(Color c:colors){<pre><code>System.out.print(c+&quot;,&quot;);
-</code></pre>}//返回结果：RED,BLUE,BLACK YELLOW,GREEN,<br><code>&lt;/pre&gt;
-toString()方法： 返回枚举常量的名称。
-&lt;pre&gt;</code>Color c=Color.RED;<br>System.out.println(c.toString());//返回结果: RED<br><code>&lt;/pre&gt;
-(5)  valueOf()方法： 这个方法和toString方法是相对应的，返回带指定名称的指定枚举类型的枚举常量。
-&lt;pre&gt;</code>Color.valueOf(“BLUE”);   //返回结果: Color.BLUE</pre></li>
-</ol>
-<p>(6)  equals()方法： 比较两个枚举类对象的引用。</p>
+<li>构造器只能是私有的private，不允许有public构造器<br>这样可以保证外部代码无法新构造枚举类实例，因为我们知道枚举值是public static final的常量而已。但枚举值的方法和数据域允许外部访问。</li>
+<li>枚举类可以在switch中使用<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Color color=Color.RED;</span><br><span class="line"><span class="keyword">switch</span>(color)&#123;</span><br><span class="line">  <span class="keyword">case</span> RED:</span><br><span class="line">    System.out.println(<span class="string">"it's red"</span>);<span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> BLUE:</span><br><span class="line">    System.out.println(<span class="string">"it's blue"</span>);<span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> BLACK:</span><br><span class="line">    System.out.println(<span class="string">"it's blue"</span>);<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="枚举类常用的方法"><a href="#枚举类常用的方法" class="headerlink" title="枚举类常用的方法"></a>枚举类常用的方法</h2><h3 id="ordinal-方法"><a href="#ordinal-方法" class="headerlink" title="ordinal()方法:"></a>ordinal()方法:</h3><p>返回枚举值在枚举类种的顺序。这个顺序根据枚举值声明的顺序而定。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color.RED.ordinal();  <span class="comment">//返回结果：0</span></span><br><span class="line">Color.BLUE.ordinal();  <span class="comment">//返回结果：1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="compareTo-方法"><a href="#compareTo-方法" class="headerlink" title="compareTo()方法:"></a>compareTo()方法:</h3><p>Enum实现了java.lang.Comparable接口，因此可以比较象与指定对象的顺序。Enum中的<code>compareTo</code>返回的是两个枚举值的顺序之差。当然，前提是两个枚举值必须属于同一个枚举类，否则会抛出<code>ClassCastException()</code>异常(具体可见源代码)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Color.RED.compareTo(Color.BLUE);  <span class="comment">//返回结果 -1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="values-方法："><a href="#values-方法：" class="headerlink" title="values()方法："></a>values()方法：</h3><p>静态方法，返回一个包含全部枚举值的数组。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Color[] colors=Color.values();</span><br><span class="line"><span class="keyword">for</span>(Color c:colors)&#123;</span><br><span class="line">    System.out.print(c+<span class="string">","</span>);</span><br><span class="line">&#125;<span class="comment">//返回结果：RED,BLUE,BLACK YELLOW,GREEN,</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="toString-方法："><a href="#toString-方法：" class="headerlink" title="toString()方法："></a>toString()方法：</h3><p>返回枚举常量的名称。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color c=Color.RED;</span><br><span class="line">System.out.println(c.toString());<span class="comment">//返回结果: RED</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="valueOf-方法："><a href="#valueOf-方法：" class="headerlink" title="valueOf()方法："></a>valueOf()方法：</h3><p>这个方法和toString方法是相对应的，返回带指定名称的指定枚举类型的枚举常量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Color.valueOf(<span class="string">"BLUE"</span>);   <span class="comment">//返回结果: Color.BLUE</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="equals-方法："><a href="#equals-方法：" class="headerlink" title="equals()方法："></a>equals()方法：</h3><p>比较两个枚举类对象的引用。</p>
 
           
         
@@ -1488,85 +1462,16 @@ toString()方法： 返回枚举常量的名称。
       
         
           
-            <p>上一篇博客中我在解释Handler的过程中提到了<code>HandlerThread</code>，我们先回顾一下上一篇博客中对于Handler的定义：<strong><span style="color: #ff0000;">Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。</span></strong>也就是说如果我们使用Handler提供的方法handler.post(new Runnable());时候，如果使用不当的话一样会出现界面卡死，因为其默认管线的还是主线程，也就是说其还是会在主线程中简单地调用Runnable中的run()方法，这样耗时任务虽然在run()方法中，但是还是运行在主线程，所以同样会阻塞UI，接下来我们来看两个例子，就会更明白了，第一个例子：</p>
-<pre><code>package cn.picksomething.testhandler;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-
-public class MainActivity extends Activity {
-
-    private String TAG = &quot;TAG&quot;;
-    private Handler handler = new Handler();
-&lt;!--more--&gt;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        handler.post(new myRunnable());
-        Log.d(TAG, &quot;onCreate-----The thread id is：&quot; + Thread.currentThread().getId());
-        setContentView(R.layout.main);
-    }
-
-    class myRunnable implements Runnable{
-        @Override
-        public void run() {
-            Log.d(TAG, &quot;run method is calling----&quot;);
-            Log.d(TAG, &quot;The thread id is：&quot; + Thread.currentThread().getId());
-            try {
-                Thread.sleep(6000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-}
-`&lt;/pre&gt;
-运行上述程序，程序启动6秒之后，才看到布局被加载，显示出TextView上的Hello World!字样。
-分析一下程序执行的过程，首先程序启动，就把myRunnable加入到当前线程的消息队列中，也就是handler默认关联的主线程消息队列，android的handler确实是异步机制，所以在handler.post(new myRunnable());之后，程序会继续执行，所以以后的语句会继续执行，会输出onCreate中的当前线程ID。但同时myRunnable()的run方法也在运行，一样输出run方法中的当前线程ID，然后让当前线程休眠6秒。
-通过输出结果和分析，我们可以得出handler和主线程是同一个线程，handler也是运行在主线程中的，这个时候若是执行耗时任务，显然会阻塞UI。当然肯定有解决办法的：
-Android给我们提供了Looper这样一个类，上一遍博客中已经介绍过了，Android中每一个Thread都跟着一个Looper，Looper可以帮助Thread维护一个消息队列，每个Thread都只有一个消息队列。我们看看另一个例子：
-&lt;pre&gt;`package cn.picksomething.testlooper;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.app.Activity;
-import android.util.Log;
-
-public class MainActivity extends Activity {
-
-    private String TAG = &quot;TAG&quot;;
-    private Handler handler = null;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        HandlerThread mThread = new HandlerThread(&quot;handlerThread&quot;);
-        mThread.start();
-        handler = new Handler(mThread.getLooper());
-        handler.post(new myRunnable());
-        Log.d(TAG, &quot;onCreate-----The Thread id is:&quot; + Thread.currentThread().getId());
-        setContentView(R.layout.main);
-    }
-
-    class myRunnable implements Runnable{
-        @Override
-        public void run() {
-            Log.d(TAG, &quot;myRunnable is running----&quot;);
-            Log.d(TAG, &quot;The thread id is:&quot; + Thread.currentThread().getId());
-            try {
-                Thread.sleep(6000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-}
-</code></pre><p>运行上述程序，过滤打印信息，我们看到<code>LogCat</code>输出如下结果：<br>同时我们看到程序已启动，就立即输出了布局文件中的<code>Hello world!</code>信息。<br>在这个例子中，用到了HandlerThread，在HandlerThread对象中可以通过getLooper方法获取一个Looper对象控制句柄，我们可以将这个Looper对象映射到一个Handler中来实现一个线程同步机制，所以就会有上面的结果了。这样就达到了多线程的效果。<br>补充：<code>HandlerThread</code>这个类，HandlerThread继承于Thread，所以它本质就是个Thread。HandlerThread类用于方便的创建一个含有<code>looper</code>的线程类，looper用来创建handler类。我们一般不创建looper对象，直接调用HandlerThread即可。HandlerThread本身实现了循环处理消息的功能，不用再直接调用<code>Looper.prepare()</code>方法。与普通Thread的差别就在于它有个Looper成员变量。这个Looper其实就是对消息队列以及队列处理逻辑的封装，简单说就是消息队列+消息循环。<br>小结：多了解Android内部机制，不能只满足于结果正确。</p>
+            <p>上一篇博客中我在解释Handler的过程中提到了<code>HandlerThread</code>，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。</p>
+<p>也就是说如果我们使用Handler提供的方法handler.post(new Runnable())时候，如果使用不当的话一样会出现界面卡死，因为其默认管线的还是主线程，也就是说其还是会在主线程中简单地调用Runnable中的run()方法，这样耗时任务虽然在run()方法中，但是还是运行在主线程，所以同样会阻塞UI，接下来我们来看两个例子，就会更明白了，第一个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.picksomething.testhandler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.os.Handler;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String TAG = <span class="string">"TAG"</span>;</span><br><span class="line">    <span class="keyword">private</span> Handler handler = <span class="keyword">new</span> Handler();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        handler.post(<span class="keyword">new</span> myRunnable());</span><br><span class="line">        Log.d(TAG, <span class="string">"onCreate-----The thread id is："</span> + Thread.currentThread().getId());</span><br><span class="line">        setContentView(R.layout.main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">myRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"run method is calling----"</span>);</span><br><span class="line">            Log.d(TAG, <span class="string">"The thread id is："</span> + Thread.currentThread().getId());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">6000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行上述程序，程序启动6秒之后，才看到布局被加载，显示出TextView上的Hello World!字样</p>
+<p>分析一下程序执行的过程，首先程序启动，就把myRunnable加入到当前线程的消息队列中，也就是handler默认关联的主线程消息队列，android的handler确实是异步机制，所以在handler.post(new myRunnable());之后，程序会继续执行，所以以后的语句会继续执行，会输出onCreate中的当前线程ID。但同时myRunnable()的run方法也在运行，一样输出run方法中的当前线程ID，然后让当前线程休眠6秒</p>
+<p>通过输出结果和分析，我们可以得出handler和主线程是同一个线程，handler也是运行在主线程中的，这个时候若是执行耗时任务，显然会阻塞UI。当然肯定有解决办法的：</p>
+<p>Android给我们提供了Looper这样一个类，上一遍博客中已经介绍过了，Android中每一个Thread都跟着一个Looper，Looper可以帮助Thread维护一个消息队列，每个Thread都只有一个消息队列。我们看看另一个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.picksomething.testlooper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.os.Handler;</span><br><span class="line"><span class="keyword">import</span> android.os.HandlerThread;</span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String TAG = <span class="string">"TAG"</span>;</span><br><span class="line">    <span class="keyword">private</span> Handler handler = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        HandlerThread mThread = <span class="keyword">new</span> HandlerThread(<span class="string">"handlerThread"</span>);</span><br><span class="line">        mThread.start();</span><br><span class="line">        handler = <span class="keyword">new</span> Handler(mThread.getLooper());</span><br><span class="line">        handler.post(<span class="keyword">new</span> myRunnable());</span><br><span class="line">        Log.d(TAG, <span class="string">"onCreate-----The Thread id is: "</span> + Thread.currentThread().getId());</span><br><span class="line">        setContentView(R.layout.main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">myRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"myRunnable is running----"</span>);</span><br><span class="line">            Log.d(TAG, <span class="string">"The thread id is: "</span> + Thread.currentThread().getId());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">6000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行上述程序，过滤打印信息，我们看到<code>LogCat</code>输出如下结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">onCreate-----The Thread id is: xxx</span><br><span class="line">myRunnable is running----</span><br><span class="line">The thread id is: xxx</span><br></pre></td></tr></table></figure></p>
+<p>同时我们看到程序已启动，就立即输出了布局文件中的<code>Hello world!</code>信息。</p>
+<p>在这个例子中，用到了HandlerThread，在HandlerThread对象中可以通过getLooper方法获取一个Looper对象控制句柄，我们可以将这个Looper对象映射到一个Handler中来实现一个线程同步机制，所以就会有上面的结果了。这样就达到了多线程的效果</p>
+<p>补充：<code>HandlerThread</code>这个类，HandlerThread继承于Thread，所以它本质就是个Thread。HandlerThread类用于方便的创建一个含有<code>looper</code>的线程类，looper用来创建handler类。我们一般不创建looper对象，直接调用HandlerThread即可，HandlerThread本身实现了循环处理消息的功能，不用再直接调用<code>Looper.prepare()</code>方法，与普通Thread的差别就在于它有个Looper成员变量，这个Looper其实就是对消息队列以及队列处理逻辑的封装，简单说就是消息队列+消息循环</p>
 
           
         
@@ -1919,64 +1824,17 @@ class MessageHandler extends Handler {
 
       
         
-          
-            <p>由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。<br>它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：</p>
-<pre><code>beforeTextChanged(CharSequence s, int start, int count, int after)
-`&lt;/pre&gt;
-这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换。
-&lt;pre&gt;`onTextChanged(CharSequence s, int start, int before, int count)
-`&lt;/pre&gt;
-这个方法是在Text改变过程中触发调用的，它的意思就是说在原有的文本s中，从start开始的count个字符替换长度为before的旧文本，注意这里没有将要之类的字眼，也就是说一句执行了替换动作。
-可能说起来比较抽象，我举个简单的例子，比如说我们监听一个EditText，默认开始的时候EditText中没有文本，当我们输入LOVE四个字母的时候，在打印信息中我输出各个参数看一下参数的变化。
-&lt;!--more--&gt;
-&lt;pre&gt;`10-18 16:40:21.528: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=----start=0----after=1----count=0
-10-18 16:40:21.528: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=L----start=0----before=0----count=1
-10-18 16:40:21.532: D/Debug(4501): afterTextChanged 被执行----&amp;gt;L
-10-18 16:40:29.304: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=L----start=1----after=1----count=0
-10-18 16:40:29.308: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LO----start=1----before=0----count=1
-10-18 16:40:29.308: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LO
-10-18 16:40:32.772: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=LO----start=2----after=1----count=0
-10-18 16:40:32.772: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LOV----start=2----before=0----count=1
-10-18 16:40:32.776: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LOV
-10-18 16:40:34.772: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=LOV----start=3----after=1----count=0
-10-18 16:40:34.772: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LOVE----start=3----before=0----count=1
-10-18 16:40:34.776: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LOVE
-`&lt;/pre&gt;
-通过上面的打印信息我们可以发现在输入L之前`beforeTextChanged`被执行，s为空，所以s输入空，start=0，也就是从位置0开始，count=0，也就是0个字符将会被替换，after=1，也就是说0个字符将会被一个新的长度为after=1的文本(也就是L)替换。
-当输入发生改变的时候`onTextChanged`被执行，此时s=L也就是输入的字母L，从start=0开始，count=1个字符替换了长度为before=0的旧文本。通俗点将就是字母L从位置0开始替换了原来的空文本，下面的就可以依次类推了。那么我们如何利用这个接口监听EditText的文本变化来实现限制输入字数的功能呢，我相信大家都有自己的想法了，这里我给出自己的一个简单实现，主要代码如下：
-&lt;pre&gt;`source_des.addTextChangedListener(new TextWatcher() { 
-    private CharSequence temp; 
-    private int selectionStart; 
-    private int selectionEnd; 
-
-    @Override 
-    public void onTextChanged(CharSequence s, int start, int before, int count) { 
-        Log.d(TAG, &quot;onTextChanged 被执行----&amp;gt;s=&quot; + s + &quot;----start=&quot;+ start 
-          + &quot;----before=&quot;+before + &quot;----count&quot; +count); temp = s; 
-    }
-
-    public void beforeTextChanged(CharSequence s, int start, int count,int after) { 
-        Log.d(TAG, &quot;beforeTextChanged 被执行----&amp;gt; s=&quot; + s+&quot;----start=&quot;+ start 
-          + &quot;----after=&quot;+after + &quot;----count&quot; +count); 
-    } 
-
-    public void afterTextChanged(Editable s) { 
-        Log.d(TAG, &quot;afterTextChanged 被执行----&amp;gt;&quot; + s); 
-        selectionStart = source_des.getSelectionStart(); 
-        selectionEnd = source_des.getSelectionEnd(); 
-        if (temp.length() &amp;gt; MAX_LENGTH) { 
-            Toast.makeText(MainActivity.this, &quot;只能输入九个字&quot;, 
-              Toast.LENGTH_SHORT).show(); 
-            s.delete(selectionStart - 1, selectionEnd); 
-            int tempSelection = selectionEnd; 
-            source_des.setText(s); 
-            source_des.setSelection(tempSelection); 
-        } 
-    } 
-});
-</code></pre><p>如大家有什么疑问，欢迎交流。<br>小结：多总结。</p>
-
-          
+          <p>由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。<br>它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beforeTextChanged(CharSequence s, <span class="keyword">int</span> start, <span class="keyword">int</span> count, <span class="keyword">int</span> after)</span><br></pre></td></tr></table></figure></p>
+<p>这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onTextChanged(CharSequence s, int start, int before, int count)</span><br></pre></td></tr></table></figure></p>
+<p>这个方法是在Text改变过程中触发调用的，它的意思就是说在原有的文本s中，从start开始的count个字符替换长度为before的旧文本，注意这里没有将要之类的字眼，也就是说一句执行了替换动作</p>
+<p>可能说起来比较抽象，我举个简单的例子，比如说我们监听一个EditText，默认开始的时候EditText中没有文本，当我们输入LOVE四个字母的时候，在打印信息中我输出各个参数看一下参数的变化。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2013/10/18/onTextChanged参数解释及实现EditText字数监听/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

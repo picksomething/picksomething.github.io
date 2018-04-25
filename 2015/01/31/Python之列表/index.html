@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功。">
+<meta name="description" content="记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功">
 <meta name="keywords" content="BIF,list,Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python之列表">
 <meta property="og:url" content="http://picksomething.cn/2015/01/31/Python之列表/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功。">
+<meta property="og:description" content="记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/list_stack.jpg">
+<meta property="og:updated_time" content="2018-04-25T15:45:54.931Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python之列表">
-<meta name="twitter:description" content="记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功。">
+<meta name="twitter:description" content="记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/list_stack.jpg">
 
 
 
@@ -354,88 +356,24 @@
       
 
       
-        <p>记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功。</p>
-<p>先给出一个列表的定义：</p>
-<pre><code>language = [&quot;Python&quot;,&quot;Java&quot;,&quot;C/C++&quot;]`&lt;/pre&gt;
-关于列表定义：如果你有其他高级语言的基础第一次接触Python的时候会很好奇，难道不需要为列表声明类型信息吗?答案是不用，Python的变量标识符没有类型，标识符只是名字，可以只是某个类型的数据对象，可以把Python的列表想象成是一个高层集合。
-&lt;!--more--&gt;
-关于列表在内存中存储：Python创建一个列表时，解释器会在内存中创建一个类似数组的数据结构来存储数据，数据堆自下而上堆放(形成一个堆栈)。和其他语言一样，默认第一项的编号也是从0开始。
-[![list_stack](http://www.picksomething.cn/wp-content/uploads/2015/01/list_stack.jpg)](http://www.picksomething.cn/wp-content/uploads/2015/01/list_stack.jpg)
-可以通过`print(language[0])`在屏幕上打出列表第一项的值。
-
-Python列表的一些方法：
-
-`len()`获取列表长度
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; len(language)
-3
-&amp;gt;&amp;gt;&amp;gt; print(len(language))
-3`&lt;/pre&gt;
-`append()`在列表末尾增加一个数据项
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.append(&quot;Swift&quot;)
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;Java&apos;, &apos;C/C++&apos;, &apos;Swift&apos;]`&lt;/pre&gt;
-`pop()`从列表末尾删除数据项
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.pop()
-&apos;Swift&apos;
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;Java&apos;, &apos;C/C++&apos;]
-&amp;gt;&amp;gt;&amp;gt;`&lt;/pre&gt;
-`extend()`在列表末尾增加一个数据项集合
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.extend([&quot;Swift&quot;,&quot;Go&quot;])
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;Java&apos;, &apos;C/C++&apos;, &apos;Swift&apos;, &apos;Go&apos;]`&lt;/pre&gt;
-`remove()`在列表中找到并删除一个特定的数据项：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.remove(&quot;Java&quot;)
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;C/C++&apos;, &apos;Swift&apos;, &apos;Go&apos;]`&lt;/pre&gt;
-`insert()`在某个特定位置前面插入一个数据项：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.insert(2,&quot;Java&quot;)
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;C/C++&apos;, &apos;Java&apos;, &apos;Swift&apos;, &apos;Go&apos;]`&lt;/pre&gt;
-列表中可以混入不同类型的数据以及列表中嵌套列表
-
-给出一个嵌套列表的例子，然后输出列表中的每一项：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; movies = [&quot;The Holy Grail&quot;,1975,&quot;Terry Gilliam&quot;,91,[&quot;Graham Chapman&quot;,[&quot;Michael Palin&quot;,&quot;John Cleese&quot;,&quot;Terry Gilliam&quot;,&quot;Eric Idle&quot;,&quot;Terry Jones&quot;]]]
-&amp;gt;&amp;gt;&amp;gt; print(movies)
-[&apos;The Holy Grail&apos;, 1975, &apos;Terry Gilliam&apos;, 91, [&apos;Graham Chapman&apos;, [&apos;Michael Palin&apos;, &apos;John Cleese&apos;, &apos;Terry Gilliam&apos;, &apos;Eric Idle&apos;, &apos;Terry Jones&apos;]]]
-&amp;gt;&amp;gt;&amp;gt; for each_item in movies:
-    print(each_item)
-
-The Holy Grail
-1975
-Terry Gilliam
-91
-[&apos;Graham Chapman&apos;, [&apos;Michael Palin&apos;, &apos;John Cleese&apos;, &apos;Terry Gilliam&apos;, &apos;Eric Idle&apos;, &apos;Terry Jones&apos;]]`&lt;/pre&gt;
-会发现，其实只是把列表中的每一项整个打印出来了，但是因为列表的有些项本身还是一个列表，甚至列表中还有列表，那么我们需要改进程序：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; for each_item in movies:
-    if isinstance(each_item,list):
-        for each_value in each_item:
-            if isinstance(each_value,list):
-                for nested_item in each_value:
-                    print(nested_item)
-            else:
-                print(each_value)
-    else:
-        print(each_item)
-
-The Holy Grail
-1975
-Terry Gilliam
-91
-Graham Chapman
-Michael Palin
-John Cleese
-Terry Gilliam
-Eric Idle
-Terry Jones
-</code></pre><p>这样打印出来的就没有列表了，但是你会发现重复代码很多，而且如果嵌套多层的话，代码要变的更臃肿，就不符合Python的简洁高效了，所以后面我们会来优化这段代码。</p>
-<p>PS：注意几点</p>
-<ol>
+        <p>记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功</p>
+<p>先给出一个列表的定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language = [<span class="string">"Python"</span>,<span class="string">"Java"</span>,<span class="string">"C/C++"</span>]</span><br></pre></td></tr></table></figure></p>
+<h2 id="列表定义："><a href="#列表定义：" class="headerlink" title="列表定义："></a>列表定义：</h2><p>如果你有其他高级语言的基础第一次接触Python的时候会很好奇，难道不需要为列表声明类型信息吗?答案是不用，Python的变量标识符没有类型，标识符只是名字，可以只是某个类型的数据对象，可以把Python的列表想象成是一个高层集合</p>
+<p>关于列表在内存中存储：Python创建一个列表时，解释器会在内存中创建一个类似数组的数据结构来存储数据，数据堆自下而上堆放(形成一个堆栈)。和其他语言一样，默认第一项的编号也是从0开始。<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/list_stack.jpg"><br>可以通过<code>print(language[0])</code>在屏幕上打出列表第一项的值</p>
+<h2 id="Python列表的一些方法："><a href="#Python列表的一些方法：" class="headerlink" title="Python列表的一些方法："></a>Python列表的一些方法：</h2><h3 id="len"><a href="#len" class="headerlink" title="len()"></a>len()</h3><p>获取列表长度<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(language)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(len(language))</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="append"><a href="#append" class="headerlink" title="append()"></a>append()</h3><p>在列表末尾增加一个数据项<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.append(<span class="string">"Swift"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">    [<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C/C++'</span>, <span class="string">'Swift'</span>]</span><br></pre></td></tr></table></figure></p>
+<h3 id="pop"><a href="#pop" class="headerlink" title="pop()"></a>pop()</h3><p>从列表末尾删除数据项<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.pop()</span><br><span class="line"><span class="string">'Swift'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C/C++'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="extend"><a href="#extend" class="headerlink" title="extend()"></a>extend()</h3><p>在列表末尾增加一个数据项集合<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.extend([<span class="string">"Swift"</span>,<span class="string">"Go"</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C/C++'</span>, <span class="string">'Swift'</span>, <span class="string">'Go'</span>]</span><br></pre></td></tr></table></figure></p>
+<h3 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h3><p>在列表中找到并删除一个特定的数据项：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.remove(<span class="string">"Java"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'C/C++'</span>, <span class="string">'Swift'</span>, <span class="string">'Go'</span>]</span><br></pre></td></tr></table></figure></p>
+<h3 id="insert"><a href="#insert" class="headerlink" title="insert()"></a>insert()</h3><p>在某个特定位置前面插入一个数据项：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.insert(<span class="number">2</span>,<span class="string">"Java"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'C/C++'</span>, <span class="string">'Java'</span>, <span class="string">'Swift'</span>, <span class="string">'Go'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>列表中可以混入不同类型的数据以及列表中嵌套列表，给出一个嵌套列表的例子，然后输出列表中的每一项：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>movies = [<span class="string">"The Holy Grail"</span>,<span class="number">1975</span>,<span class="string">"Terry Gilliam"</span>,<span class="number">91</span>,[<span class="string">"Graham Chapman"</span>,[<span class="string">"Michael Palin"</span>,<span class="string">"John Cleese"</span>,<span class="string">"Terry Gilliam"</span>,<span class="string">"Eric Idle"</span>,<span class="string">"Terry Jones"</span>]]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(movies)</span><br><span class="line">[<span class="string">'The Holy Grail'</span>, <span class="number">1975</span>, <span class="string">'Terry Gilliam'</span>, <span class="number">91</span>, [<span class="string">'Graham Chapman'</span>, [<span class="string">'Michael Palin'</span>, <span class="string">'John Cleese'</span>, <span class="string">'Terry Gilliam'</span>, <span class="string">'Eric Idle'</span>, <span class="string">'Terry Jones'</span>]]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> each_item <span class="keyword">in</span> movies:</span><br><span class="line">        print(each_item)</span><br><span class="line"></span><br><span class="line">The Holy Grail</span><br><span class="line"><span class="number">1975</span></span><br><span class="line">Terry Gilliam</span><br><span class="line"><span class="number">91</span></span><br><span class="line">[<span class="string">'Graham Chapman'</span>, [<span class="string">'Michael Palin'</span>, <span class="string">'John Cleese'</span>, <span class="string">'Terry Gilliam'</span>, <span class="string">'Eric Idle'</span>, <span class="string">'Terry Jones'</span>]]</span><br></pre></td></tr></table></figure></p>
+<p>你会发现，其实只是把列表中的每一项整个打印出来了，但是因为列表的有些项本身还是一个列表，甚至列表中还有列表，那么我们需要改进程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> each_item <span class="keyword">in</span> movies:</span><br><span class="line">    	<span class="keyword">if</span> isinstance(each_item,list):</span><br><span class="line">    		<span class="keyword">for</span> each_value <span class="keyword">in</span> each_item:</span><br><span class="line">    			<span class="keyword">if</span> isinstance(each_value,list):</span><br><span class="line">    				<span class="keyword">for</span> nested_item <span class="keyword">in</span> each_value:</span><br><span class="line">    					print(nested_item)</span><br><span class="line">    			<span class="keyword">else</span>:</span><br><span class="line">    				print(each_value)</span><br><span class="line">    	<span class="keyword">else</span>:</span><br><span class="line">    		print(each_item)</span><br><span class="line"></span><br><span class="line">The Holy Grail</span><br><span class="line"><span class="number">1975</span></span><br><span class="line">Terry Gilliam</span><br><span class="line"><span class="number">91</span></span><br><span class="line">Graham Chapman</span><br><span class="line">Michael Palin</span><br><span class="line">John Cleese</span><br><span class="line">Terry Gilliam</span><br><span class="line">Eric Idle</span><br><span class="line">Terry Jones</span><br></pre></td></tr></table></figure></p>
+<p>这样打印出来的就没有列表了，但是你会发现重复代码很多，而且如果嵌套多层的话，代码要变的更臃肿，就不符合Python的简洁高效了，所以后面我们会来优化这段代码</p>
+<h2 id="注意几点"><a href="#注意几点" class="headerlink" title="注意几点"></a>注意几点</h2><ul>
 <li>如果需要在一个字符串中嵌入一个双引号需要使用转义符：\ 像这样：\” 或者用单引号引起这个字符串。</li>
 <li>Python中，单引号和双引号都可以用来创建字符串，有一个规则是：如果字符串前面使用了某个引号(单引号或双引号)，那么字符串后面也要用同样的引号：不能再字符串前后混合使用不同的引号。</li>
 <li>可以通过help(insert)来查看BIF函数insert()方法的解释和用法</li>
-</ol>
-<p>that’s all.</p>
+</ul>
 
       
     </div>
@@ -534,8 +472,17 @@ Terry Jones
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -606,6 +553,22 @@ Terry Jones
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#列表定义："><span class="nav-number">1.</span> <span class="nav-text">列表定义：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Python列表的一些方法："><span class="nav-number">2.</span> <span class="nav-text">Python列表的一些方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#len"><span class="nav-number">2.1.</span> <span class="nav-text">len()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#append"><span class="nav-number">2.2.</span> <span class="nav-text">append()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pop"><span class="nav-number">2.3.</span> <span class="nav-text">pop()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#extend"><span class="nav-number">2.4.</span> <span class="nav-text">extend()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#remove"><span class="nav-number">2.5.</span> <span class="nav-text">remove()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#insert"><span class="nav-number">2.6.</span> <span class="nav-text">insert()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意几点"><span class="nav-number">3.</span> <span class="nav-text">注意几点</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

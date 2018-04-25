@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,fstab,mount,挂载," />
+  <meta name="keywords" content="fstab,Linux,mount,挂载," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。 那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类， 一，将mount命令写入到脚本中">
-<meta name="keywords" content="Linux,fstab,mount,挂载">
+<meta name="description" content="因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。 那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类：  将mount命令写入到脚本中，">
+<meta name="keywords" content="fstab,Linux,mount,挂载">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下开机自动挂载samba目录，且可以正常读写">
 <meta property="og:url" content="http://picksomething.cn/2014/10/30/Linux下开机自动挂载samba目录，且可以正常读写/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。 那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类， 一，将mount命令写入到脚本中">
+<meta property="og:description" content="因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。 那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类：  将mount命令写入到脚本中，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.424Z">
+<meta property="og:updated_time" content="2018-04-25T15:21:31.770Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下开机自动挂载samba目录，且可以正常读写">
-<meta name="twitter:description" content="因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。 那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类， 一，将mount命令写入到脚本中">
+<meta name="twitter:description" content="因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。 那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类：  将mount命令写入到脚本中，">
 
 
 
@@ -355,31 +355,21 @@
 
       
         <p>因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。</p>
-<p>那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类，</p>
-<p>一，将mount命令写入到脚本中，开机自动加载脚本</p>
-<p>二，修改fstab</p>
-<p>第一种方法我没有试过，我用的第二种方法，但是也遇到很多坑，写下来让需要的网友不用走那么多弯路。</p>
-<p>首先我们知道挂载samba目录的mount命令是：</p>
-<pre><code>mount -t cifs //172.20.4.189/home /mnt/myshare -o username=caobin
-`&lt;/pre&gt;
--o代表后面可以跟很多参数，比如password啊，iocharset之类的，以`，`分割。
-运行完该命令之后，如果有密码会提示让输入密码的，也可以直接将密码以password=xxx的形式放到-o后面。
-&lt;!--more--&gt;
-打开fstab，vim /etc/fstab 默认fstab是只读的，所以需要修改一下权限，在最后加入这么一句：
-&lt;pre&gt;`//172.20.4.189/home /mnt/myspace cifs defaults,username=caobin,password=xxx 0 0
-`&lt;/pre&gt;
-然后保存退出，重启机器你发现确实挂载上了，开心的不得了
-
-而且还可以将服务器上的android源码导入`source insight`了，但是你会发现普通用户你没办法修改，shit啊，怎么可能不修改代码呢，你们一看可能说我没加rw，那么我将上面那句改为这样
-&lt;pre&gt;`//172.20.4.189/home /mnt/myspace cifs defaults,rw,username=caobin,password=xxx 0 0
-`&lt;/pre&gt;
-然后你试试，一样是不可以写的，哪有那么简单啊，或者说把defaults去掉，一样没用的。
-
-那么如何解决呢，google了很多，有的说加`umask=000`，有的说把服务器上的uid和gid加上去，几乎都是抄来抄去的，我就一次次试，最终发现我在挂载的时候将uid和gid指定为本机的就行了，打开terminal，输入id，就看到uid和gid了。
-
-最终我挂载成功，且可以正常读写的命令是这样的
-&lt;pre&gt;`//172.20.4.189/home /mnt/myspace cifs defaults,rw,uid=1000,gid=1000,credentials=/etc/samba/credentials 0 0
-</code></pre><p>那个<code>/ect/samba/credentials</code>是保存密码用的，嫌麻烦可以直接用<code>username=caobin,password=xxx</code>替换即可，如果中文乱码的话，可以加上<code>iocharset=utf8</code>。</p>
+<p>那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类：</p>
+<ul>
+<li>将mount命令写入到脚本中，开机自动加载脚本</li>
+<li>修改fstab</li>
+</ul>
+<p>第一种方法我没有试过，我用的第二种方法，但是也遇到很多坑，写下来让需要的网友不用走那么多弯路</p>
+<p>首先我们知道挂载samba目录的mount命令是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cifs //172.20.4.189/home /mnt/myshare -o username=caobin</span><br></pre></td></tr></table></figure></p>
+<p>-o代表后面可以跟很多参数，比如password啊，iocharset之类的，以<code>，</code>分割，运行完该命令之后，如果有密码会提示让输入密码的，也可以直接将密码以password=xxx的形式放到-o后面<br><a id="more"></a></p>
+<p>打开fstab，vim /etc/fstab 默认fstab是只读的，所以需要修改一下权限，在最后加入这么一句：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//172.20.4.189/home /mnt/myspace cifs defaults,username=caobin,password=xxx 0 0</span><br></pre></td></tr></table></figure></p>
+<p>然后保存退出，重启机器你发现确实挂载上了，开心的不得了</p>
+<p>而且还可以将服务器上的android源码导入<code>source insight</code>了，但是你会发现普通用户你没办法修改，shit啊，怎么可能不修改代码呢，你们一看可能说我没加rw，那么我将上面那句改为这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//172.20.4.189/home /mnt/myspace cifs defaults,rw,username=caobin,password=xxx 0 0</span><br></pre></td></tr></table></figure></p>
+<p>然后你试试，一样是不可以写的，哪有那么简单啊，或者说把defaults去掉，一样没用的</p>
+<p>那么如何解决呢，google了很多，有的说加<code>umask=000</code>，有的说把服务器上的uid和gid加上去，几乎都是抄来抄去的，我就一次次试，最终发现我在挂载的时候将uid和gid指定为本机的就行了，打开terminal，输入id，就看到uid和gid了</p>
+<p>最终我挂载成功，且可以正常读写的命令是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">//172.20.4.189/home /mnt/myspace cifs defaults,rw,uid=1000,gid=1000,credentials=/etc/samba/credentials 0 0</span><br></pre></td></tr></table></figure></p>
+<p>那个<code>/ect/samba/credentials</code>是保存密码用的，嫌麻烦可以直接用<code>username=caobin,password=xxx</code>替换即可，如果中文乱码的话，可以加上<code>iocharset=utf8</code></p>
 <p>就酱，over</p>
 
       
@@ -398,9 +388,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
             <a href="/tags/fstab/" rel="tag"># fstab</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
           
             <a href="/tags/mount/" rel="tag"># mount</a>
           

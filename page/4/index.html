@@ -1131,21 +1131,23 @@ output_config_file:
 
       
         
-          <p>现在<code>Android Studio 1.0</code>版本正式发布以后，感觉体验比以前好了很多，所以也可以正式抛弃Eclipse，彻底改用Android Studio了。<br>Linux下安装Android Studio很简单，就是到官网下载安装包，然后解压就可以了，然后到对应的Android Studio解压目录找到bin文件夹下面的studio.sh脚本，在终端中执行<code>./studio.sh</code>就可以启动了(前提是安装并配置好了JDK环境)<br>但是每次都在终端下到指定目录运行脚本启动也挺麻烦的，所以就要加入到应用程序列表中，可以直接搜索或者添加OpenSuSE左边的收藏栏中，如何将Android Studio添加到应用程序列表呢，很简单：</p>
+          
+            <p>现在<code>Android Studio 1.0</code>版本正式发布以后，感觉体验比以前好了很多，所以也可以正式抛弃Eclipse，彻底改用Android Studio了</p>
+<p>Linux下安装Android Studio很简单，就是到官网下载安装包，然后解压就可以了，然后到对应的Android Studio解压目录找到bin文件夹下面的studio.sh脚本，在终端中执行<code>./studio.sh</code>就可以启动了(前提是安装并配置好了JDK环境)</p>
+<p>但是每次都在终端下到指定目录运行脚本启动也挺麻烦的，所以就要加入到应用程序列表中，可以直接搜索或者添加OpenSuSE左边的收藏栏中，如何将Android Studio添加到应用程序列表呢，很简单：</p>
 <ol>
 <li><p>到/usr/share/applications/目录下面</p>
 </li>
 <li><p>执行vim studio.desktop命令</p>
 </li>
 <li><p>加入如下代码</p>
-<p>[Desktop Entry]<br>Categories=Application;Development<br>Name=Studio<br>Exec=/home/caobin/android-studio/bin/studio.sh<br>Icon=/home/caobin/android-studio/bin/idea.png<br>Terminal=false<br>Encoding=UTF-8<br>Comment=Android Studio<br>上面代码中Exec和Icon代表执行文件路径和图标路径，具体替换为自己实际的路径即可</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/12/14/OpenSuSE13.2添加Android Studio到应用程序列表/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Desktop Entry]</span><br><span class="line">Categories=Application;Development</span><br><span class="line">Name=Studio</span><br><span class="line">Exec=/home/caobin/android-studio/bin/studio.sh</span><br><span class="line">Icon=/home/caobin/android-studio/bin/idea.png</span><br><span class="line">Terminal=false</span><br><span class="line">Encoding=UTF-8</span><br><span class="line">Comment=Android Studio</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上面代码中Exec和Icon代表执行文件路径和图标路径，具体替换为自己实际的路径即可</p>
+<p>这样就算OK了，你ALT+F1打开OpenSuSE的应用程序搜索，然后输入Studio就可以看到下面出来了Android Studio的图标，右键选择添加到收藏栏或者直接打开都可以，这样以后启动就很方面了。你也可以将Android Studio的路径加入到PATH中，这样可以在任意地方打开Android Studio了，不用再到指定了安装目录了</p>
+
+          
         
       
     </div>
@@ -1583,36 +1585,22 @@ output_config_file:
 
       
         
-          
-            <p>因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。</p>
-<p>那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类，</p>
-<p>一，将mount命令写入到脚本中，开机自动加载脚本</p>
-<p>二，修改fstab</p>
-<p>第一种方法我没有试过，我用的第二种方法，但是也遇到很多坑，写下来让需要的网友不用走那么多弯路。</p>
-<p>首先我们知道挂载samba目录的mount命令是：</p>
-<pre><code>mount -t cifs //172.20.4.189/home /mnt/myshare -o username=caobin
-`&lt;/pre&gt;
--o代表后面可以跟很多参数，比如password啊，iocharset之类的，以`，`分割。
-运行完该命令之后，如果有密码会提示让输入密码的，也可以直接将密码以password=xxx的形式放到-o后面。
-&lt;!--more--&gt;
-打开fstab，vim /etc/fstab 默认fstab是只读的，所以需要修改一下权限，在最后加入这么一句：
-&lt;pre&gt;`//172.20.4.189/home /mnt/myspace cifs defaults,username=caobin,password=xxx 0 0
-`&lt;/pre&gt;
-然后保存退出，重启机器你发现确实挂载上了，开心的不得了
-
-而且还可以将服务器上的android源码导入`source insight`了，但是你会发现普通用户你没办法修改，shit啊，怎么可能不修改代码呢，你们一看可能说我没加rw，那么我将上面那句改为这样
-&lt;pre&gt;`//172.20.4.189/home /mnt/myspace cifs defaults,rw,username=caobin,password=xxx 0 0
-`&lt;/pre&gt;
-然后你试试，一样是不可以写的，哪有那么简单啊，或者说把defaults去掉，一样没用的。
-
-那么如何解决呢，google了很多，有的说加`umask=000`，有的说把服务器上的uid和gid加上去，几乎都是抄来抄去的，我就一次次试，最终发现我在挂载的时候将uid和gid指定为本机的就行了，打开terminal，输入id，就看到uid和gid了。
-
-最终我挂载成功，且可以正常读写的命令是这样的
-&lt;pre&gt;`//172.20.4.189/home /mnt/myspace cifs defaults,rw,uid=1000,gid=1000,credentials=/etc/samba/credentials 0 0
-</code></pre><p>那个<code>/ect/samba/credentials</code>是保存密码用的，嫌麻烦可以直接用<code>username=caobin,password=xxx</code>替换即可，如果中文乱码的话，可以加上<code>iocharset=utf8</code>。</p>
-<p>就酱，over</p>
-
-          
+          <p>因为现在基本都在Linux下活动了，工作中有需要用到编译服务器，每次进入linux之后再用mount命令手动挂载也挺麻烦的，而且手动挂载的话，每次都要重新将服务器目录的代码导入到source insight，麻烦极了，严重降低了生产效率。</p>
+<p>那么问题就来了，如何能够开机自动挂载samba目录呢，google或者baidu一下你会发现各种各样的方法，大致可以分为两类：</p>
+<ul>
+<li>将mount命令写入到脚本中，开机自动加载脚本</li>
+<li>修改fstab</li>
+</ul>
+<p>第一种方法我没有试过，我用的第二种方法，但是也遇到很多坑，写下来让需要的网友不用走那么多弯路</p>
+<p>首先我们知道挂载samba目录的mount命令是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t cifs //172.20.4.189/home /mnt/myshare -o username=caobin</span><br></pre></td></tr></table></figure></p>
+<p>-o代表后面可以跟很多参数，比如password啊，iocharset之类的，以<code>，</code>分割，运行完该命令之后，如果有密码会提示让输入密码的，也可以直接将密码以password=xxx的形式放到-o后面<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/10/30/Linux下开机自动挂载samba目录，且可以正常读写/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

@@ -506,7 +506,8 @@
         
           <p>Android上定时任务这个需求肯定是经常有的，之前一遇到定时任务，就首选<code>Timer</code>，也没觉得有什么不好的。<br>后来有一次我测试的时候无意间把系统时间往前调(系统时间调早一点)了一些，发现定时任务的打印停止了，觉得很好奇，以为是进程被干掉了，也就没有在意，又重启了一下应用进程，但是后来再一次出现了这样的事，于是就不淡定了，然后就看了一下Android官方网站上关于Timer的说明，又顺便Google了一下，发现原来是这样的：</p>
 <blockquote>
-<p>在Timer定时器中是以<code>System.currentTimeMillis()</code>来获取当前时间，然后和<code>TimerTask</code>任务下次要执行的时间进行比较，如果时间到了就执行下一次重复任务，比如我用Timer设定的是每隔1s执行一次定时任务，如果你把时间往前调了1个小时，那么Timer定时器在准备执行下次任务的时候获取到的当前时间就比定时器的间隔时间1s大了很多，这样定时器就会等到1个小时零1s才会执行下一次的定时任务，如果你将时间往后调肯定不所以这就是为什么时间往前调Timer定时器会”失效”而往后调不会”失效”的原因<br>
+<p>在Timer定时器中是以<code>System.currentTimeMillis()</code>来获取当前时间，然后和<code>TimerTask</code>任务下次要执行的时间进行比较，如果时间到了就执行下一次重复任务，比如我用Timer设定的是每隔1s执行一次定时任务，如果你把时间往前调了1个小时，那么Timer定时器在准备执行下次任务的时候获取到的当前时间就比定时器的间隔时间1s大了很多，这样定时器就会等到1个小时零1s才会执行下一次的定时任务，如果你将时间往后调肯定不所以这就是为什么时间往前调Timer定时器会”失效”而往后调不会”失效”的原因</p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/05/22/Android定时任务Timer失效？/#more" rel="contents">
@@ -1104,37 +1105,16 @@
       
         
           
-            <p>之前用IOS的时候，IOS的<code>Assisitivetouch</code>中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的方法进行调用。先上代码：</p>
-<pre><code>private void handleNotify(String hanlde) {
-    int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-    try {
-        Object service = getSystemService(&quot;statusbar&quot;);
-        Class&amp;lt;?&amp;gt; statusbarManager = Class
-                .forName(&quot;android.app.StatusBarManager&quot;);
-        Method expand = null;
-&lt;!--more--&gt;
-        if (service != null) {
-            if (currentApiVersion &amp;lt;= 16) {
-                expand = statusbarManager.getMethod(&quot;expand&quot;);
-            } else {
-                if (hanlde == &quot;open&quot;) {
-                    expand = statusbarManager
-                            .getMethod(&quot;expandNotificationsPanel&quot;);
-                } else if (hanlde == &quot;close&quot;) {
-                    expand = statusbarManager
-                            .getMethod(&quot;collapsePanels&quot;);
-                }
-            }
-            expand.setAccessible(true);
-            expand.invoke(service);
-        }
-    } catch (Exception e) {
-        Log.d(&quot;caobin&quot;, &quot;error&quot;);
-    }
-}
-</code></pre><p>注意有两点需要注意三点：<br>1. 在执行Object service = getSystemService(“statusbar”);这句的时候，可能会提示参数错误，说是参数只能是Context.xxxService之类的，忽略一下就好。</p>
-<p>2.因为在Android4.1(API 16)之后，打开通知栏的方法名由expand改成expandNotificationsPanel了，所以为了保证程序在所有的手机上都能够正常工作，需要加上api的判断。</p>
-<p>3.关闭通知栏的方法是collapsePanels，调用该方法会自动关闭打开的通知栏。</p>
+            <p>之前用iPhone的时候，iPhone的<code>Assisitivetouch</code>中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对普通用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的方法进行调用，反射打开通知栏代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleNotify</span><span class="params">(String hanlde)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> currentApiVersion = android.os.Build.VERSION.SDK_INT;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object service = getSystemService(<span class="string">"statusbar"</span>);</span><br><span class="line">        Class&lt;?&gt; statusbarManager = Class</span><br><span class="line">                .forName(<span class="string">"android.app.StatusBarManager"</span>);</span><br><span class="line">        Method expand = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (service != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (currentApiVersion &lt;= <span class="number">16</span>) &#123;</span><br><span class="line">                expand = statusbarManager.getMethod(<span class="string">"expand"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (hanlde == <span class="string">"open"</span>) &#123;</span><br><span class="line">                    expand = statusbarManager</span><br><span class="line">                            .getMethod(<span class="string">"expandNotificationsPanel"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hanlde == <span class="string">"close"</span>) &#123;</span><br><span class="line">                    expand = statusbarManager</span><br><span class="line">                            .getMethod(<span class="string">"collapsePanels"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            expand.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            expand.invoke(service);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        Log.d(<span class="string">"caobin"</span>, <span class="string">"error"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意有三点需要注意：</p>
+<ol>
+<li><p>在执行Object service = getSystemService(“statusbar”);这句的时候，可能会提示参数错误，说是参数只能是Context.xxxService之类的，忽略一下就好。</p>
+</li>
+<li><p>因为在Android4.1(API 16)之后，打开通知栏的方法名由expand改成expandNotificationsPanel了，所以为了保证程序在所有的手机上都能够正常工作，需要加上api的判断。</p>
+</li>
+<li><p>关闭通知栏的方法是collapsePanels，调用该方法会自动关闭打开的通知栏。</p>
+</li>
+</ol>
 <p>附上项目demo地址：<a href="https://github.com/picksomething/HandleNotification" target="_blank" rel="noopener">反射方法调用打开关闭通知栏</a></p>
 
           
@@ -1278,85 +1258,22 @@
         
           
             <p>过完年了，新的一年希望能找份理想的工作，好了开始正题，今天读的是Python中的文件和异常</p>
-<p>Python是如何从文件读取数据的呢，先看一段代码：</p>
-<pre><code>file = open(&apos;a.txt&apos;)
-#Todo something with the file
-...
-file.close()`&lt;/pre&gt;
-看完上面这段代码就基本明白，Python是通过open()这个BIF来和文件交互，结合for语句使用，就很容易实现从文件中读取数据了。
-&lt;!--more--&gt;
-Python中和读取文件相关的几个方法的基本功能如下所示：
-`open()`BIF打开一个磁盘文件，创建一个迭代器从文件读取数据，一次读取一行
-`readline()`方法从一个打开的文件读取一行数据
-`seek()`方法可以用来将文件‘退回’到起始位置
-`close()`方法关闭一个之前打开的文件
-`split()`方法可以将一个字符串分解为一个子字串列表，可以指定一个最大分割数来限定最多分割为几部分，如果没有指定分隔符的话，默认以空格作为分隔符进行分割
-find()方法会在一个字符串中查找一个特定子串，找到的话返回特定子串的起始位置，找不到返回-1
-先看一下下面这段Python代码(注意：该Python文件的要和sketch.txt这一个目录)
-&lt;pre&gt;`data = open(&apos;sketch.txt&apos;)
-
-for each_line in data:
-        (role,line_spoken) = each_line.split(&apos;:&apos;)
-        print(role,end=&apos;&apos;)
-        print(&apos; said: &apos;,end=&apos;&apos;)
-        print(line_spoken,end=&apos;&apos;)
-
-data.close()`&lt;/pre&gt;
-这段代码很简单，就是读取文件sketch.txt里面的内容，将每行以:分割，然后进行格式化输出，但是事实上这段代码是不完善的，因为如果sketch.txt里面某一行没有:字符亦或者某一行里面不止一个:字符，程序执行过程中都会出现ValueError错误，为了让程序变的更健壮，我们改一下，下面是2.0版本
-&lt;pre&gt;`data = open(&apos;sketch.txt&apos;)
-
-for each_line in data:
-    if not each_line.find(&apos;:&apos;) == -1:
-            (role,line_spoken) = each_line.split(&apos;:&apos;,1)
-            print(role,end=&apos;&apos;)
-            print(&apos; said: &apos;,end=&apos;&apos;)
-            print(line_spoken,end=&apos;&apos;)
-
-data.close()`&lt;/pre&gt;
-2.0在1.0的基础上有两个改动：
-
-a.判断某一个有没有:这个符号，有的话再分割，防止某一行没有:而出错
-
-b.split传入第二个可选参数maxsplit(最大分割数)，限制只分为两部分，防止:过多而出错
-
-现在看上去程序是没有什么错误了，也能够正常输出了。但是问题还是来了，你会发现这样做的话如果后面我又想以,或者其他字符作为分隔符，改动的就多了，而且if语句感觉好像也很别扭，那么有没有更好的解决办法呢？我们一起看看3.0版本
-&lt;pre&gt;`data = open(&apos;sketch.txt&apos;)
-
-for each_line in data:
-    try:
-        (role,line_spoken) = each_line.split(&apos;:&apos;,1)
-        print(role,end=&apos;&apos;)
-        print(&apos; said: &apos;,end=&apos;&apos;)
-        print(line_spoken,end=&apos;&apos;)
-    except:
-        pass
-
-data.close()`&lt;/pre&gt;
-有其他编程语言经验的一眼就看出来了，这不是异常捕获呢，对，这就是Python的异常捕获机制，简称try/except机制，try:后面跟你可能会抛出运行时错误的代码，except:后面跟错误恢复代码，上面是直接跟一个pass，相当于空语句，什么都不做。
-
-这样一来，3.0版本的不但可以正常运行，而且兼容性还比较高，代码逻辑简单，是不错的选择。这个会不会还有其他错误呢，细心观察会发现open() BIF这里，如果文件不存在，会抛出IOError错误。为了解决错误，我们可以选择增加逻辑判定sketch.txt是否存在或者再加一层异常处理，前面已经对比过，增加异常处理相对比增加代码逻辑要好一些，所以我们选择再增加一层异常处理。
-
-另一方面我们捕获异常的时候使用的是except:这种一般法的方式，这样无论什么样的异常或者错误都会被忽略，这并不是我们要的，因为我们知道现在会出现的错误只有外层open的IOError和字符串截取可能发生的ValueError这两种错误，我们只想针对这两种错误捕获异常，而不是忽略任何错误，这样不利于我们分析问题。
-
-综合上面两点，最终版4.0如下：
-&lt;pre&gt;`try:
-    data = open(&apos;sketch.txt&apos;)
-
-    for each_line in data:
-        try:
-            (role,line_spoken) = each_line.split(&apos;:&apos;,1)
-            print(role,end=&apos;&apos;)
-            print(&apos; said: &apos;,end=&apos;&apos;)
-            print(line_spoken,end=&apos;&apos;)
-        except ValueError:
-            pass
-
-data.close()
-
-except IOError:
-    print(&apos;The data file is missing!&apos;)
-</code></pre><p>小知识：</p>
-<p>1、Python中不可改变的常量列表称为元组(tuple)。一旦将列表数据赋值至一个元组，就不能再改变，元组是不可改变的。</p>
+<p>Python是如何从文件读取数据的呢，先看一段代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file = open(<span class="string">'a.txt'</span>)</span><br><span class="line"><span class="comment">#Todo something with the file</span></span><br><span class="line">...</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure></p>
+<p>看完上面这段代码就基本明白，Python是通过open()这个BIF来和文件交互，结合for语句使用，就很容易实现从文件中读取数据了。</p>
+<p>Python中和读取文件相关的几个方法的基本功能如下所示：</p>
+<h2 id="open"><a href="#open" class="headerlink" title="open()"></a>open()</h2><p>BIF打开一个磁盘文件，创建一个迭代器从文件读取数据，一次读取一行</p>
+<h2 id="readline"><a href="#readline" class="headerlink" title="readline()"></a>readline()</h2><p>从一个打开的文件读取一行数据</p>
+<h2 id="seek"><a href="#seek" class="headerlink" title="seek()"></a>seek()</h2><p>可以用来将文件‘退回’到起始位置</p>
+<h2 id="close"><a href="#close" class="headerlink" title="close()"></a>close()</h2><p>关闭一个之前打开的文件</p>
+<h2 id="split"><a href="#split" class="headerlink" title="split()"></a>split()</h2><p>可以将一个字符串分解为一个子字串列表，可以指定一个最大分割数来限定最多分割为几部分，如果没有指定分隔符的话，默认以空格作为分隔符进行分割</p>
+<h2 id="find"><a href="#find" class="headerlink" title="find()"></a>find()</h2><p>在一个字符串中查找一个特定子串，找到的话返回特定子串的起始位置，找不到返回-1</p>
+<p>先看一下下面这段Python代码(注意：该Python文件的要和sketch.txt这一个目录)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data = open(<span class="string">'sketch.txt'</span>)</span><br><span class="line"><span class="keyword">for</span> each_line <span class="keyword">in</span> data:</span><br><span class="line">    (role,line_spoken) = each_line.split(<span class="string">':'</span>)</span><br><span class="line">    print(role,end=<span class="string">''</span>)</span><br><span class="line">    print(<span class="string">' said: '</span>,end=<span class="string">''</span>)</span><br><span class="line">    print(line_spoken,end=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">data.close()</span><br></pre></td></tr></table></figure></p>
+<p>这段代码很简单，就是读取文件sketch.txt里面的内容，将每行以:分割，然后进行格式化输出，但是事实上这段代码是不完善的，因为如果sketch.txt里面某一行没有:字符亦或者某一行里面不止一个:字符，程序执行过程中都会出现ValueError错误，为了让程序变的更健壮，我们改一下，下面是2.0版本<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">data = open(<span class="string">'sketch.txt'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> each_line <span class="keyword">in</span> data:</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> each_line.find(<span class="string">':'</span>) == <span class="number">-1</span>:</span><br><span class="line">        (role,line_spoken) = each_line.split(<span class="string">':'</span>,<span class="number">1</span>)</span><br><span class="line">        print(role,end=<span class="string">''</span>)</span><br><span class="line">        print(<span class="string">' said: '</span>,end=<span class="string">''</span>)</span><br><span class="line">        print(line_spoken,end=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">data.close()</span><br><span class="line">```  </span><br><span class="line"><span class="number">2.0</span>在<span class="number">1.0</span>的基础上有两个改动：</span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line">* 判断某一个有没有:这个符号，有的话再分割，防止某一行没有:而出错</span><br><span class="line">* split传入第二个可选参数maxsplit(最大分割数)，限制只分为两部分，防止:过多而出错</span><br><span class="line"></span><br><span class="line">现在看上去程序是没有什么错误了，也能够正常输出了。但是问题还是来了，你会发现这样做的话如果后面我又想以,或者其他字符作为分隔符，改动的就多了，而且<span class="keyword">if</span>语句感觉好像也很别扭，那么有没有更好的解决办法呢？我们一起看看<span class="number">3.0</span>版本</span><br><span class="line">```Python</span><br><span class="line">data = open(<span class="string">'sketch.txt'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> each_line <span class="keyword">in</span> data:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        (role,line_spoken) = each_line.split(<span class="string">':'</span>,<span class="number">1</span>)</span><br><span class="line">        print(role,end=<span class="string">''</span>)</span><br><span class="line">        print(<span class="string">' said: '</span>,end=<span class="string">''</span>)</span><br><span class="line">        print(line_spoken,end=<span class="string">''</span>)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">data.close()</span><br></pre></td></tr></table></figure></p>
+<p>有其他编程语言经验的一眼就看出来了，这不是异常捕获呢，对，这就是Python的异常捕获机制，简称try/except机制，try:后面跟你可能会抛出运行时错误的代码，except:后面跟错误恢复代码，上面是直接跟一个pass，相当于空语句，什么都不做。</p>
+<p>这样一来，3.0版本的不但可以正常运行，而且兼容性还比较高，代码逻辑简单，是不错的选择。这个会不会还有其他错误呢，细心观察会发现open() BIF这里，如果文件不存在，会抛出IOError错误。为了解决错误，我们可以选择增加逻辑判定sketch.txt是否存在或者再加一层异常处理，前面已经对比过，增加异常处理相对比增加代码逻辑要好一些，所以我们选择再增加一层异常处理。</p>
+<p>另一方面我们捕获异常的时候使用的是except:这种一般法的方式，这样无论什么样的异常或者错误都会被忽略，这并不是我们要的，因为我们知道现在会出现的错误只有外层open的IOError和字符串截取可能发生的ValueError这两种错误，我们只想针对这两种错误捕获异常，而不是忽略任何错误，这样不利于我们分析问题。</p>
+<p>综合上面两点，最终版4.0如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    data = open(<span class="string">'sketch.txt'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> each_line <span class="keyword">in</span> data:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            (role,line_spoken) = each_line.split(<span class="string">':'</span>,<span class="number">1</span>)</span><br><span class="line">            print(role,end=<span class="string">''</span>)</span><br><span class="line">            print(<span class="string">' said: '</span>,end=<span class="string">''</span>)</span><br><span class="line">            print(line_spoken,end=<span class="string">''</span>)</span><br><span class="line">        <span class="keyword">except</span> ValueError:</span><br><span class="line">        		<span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    data.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">except</span> IOError:</span><br><span class="line">    print(<span class="string">'The data file is missing!'</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="tips："><a href="#tips：" class="headerlink" title="tips："></a>tips：</h3><p>Python中不可改变的常量列表称为元组(tuple)。一旦将列表数据赋值至一个元组，就不能再改变，元组是不可改变的</p>
 
           
         
@@ -1645,88 +1562,24 @@ except IOError:
       
         
           
-            <p>记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功。</p>
-<p>先给出一个列表的定义：</p>
-<pre><code>language = [&quot;Python&quot;,&quot;Java&quot;,&quot;C/C++&quot;]`&lt;/pre&gt;
-关于列表定义：如果你有其他高级语言的基础第一次接触Python的时候会很好奇，难道不需要为列表声明类型信息吗?答案是不用，Python的变量标识符没有类型，标识符只是名字，可以只是某个类型的数据对象，可以把Python的列表想象成是一个高层集合。
-&lt;!--more--&gt;
-关于列表在内存中存储：Python创建一个列表时，解释器会在内存中创建一个类似数组的数据结构来存储数据，数据堆自下而上堆放(形成一个堆栈)。和其他语言一样，默认第一项的编号也是从0开始。
-[![list_stack](http://www.picksomething.cn/wp-content/uploads/2015/01/list_stack.jpg)](http://www.picksomething.cn/wp-content/uploads/2015/01/list_stack.jpg)
-可以通过`print(language[0])`在屏幕上打出列表第一项的值。
-
-Python列表的一些方法：
-
-`len()`获取列表长度
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; len(language)
-3
-&amp;gt;&amp;gt;&amp;gt; print(len(language))
-3`&lt;/pre&gt;
-`append()`在列表末尾增加一个数据项
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.append(&quot;Swift&quot;)
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;Java&apos;, &apos;C/C++&apos;, &apos;Swift&apos;]`&lt;/pre&gt;
-`pop()`从列表末尾删除数据项
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.pop()
-&apos;Swift&apos;
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;Java&apos;, &apos;C/C++&apos;]
-&amp;gt;&amp;gt;&amp;gt;`&lt;/pre&gt;
-`extend()`在列表末尾增加一个数据项集合
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.extend([&quot;Swift&quot;,&quot;Go&quot;])
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;Java&apos;, &apos;C/C++&apos;, &apos;Swift&apos;, &apos;Go&apos;]`&lt;/pre&gt;
-`remove()`在列表中找到并删除一个特定的数据项：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.remove(&quot;Java&quot;)
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;C/C++&apos;, &apos;Swift&apos;, &apos;Go&apos;]`&lt;/pre&gt;
-`insert()`在某个特定位置前面插入一个数据项：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; language.insert(2,&quot;Java&quot;)
-&amp;gt;&amp;gt;&amp;gt; print(language)
-[&apos;Python&apos;, &apos;C/C++&apos;, &apos;Java&apos;, &apos;Swift&apos;, &apos;Go&apos;]`&lt;/pre&gt;
-列表中可以混入不同类型的数据以及列表中嵌套列表
-
-给出一个嵌套列表的例子，然后输出列表中的每一项：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; movies = [&quot;The Holy Grail&quot;,1975,&quot;Terry Gilliam&quot;,91,[&quot;Graham Chapman&quot;,[&quot;Michael Palin&quot;,&quot;John Cleese&quot;,&quot;Terry Gilliam&quot;,&quot;Eric Idle&quot;,&quot;Terry Jones&quot;]]]
-&amp;gt;&amp;gt;&amp;gt; print(movies)
-[&apos;The Holy Grail&apos;, 1975, &apos;Terry Gilliam&apos;, 91, [&apos;Graham Chapman&apos;, [&apos;Michael Palin&apos;, &apos;John Cleese&apos;, &apos;Terry Gilliam&apos;, &apos;Eric Idle&apos;, &apos;Terry Jones&apos;]]]
-&amp;gt;&amp;gt;&amp;gt; for each_item in movies:
-    print(each_item)
-
-The Holy Grail
-1975
-Terry Gilliam
-91
-[&apos;Graham Chapman&apos;, [&apos;Michael Palin&apos;, &apos;John Cleese&apos;, &apos;Terry Gilliam&apos;, &apos;Eric Idle&apos;, &apos;Terry Jones&apos;]]`&lt;/pre&gt;
-会发现，其实只是把列表中的每一项整个打印出来了，但是因为列表的有些项本身还是一个列表，甚至列表中还有列表，那么我们需要改进程序：
-&lt;pre&gt;`&amp;gt;&amp;gt;&amp;gt; for each_item in movies:
-    if isinstance(each_item,list):
-        for each_value in each_item:
-            if isinstance(each_value,list):
-                for nested_item in each_value:
-                    print(nested_item)
-            else:
-                print(each_value)
-    else:
-        print(each_item)
-
-The Holy Grail
-1975
-Terry Gilliam
-91
-Graham Chapman
-Michael Palin
-John Cleese
-Terry Gilliam
-Eric Idle
-Terry Jones
-</code></pre><p>这样打印出来的就没有列表了，但是你会发现重复代码很多，而且如果嵌套多层的话，代码要变的更臃肿，就不符合Python的简洁高效了，所以后面我们会来优化这段代码。</p>
-<p>PS：注意几点</p>
-<ol>
+            <p>记得最开始学接触Python就被它那高效简洁的代码吸引了，就决定要学Python，那时候还没大学毕业，在网易云课堂看一些Python的视频，但是因为后来从事Android开发又加上工作比较忙，所以就没有继续系统学习和梳理了，之前学的也都忘差不多了，现在决定重新系统地再学习一遍，记得刚工作的时候买了一本Head First Python，一直放在抽屉了没怎么看，现在又派上用场了，坚持下去，就会成功</p>
+<p>先给出一个列表的定义：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">language = [<span class="string">"Python"</span>,<span class="string">"Java"</span>,<span class="string">"C/C++"</span>]</span><br></pre></td></tr></table></figure></p>
+<h2 id="列表定义："><a href="#列表定义：" class="headerlink" title="列表定义："></a>列表定义：</h2><p>如果你有其他高级语言的基础第一次接触Python的时候会很好奇，难道不需要为列表声明类型信息吗?答案是不用，Python的变量标识符没有类型，标识符只是名字，可以只是某个类型的数据对象，可以把Python的列表想象成是一个高层集合</p>
+<p>关于列表在内存中存储：Python创建一个列表时，解释器会在内存中创建一个类似数组的数据结构来存储数据，数据堆自下而上堆放(形成一个堆栈)。和其他语言一样，默认第一项的编号也是从0开始。<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/list_stack.jpg"><br>可以通过<code>print(language[0])</code>在屏幕上打出列表第一项的值</p>
+<h2 id="Python列表的一些方法："><a href="#Python列表的一些方法：" class="headerlink" title="Python列表的一些方法："></a>Python列表的一些方法：</h2><h3 id="len"><a href="#len" class="headerlink" title="len()"></a>len()</h3><p>获取列表长度<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(language)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(len(language))</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="append"><a href="#append" class="headerlink" title="append()"></a>append()</h3><p>在列表末尾增加一个数据项<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.append(<span class="string">"Swift"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">    [<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C/C++'</span>, <span class="string">'Swift'</span>]</span><br></pre></td></tr></table></figure></p>
+<h3 id="pop"><a href="#pop" class="headerlink" title="pop()"></a>pop()</h3><p>从列表末尾删除数据项<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.pop()</span><br><span class="line"><span class="string">'Swift'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C/C++'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="extend"><a href="#extend" class="headerlink" title="extend()"></a>extend()</h3><p>在列表末尾增加一个数据项集合<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.extend([<span class="string">"Swift"</span>,<span class="string">"Go"</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'Java'</span>, <span class="string">'C/C++'</span>, <span class="string">'Swift'</span>, <span class="string">'Go'</span>]</span><br></pre></td></tr></table></figure></p>
+<h3 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h3><p>在列表中找到并删除一个特定的数据项：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.remove(<span class="string">"Java"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'C/C++'</span>, <span class="string">'Swift'</span>, <span class="string">'Go'</span>]</span><br></pre></td></tr></table></figure></p>
+<h3 id="insert"><a href="#insert" class="headerlink" title="insert()"></a>insert()</h3><p>在某个特定位置前面插入一个数据项：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>language.insert(<span class="number">2</span>,<span class="string">"Java"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(language)</span><br><span class="line">[<span class="string">'Python'</span>, <span class="string">'C/C++'</span>, <span class="string">'Java'</span>, <span class="string">'Swift'</span>, <span class="string">'Go'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>列表中可以混入不同类型的数据以及列表中嵌套列表，给出一个嵌套列表的例子，然后输出列表中的每一项：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>movies = [<span class="string">"The Holy Grail"</span>,<span class="number">1975</span>,<span class="string">"Terry Gilliam"</span>,<span class="number">91</span>,[<span class="string">"Graham Chapman"</span>,[<span class="string">"Michael Palin"</span>,<span class="string">"John Cleese"</span>,<span class="string">"Terry Gilliam"</span>,<span class="string">"Eric Idle"</span>,<span class="string">"Terry Jones"</span>]]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(movies)</span><br><span class="line">[<span class="string">'The Holy Grail'</span>, <span class="number">1975</span>, <span class="string">'Terry Gilliam'</span>, <span class="number">91</span>, [<span class="string">'Graham Chapman'</span>, [<span class="string">'Michael Palin'</span>, <span class="string">'John Cleese'</span>, <span class="string">'Terry Gilliam'</span>, <span class="string">'Eric Idle'</span>, <span class="string">'Terry Jones'</span>]]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> each_item <span class="keyword">in</span> movies:</span><br><span class="line">        print(each_item)</span><br><span class="line"></span><br><span class="line">The Holy Grail</span><br><span class="line"><span class="number">1975</span></span><br><span class="line">Terry Gilliam</span><br><span class="line"><span class="number">91</span></span><br><span class="line">[<span class="string">'Graham Chapman'</span>, [<span class="string">'Michael Palin'</span>, <span class="string">'John Cleese'</span>, <span class="string">'Terry Gilliam'</span>, <span class="string">'Eric Idle'</span>, <span class="string">'Terry Jones'</span>]]</span><br></pre></td></tr></table></figure></p>
+<p>你会发现，其实只是把列表中的每一项整个打印出来了，但是因为列表的有些项本身还是一个列表，甚至列表中还有列表，那么我们需要改进程序：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> each_item <span class="keyword">in</span> movies:</span><br><span class="line">    	<span class="keyword">if</span> isinstance(each_item,list):</span><br><span class="line">    		<span class="keyword">for</span> each_value <span class="keyword">in</span> each_item:</span><br><span class="line">    			<span class="keyword">if</span> isinstance(each_value,list):</span><br><span class="line">    				<span class="keyword">for</span> nested_item <span class="keyword">in</span> each_value:</span><br><span class="line">    					print(nested_item)</span><br><span class="line">    			<span class="keyword">else</span>:</span><br><span class="line">    				print(each_value)</span><br><span class="line">    	<span class="keyword">else</span>:</span><br><span class="line">    		print(each_item)</span><br><span class="line"></span><br><span class="line">The Holy Grail</span><br><span class="line"><span class="number">1975</span></span><br><span class="line">Terry Gilliam</span><br><span class="line"><span class="number">91</span></span><br><span class="line">Graham Chapman</span><br><span class="line">Michael Palin</span><br><span class="line">John Cleese</span><br><span class="line">Terry Gilliam</span><br><span class="line">Eric Idle</span><br><span class="line">Terry Jones</span><br></pre></td></tr></table></figure></p>
+<p>这样打印出来的就没有列表了，但是你会发现重复代码很多，而且如果嵌套多层的话，代码要变的更臃肿，就不符合Python的简洁高效了，所以后面我们会来优化这段代码</p>
+<h2 id="注意几点"><a href="#注意几点" class="headerlink" title="注意几点"></a>注意几点</h2><ul>
 <li>如果需要在一个字符串中嵌入一个双引号需要使用转义符：\ 像这样：\” 或者用单引号引起这个字符串。</li>
 <li>Python中，单引号和双引号都可以用来创建字符串，有一个规则是：如果字符串前面使用了某个引号(单引号或双引号)，那么字符串后面也要用同样的引号：不能再字符串前后混合使用不同的引号。</li>
 <li>可以通过help(insert)来查看BIF函数insert()方法的解释和用法</li>
-</ol>
-<p>that’s all.</p>
+</ul>
 
           
         

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,Enum,枚举," />
+  <meta name="keywords" content="Enum,Java,枚举," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子 public enum Color{     RED,BLUE,BLACK,YELLOW,GREEN } `&amp;lt;/pre&amp;gt; 事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum&amp;amp;lt;E&amp;amp;gt;">
-<meta name="keywords" content="Java,Enum,枚举">
+<meta name="description" content="因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子123public enum Color&amp;#123;    RED,BLUE,BLACK,YELLOW,GREEN&amp;#125; 事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum)。它们会继承Enum中的方法，通常这些方">
+<meta name="keywords" content="Enum,Java,枚举">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java中枚举enum的基本用法">
 <meta property="og:url" content="http://picksomething.cn/2013/10/24/Java中枚举enum的基本用法/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子 public enum Color{     RED,BLUE,BLACK,YELLOW,GREEN } `&amp;lt;/pre&amp;gt; 事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum&amp;amp;lt;E&amp;amp;gt;">
+<meta property="og:description" content="因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子123public enum Color&amp;#123;    RED,BLUE,BLACK,YELLOW,GREEN&amp;#125; 事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum)。它们会继承Enum中的方法，通常这些方">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:55:20.950Z">
+<meta property="og:updated_time" content="2018-04-25T15:19:08.013Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中枚举enum的基本用法">
-<meta name="twitter:description" content="因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子 public enum Color{     RED,BLUE,BLACK,YELLOW,GREEN } `&amp;lt;/pre&amp;gt; 事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum&amp;amp;lt;E&amp;amp;gt;">
+<meta name="twitter:description" content="因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子123public enum Color&amp;#123;    RED,BLUE,BLACK,YELLOW,GREEN&amp;#125; 事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum)。它们会继承Enum中的方法，通常这些方">
 
 
 
@@ -354,41 +354,22 @@
       
 
       
-        <p>因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子</p>
-<pre><code>public enum Color{
-    RED,BLUE,BLACK,YELLOW,GREEN
-}
-`&lt;/pre&gt;
-事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum&amp;lt;E&amp;gt;)。它们会继承Enum中的方法，通常这些方法能帮助我们更好地操作枚举类。上述Color就是一个枚举类，而且是一个不可被继承的final类。其枚举值(RED,BLUE...)都是Color类型的类静态常量，可以通过下面的方式来得到Color枚举类的一个实例
-&lt;pre&gt;`Color c=Color.RED;
-`&lt;/pre&gt;
-&lt;!--more--&gt;
-注意：这些枚举值都是`public static final`的，也就是我们经常所定义的常量方式，因此枚举类中的枚举值一般都是大写。
-既然枚举类也是类，当然也会有构造器，方法和数据域，但是，枚举类的构造器和普通类的构造器有很大的不同：
-</code></pre><ol>
+        <p>因为之前看电视底层的一些接口很多地方都用到了枚举，所以现在学学，总结一下枚举，首先我们先看一下一个例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color&#123;</span><br><span class="line">    RED,BLUE,BLACK,YELLOW,GREEN</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>事实上枚举enum声明定义的类型就是一个类，所以我们统称为枚举类，这些类都是类库中Enum类的子类(java.lang.Enum<e>)。它们会继承Enum中的方法，通常这些方法能帮助我们更好地操作枚举类。上述Color就是一个枚举类，而且是一个不可被继承的final类。其枚举值(RED,BLUE…)都是Color类型的类静态常量，可以通过下面的方式来得到Color枚举类的一个实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Color c=Color.RED;</span><br></pre></td></tr></table></figure></e></p>
+<p>注意：这些枚举值都是<code>public static final</code>的，也就是我们经常所定义的常量方式，因此枚举类中的枚举值一般都是大写，既然枚举类也是类，当然也会有构造器，方法和数据域，但是，枚举类的构造器和普通类的构造器有很大的不同：</p>
+<p>##枚举构造器的不同</p>
+<ul>
 <li>构造器只是在构造枚举值的时候被调用</li>
-<li>构造器只能是私有的private，不允许有public构造器，这样可以保证外部代码无法新构造枚举类实例，因为我们知道枚举值是public static final的常量而已。但枚举值的方法和数据域允许外部访问。</li>
-<li>枚举类可以在switch中使用<br><pre>`Color color=Color.RED;<br>switch(color){<pre><code>case RED:
-    System.out.println(&quot;it&apos;s red&quot;);break;
-case BLUE:
-    System.out.println(&quot;it&apos;s blue&quot;);break;
-case BLACK:
-    System.out.println(&quot;it&apos;s blue&quot;);break;
-</code></pre>}<br><code>&lt;/pre&gt;
-以下是继承Enum中的一些方法，华丽丽的分割线=
-(1)  ordinal()方法: 返回枚举值在枚举类种的顺序。这个顺序根据枚举值声明的顺序而定。
-&lt;pre&gt;</code>Color.RED.ordinal();  //返回结果：0<br>Color.BLUE.ordinal();  //返回结果：1<br><code>&lt;/pre&gt;
-(2)  compareTo()方法: Enum实现了java.lang.Comparable接口，因此可以比较象与指定对象的顺序。Enum中的</code>compareTo<code>返回的是两个枚举值的顺序之差。当然，前提是两个枚举值必须属于同一个枚举类，否则会抛出</code>ClassCastException()<code>异常。(具体可见源代码)
-&lt;pre&gt;</code>Color.RED.compareTo(Color.BLUE);  //返回结果 -1<code>&lt;/pre&gt;
-(3)  values()方法： 静态方法，返回一个包含全部枚举值的数组。
-&lt;pre&gt;</code>Color[] colors=Color.values();<br>for(Color c:colors){<pre><code>System.out.print(c+&quot;,&quot;);
-</code></pre>}//返回结果：RED,BLUE,BLACK YELLOW,GREEN,<br><code>&lt;/pre&gt;
-toString()方法： 返回枚举常量的名称。
-&lt;pre&gt;</code>Color c=Color.RED;<br>System.out.println(c.toString());//返回结果: RED<br><code>&lt;/pre&gt;
-(5)  valueOf()方法： 这个方法和toString方法是相对应的，返回带指定名称的指定枚举类型的枚举常量。
-&lt;pre&gt;</code>Color.valueOf(“BLUE”);   //返回结果: Color.BLUE</pre></li>
-</ol>
-<p>(6)  equals()方法： 比较两个枚举类对象的引用。</p>
+<li>构造器只能是私有的private，不允许有public构造器<br>这样可以保证外部代码无法新构造枚举类实例，因为我们知道枚举值是public static final的常量而已。但枚举值的方法和数据域允许外部访问。</li>
+<li>枚举类可以在switch中使用<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Color color=Color.RED;</span><br><span class="line"><span class="keyword">switch</span>(color)&#123;</span><br><span class="line">  <span class="keyword">case</span> RED:</span><br><span class="line">    System.out.println(<span class="string">"it's red"</span>);<span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> BLUE:</span><br><span class="line">    System.out.println(<span class="string">"it's blue"</span>);<span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> BLACK:</span><br><span class="line">    System.out.println(<span class="string">"it's blue"</span>);<span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="枚举类常用的方法"><a href="#枚举类常用的方法" class="headerlink" title="枚举类常用的方法"></a>枚举类常用的方法</h2><h3 id="ordinal-方法"><a href="#ordinal-方法" class="headerlink" title="ordinal()方法:"></a>ordinal()方法:</h3><p>返回枚举值在枚举类种的顺序。这个顺序根据枚举值声明的顺序而定。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color.RED.ordinal();  <span class="comment">//返回结果：0</span></span><br><span class="line">Color.BLUE.ordinal();  <span class="comment">//返回结果：1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="compareTo-方法"><a href="#compareTo-方法" class="headerlink" title="compareTo()方法:"></a>compareTo()方法:</h3><p>Enum实现了java.lang.Comparable接口，因此可以比较象与指定对象的顺序。Enum中的<code>compareTo</code>返回的是两个枚举值的顺序之差。当然，前提是两个枚举值必须属于同一个枚举类，否则会抛出<code>ClassCastException()</code>异常(具体可见源代码)<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Color.RED.compareTo(Color.BLUE);  <span class="comment">//返回结果 -1</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="values-方法："><a href="#values-方法：" class="headerlink" title="values()方法："></a>values()方法：</h3><p>静态方法，返回一个包含全部枚举值的数组。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Color[] colors=Color.values();</span><br><span class="line"><span class="keyword">for</span>(Color c:colors)&#123;</span><br><span class="line">    System.out.print(c+<span class="string">","</span>);</span><br><span class="line">&#125;<span class="comment">//返回结果：RED,BLUE,BLACK YELLOW,GREEN,</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="toString-方法："><a href="#toString-方法：" class="headerlink" title="toString()方法："></a>toString()方法：</h3><p>返回枚举常量的名称。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Color c=Color.RED;</span><br><span class="line">System.out.println(c.toString());<span class="comment">//返回结果: RED</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="valueOf-方法："><a href="#valueOf-方法：" class="headerlink" title="valueOf()方法："></a>valueOf()方法：</h3><p>这个方法和toString方法是相对应的，返回带指定名称的指定枚举类型的枚举常量。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Color.valueOf(<span class="string">"BLUE"</span>);   <span class="comment">//返回结果: Color.BLUE</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="equals-方法："><a href="#equals-方法：" class="headerlink" title="equals()方法："></a>equals()方法：</h3><p>比较两个枚举类对象的引用。</p>
 
       
     </div>
@@ -406,9 +387,9 @@ toString()方法： 返回枚举常量的名称。
       
         <div class="post-tags">
           
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
             <a href="/tags/Enum/" rel="tag"># Enum</a>
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
           
             <a href="/tags/枚举/" rel="tag"># 枚举</a>
           
@@ -487,8 +468,17 @@ toString()方法： 返回枚举常量的名称。
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -559,6 +549,22 @@ toString()方法： 返回枚举常量的名称。
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类常用的方法"><span class="nav-number">1.</span> <span class="nav-text">枚举类常用的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ordinal-方法"><span class="nav-number">1.1.</span> <span class="nav-text">ordinal()方法:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#compareTo-方法"><span class="nav-number">1.2.</span> <span class="nav-text">compareTo()方法:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#values-方法："><span class="nav-number">1.3.</span> <span class="nav-text">values()方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toString-方法："><span class="nav-number">1.4.</span> <span class="nav-text">toString()方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#valueOf-方法："><span class="nav-number">1.5.</span> <span class="nav-text">valueOf()方法：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#equals-方法："><span class="nav-number">1.6.</span> <span class="nav-text">equals()方法：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="之前用IOS的时候，IOS的Assisitivetouch中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的">
+<meta name="description" content="之前用iPhone的时候，iPhone的Assisitivetouch中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对普通用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来">
 <meta name="keywords" content="Android,反射,通知栏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android通过反射机制实现打开关闭通知栏">
 <meta property="og:url" content="http://picksomething.cn/2015/03/18/Android通过反射机制实现打开关闭通知栏/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="之前用IOS的时候，IOS的Assisitivetouch中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的">
+<meta property="og:description" content="之前用iPhone的时候，iPhone的Assisitivetouch中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对普通用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:updated_time" content="2018-04-25T15:06:54.026Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android通过反射机制实现打开关闭通知栏">
-<meta name="twitter:description" content="之前用IOS的时候，IOS的Assisitivetouch中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的">
+<meta name="twitter:description" content="之前用iPhone的时候，iPhone的Assisitivetouch中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对普通用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来">
 
 
 
@@ -354,37 +354,16 @@
       
 
       
-        <p>之前用IOS的时候，IOS的<code>Assisitivetouch</code>中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的方法进行调用。先上代码：</p>
-<pre><code>private void handleNotify(String hanlde) {
-    int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-    try {
-        Object service = getSystemService(&quot;statusbar&quot;);
-        Class&amp;lt;?&amp;gt; statusbarManager = Class
-                .forName(&quot;android.app.StatusBarManager&quot;);
-        Method expand = null;
-&lt;!--more--&gt;
-        if (service != null) {
-            if (currentApiVersion &amp;lt;= 16) {
-                expand = statusbarManager.getMethod(&quot;expand&quot;);
-            } else {
-                if (hanlde == &quot;open&quot;) {
-                    expand = statusbarManager
-                            .getMethod(&quot;expandNotificationsPanel&quot;);
-                } else if (hanlde == &quot;close&quot;) {
-                    expand = statusbarManager
-                            .getMethod(&quot;collapsePanels&quot;);
-                }
-            }
-            expand.setAccessible(true);
-            expand.invoke(service);
-        }
-    } catch (Exception e) {
-        Log.d(&quot;caobin&quot;, &quot;error&quot;);
-    }
-}
-</code></pre><p>注意有两点需要注意三点：<br>1. 在执行Object service = getSystemService(“statusbar”);这句的时候，可能会提示参数错误，说是参数只能是Context.xxxService之类的，忽略一下就好。</p>
-<p>2.因为在Android4.1(API 16)之后，打开通知栏的方法名由expand改成expandNotificationsPanel了，所以为了保证程序在所有的手机上都能够正常工作，需要加上api的判断。</p>
-<p>3.关闭通知栏的方法是collapsePanels，调用该方法会自动关闭打开的通知栏。</p>
+        <p>之前用iPhone的时候，iPhone的<code>Assisitivetouch</code>中有一个通知中心选项，点击通知中心就会自动打开通知栏，在手机屏幕越来越大的今天，这个功能还是很实用的，现在用Android手机了，想着是不是可以在Android手机上也实现一个类似的功能，研究了一下发现Android的打开通知栏的方法是没有对普通用户开放的，也就是说我们不能够直接在代码中去调用打开通知栏的方法，只能通过反射机制来获取打开通知栏的方法进行调用，反射打开通知栏代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleNotify</span><span class="params">(String hanlde)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> currentApiVersion = android.os.Build.VERSION.SDK_INT;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Object service = getSystemService(<span class="string">"statusbar"</span>);</span><br><span class="line">        Class&lt;?&gt; statusbarManager = Class</span><br><span class="line">                .forName(<span class="string">"android.app.StatusBarManager"</span>);</span><br><span class="line">        Method expand = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (service != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (currentApiVersion &lt;= <span class="number">16</span>) &#123;</span><br><span class="line">                expand = statusbarManager.getMethod(<span class="string">"expand"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (hanlde == <span class="string">"open"</span>) &#123;</span><br><span class="line">                    expand = statusbarManager</span><br><span class="line">                            .getMethod(<span class="string">"expandNotificationsPanel"</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hanlde == <span class="string">"close"</span>) &#123;</span><br><span class="line">                    expand = statusbarManager</span><br><span class="line">                            .getMethod(<span class="string">"collapsePanels"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            expand.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            expand.invoke(service);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        Log.d(<span class="string">"caobin"</span>, <span class="string">"error"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意有三点需要注意：</p>
+<ol>
+<li><p>在执行Object service = getSystemService(“statusbar”);这句的时候，可能会提示参数错误，说是参数只能是Context.xxxService之类的，忽略一下就好。</p>
+</li>
+<li><p>因为在Android4.1(API 16)之后，打开通知栏的方法名由expand改成expandNotificationsPanel了，所以为了保证程序在所有的手机上都能够正常工作，需要加上api的判断。</p>
+</li>
+<li><p>关闭通知栏的方法是collapsePanels，调用该方法会自动关闭打开的通知栏。</p>
+</li>
+</ol>
 <p>附上项目demo地址：<a href="https://github.com/picksomething/HandleNotification" target="_blank" rel="noopener">反射方法调用打开关闭通知栏</a></p>
 
       

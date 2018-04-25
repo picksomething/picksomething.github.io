@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。也就是说如果我们使用Handler提供的">
+<meta name="description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。 也就是说如果我们使用Handler提供的">
 <meta name="keywords" content="Android,HandlerThread">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android中通过HandlerThread实现真正的多线程">
 <meta property="og:url" content="http://picksomething.cn/2013/10/23/Android中通过HandlerThread实现真正的多线程/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。也就是说如果我们使用Handler提供的">
+<meta property="og:description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。 也就是说如果我们使用Handler提供的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:updated_time" content="2018-04-25T14:58:11.479Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中通过HandlerThread实现真正的多线程">
-<meta name="twitter:description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。也就是说如果我们使用Handler提供的">
+<meta name="twitter:description" content="上一篇博客中我在解释Handler的过程中提到了HandlerThread，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。 也就是说如果我们使用Handler提供的">
 
 
 
@@ -354,85 +354,16 @@
       
 
       
-        <p>上一篇博客中我在解释Handler的过程中提到了<code>HandlerThread</code>，我们先回顾一下上一篇博客中对于Handler的定义：<strong><span style="color: #ff0000;">Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。</span></strong>也就是说如果我们使用Handler提供的方法handler.post(new Runnable());时候，如果使用不当的话一样会出现界面卡死，因为其默认管线的还是主线程，也就是说其还是会在主线程中简单地调用Runnable中的run()方法，这样耗时任务虽然在run()方法中，但是还是运行在主线程，所以同样会阻塞UI，接下来我们来看两个例子，就会更明白了，第一个例子：</p>
-<pre><code>package cn.picksomething.testhandler;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-
-public class MainActivity extends Activity {
-
-    private String TAG = &quot;TAG&quot;;
-    private Handler handler = new Handler();
-&lt;!--more--&gt;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        handler.post(new myRunnable());
-        Log.d(TAG, &quot;onCreate-----The thread id is：&quot; + Thread.currentThread().getId());
-        setContentView(R.layout.main);
-    }
-
-    class myRunnable implements Runnable{
-        @Override
-        public void run() {
-            Log.d(TAG, &quot;run method is calling----&quot;);
-            Log.d(TAG, &quot;The thread id is：&quot; + Thread.currentThread().getId());
-            try {
-                Thread.sleep(6000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-}
-`&lt;/pre&gt;
-运行上述程序，程序启动6秒之后，才看到布局被加载，显示出TextView上的Hello World!字样。
-分析一下程序执行的过程，首先程序启动，就把myRunnable加入到当前线程的消息队列中，也就是handler默认关联的主线程消息队列，android的handler确实是异步机制，所以在handler.post(new myRunnable());之后，程序会继续执行，所以以后的语句会继续执行，会输出onCreate中的当前线程ID。但同时myRunnable()的run方法也在运行，一样输出run方法中的当前线程ID，然后让当前线程休眠6秒。
-通过输出结果和分析，我们可以得出handler和主线程是同一个线程，handler也是运行在主线程中的，这个时候若是执行耗时任务，显然会阻塞UI。当然肯定有解决办法的：
-Android给我们提供了Looper这样一个类，上一遍博客中已经介绍过了，Android中每一个Thread都跟着一个Looper，Looper可以帮助Thread维护一个消息队列，每个Thread都只有一个消息队列。我们看看另一个例子：
-&lt;pre&gt;`package cn.picksomething.testlooper;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.app.Activity;
-import android.util.Log;
-
-public class MainActivity extends Activity {
-
-    private String TAG = &quot;TAG&quot;;
-    private Handler handler = null;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        HandlerThread mThread = new HandlerThread(&quot;handlerThread&quot;);
-        mThread.start();
-        handler = new Handler(mThread.getLooper());
-        handler.post(new myRunnable());
-        Log.d(TAG, &quot;onCreate-----The Thread id is:&quot; + Thread.currentThread().getId());
-        setContentView(R.layout.main);
-    }
-
-    class myRunnable implements Runnable{
-        @Override
-        public void run() {
-            Log.d(TAG, &quot;myRunnable is running----&quot;);
-            Log.d(TAG, &quot;The thread id is:&quot; + Thread.currentThread().getId());
-            try {
-                Thread.sleep(6000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-}
-</code></pre><p>运行上述程序，过滤打印信息，我们看到<code>LogCat</code>输出如下结果：<br>同时我们看到程序已启动，就立即输出了布局文件中的<code>Hello world!</code>信息。<br>在这个例子中，用到了HandlerThread，在HandlerThread对象中可以通过getLooper方法获取一个Looper对象控制句柄，我们可以将这个Looper对象映射到一个Handler中来实现一个线程同步机制，所以就会有上面的结果了。这样就达到了多线程的效果。<br>补充：<code>HandlerThread</code>这个类，HandlerThread继承于Thread，所以它本质就是个Thread。HandlerThread类用于方便的创建一个含有<code>looper</code>的线程类，looper用来创建handler类。我们一般不创建looper对象，直接调用HandlerThread即可。HandlerThread本身实现了循环处理消息的功能，不用再直接调用<code>Looper.prepare()</code>方法。与普通Thread的差别就在于它有个Looper成员变量。这个Looper其实就是对消息队列以及队列处理逻辑的封装，简单说就是消息队列+消息循环。<br>小结：多了解Android内部机制，不能只满足于结果正确。</p>
+        <p>上一篇博客中我在解释Handler的过程中提到了<code>HandlerThread</code>，我们先回顾一下上一篇博客中对于Handler的定义：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。</p>
+<p>也就是说如果我们使用Handler提供的方法handler.post(new Runnable())时候，如果使用不当的话一样会出现界面卡死，因为其默认管线的还是主线程，也就是说其还是会在主线程中简单地调用Runnable中的run()方法，这样耗时任务虽然在run()方法中，但是还是运行在主线程，所以同样会阻塞UI，接下来我们来看两个例子，就会更明白了，第一个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.picksomething.testhandler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.os.Handler;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String TAG = <span class="string">"TAG"</span>;</span><br><span class="line">    <span class="keyword">private</span> Handler handler = <span class="keyword">new</span> Handler();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        handler.post(<span class="keyword">new</span> myRunnable());</span><br><span class="line">        Log.d(TAG, <span class="string">"onCreate-----The thread id is："</span> + Thread.currentThread().getId());</span><br><span class="line">        setContentView(R.layout.main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">myRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"run method is calling----"</span>);</span><br><span class="line">            Log.d(TAG, <span class="string">"The thread id is："</span> + Thread.currentThread().getId());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">6000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行上述程序，程序启动6秒之后，才看到布局被加载，显示出TextView上的Hello World!字样</p>
+<p>分析一下程序执行的过程，首先程序启动，就把myRunnable加入到当前线程的消息队列中，也就是handler默认关联的主线程消息队列，android的handler确实是异步机制，所以在handler.post(new myRunnable());之后，程序会继续执行，所以以后的语句会继续执行，会输出onCreate中的当前线程ID。但同时myRunnable()的run方法也在运行，一样输出run方法中的当前线程ID，然后让当前线程休眠6秒</p>
+<p>通过输出结果和分析，我们可以得出handler和主线程是同一个线程，handler也是运行在主线程中的，这个时候若是执行耗时任务，显然会阻塞UI。当然肯定有解决办法的：</p>
+<p>Android给我们提供了Looper这样一个类，上一遍博客中已经介绍过了，Android中每一个Thread都跟着一个Looper，Looper可以帮助Thread维护一个消息队列，每个Thread都只有一个消息队列。我们看看另一个例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.picksomething.testlooper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"><span class="keyword">import</span> android.os.Handler;</span><br><span class="line"><span class="keyword">import</span> android.os.HandlerThread;</span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String TAG = <span class="string">"TAG"</span>;</span><br><span class="line">    <span class="keyword">private</span> Handler handler = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        HandlerThread mThread = <span class="keyword">new</span> HandlerThread(<span class="string">"handlerThread"</span>);</span><br><span class="line">        mThread.start();</span><br><span class="line">        handler = <span class="keyword">new</span> Handler(mThread.getLooper());</span><br><span class="line">        handler.post(<span class="keyword">new</span> myRunnable());</span><br><span class="line">        Log.d(TAG, <span class="string">"onCreate-----The Thread id is: "</span> + Thread.currentThread().getId());</span><br><span class="line">        setContentView(R.layout.main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">myRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"myRunnable is running----"</span>);</span><br><span class="line">            Log.d(TAG, <span class="string">"The thread id is: "</span> + Thread.currentThread().getId());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">6000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="comment">// TODO Auto-generated catch block</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行上述程序，过滤打印信息，我们看到<code>LogCat</code>输出如下结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">onCreate-----The Thread id is: xxx</span><br><span class="line">myRunnable is running----</span><br><span class="line">The thread id is: xxx</span><br></pre></td></tr></table></figure></p>
+<p>同时我们看到程序已启动，就立即输出了布局文件中的<code>Hello world!</code>信息。</p>
+<p>在这个例子中，用到了HandlerThread，在HandlerThread对象中可以通过getLooper方法获取一个Looper对象控制句柄，我们可以将这个Looper对象映射到一个Handler中来实现一个线程同步机制，所以就会有上面的结果了。这样就达到了多线程的效果</p>
+<p>补充：<code>HandlerThread</code>这个类，HandlerThread继承于Thread，所以它本质就是个Thread。HandlerThread类用于方便的创建一个含有<code>looper</code>的线程类，looper用来创建handler类。我们一般不创建looper对象，直接调用HandlerThread即可，HandlerThread本身实现了循环处理消息的功能，不用再直接调用<code>Looper.prepare()</code>方法，与普通Thread的差别就在于它有个Looper成员变量，这个Looper其实就是对消息队列以及队列处理逻辑的封装，简单说就是消息队列+消息循环</p>
 
       
     </div>

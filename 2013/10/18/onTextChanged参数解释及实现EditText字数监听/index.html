@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法： beforeTextChanged(CharSequence s, int start, int count, int after) `&amp;lt;/pr">
+<meta name="description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：1beforeTextChanged(CharSequence s, int start, int count, int after) 这个方法是在Te">
 <meta name="keywords" content="Android,TextWatcher">
 <meta property="og:type" content="article">
 <meta property="og:title" content="onTextChanged参数解释及实现EditText字数监听">
 <meta property="og:url" content="http://picksomething.cn/2013/10/18/onTextChanged参数解释及实现EditText字数监听/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法： beforeTextChanged(CharSequence s, int start, int count, int after) `&amp;lt;/pr">
+<meta property="og:description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：1beforeTextChanged(CharSequence s, int start, int count, int after) 这个方法是在Te">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:updated_time" content="2018-04-25T15:26:48.107Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="onTextChanged参数解释及实现EditText字数监听">
-<meta name="twitter:description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法： beforeTextChanged(CharSequence s, int start, int count, int after) `&amp;lt;/pr">
+<meta name="twitter:description" content="由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：1beforeTextChanged(CharSequence s, int start, int count, int after) 这个方法是在Te">
 
 
 
@@ -354,61 +354,13 @@
       
 
       
-        <p>由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。<br>它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：</p>
-<pre><code>beforeTextChanged(CharSequence s, int start, int count, int after)
-`&lt;/pre&gt;
-这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换。
-&lt;pre&gt;`onTextChanged(CharSequence s, int start, int before, int count)
-`&lt;/pre&gt;
-这个方法是在Text改变过程中触发调用的，它的意思就是说在原有的文本s中，从start开始的count个字符替换长度为before的旧文本，注意这里没有将要之类的字眼，也就是说一句执行了替换动作。
-可能说起来比较抽象，我举个简单的例子，比如说我们监听一个EditText，默认开始的时候EditText中没有文本，当我们输入LOVE四个字母的时候，在打印信息中我输出各个参数看一下参数的变化。
-&lt;!--more--&gt;
-&lt;pre&gt;`10-18 16:40:21.528: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=----start=0----after=1----count=0
-10-18 16:40:21.528: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=L----start=0----before=0----count=1
-10-18 16:40:21.532: D/Debug(4501): afterTextChanged 被执行----&amp;gt;L
-10-18 16:40:29.304: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=L----start=1----after=1----count=0
-10-18 16:40:29.308: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LO----start=1----before=0----count=1
-10-18 16:40:29.308: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LO
-10-18 16:40:32.772: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=LO----start=2----after=1----count=0
-10-18 16:40:32.772: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LOV----start=2----before=0----count=1
-10-18 16:40:32.776: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LOV
-10-18 16:40:34.772: D/Debug(4501): beforeTextChanged 被执行----&amp;gt; s=LOV----start=3----after=1----count=0
-10-18 16:40:34.772: D/Debug(4501): onTextChanged 被执行----&amp;gt;s=LOVE----start=3----before=0----count=1
-10-18 16:40:34.776: D/Debug(4501): afterTextChanged 被执行----&amp;gt;LOVE
-`&lt;/pre&gt;
-通过上面的打印信息我们可以发现在输入L之前`beforeTextChanged`被执行，s为空，所以s输入空，start=0，也就是从位置0开始，count=0，也就是0个字符将会被替换，after=1，也就是说0个字符将会被一个新的长度为after=1的文本(也就是L)替换。
-当输入发生改变的时候`onTextChanged`被执行，此时s=L也就是输入的字母L，从start=0开始，count=1个字符替换了长度为before=0的旧文本。通俗点将就是字母L从位置0开始替换了原来的空文本，下面的就可以依次类推了。那么我们如何利用这个接口监听EditText的文本变化来实现限制输入字数的功能呢，我相信大家都有自己的想法了，这里我给出自己的一个简单实现，主要代码如下：
-&lt;pre&gt;`source_des.addTextChangedListener(new TextWatcher() { 
-    private CharSequence temp; 
-    private int selectionStart; 
-    private int selectionEnd; 
-
-    @Override 
-    public void onTextChanged(CharSequence s, int start, int before, int count) { 
-        Log.d(TAG, &quot;onTextChanged 被执行----&amp;gt;s=&quot; + s + &quot;----start=&quot;+ start 
-          + &quot;----before=&quot;+before + &quot;----count&quot; +count); temp = s; 
-    }
-
-    public void beforeTextChanged(CharSequence s, int start, int count,int after) { 
-        Log.d(TAG, &quot;beforeTextChanged 被执行----&amp;gt; s=&quot; + s+&quot;----start=&quot;+ start 
-          + &quot;----after=&quot;+after + &quot;----count&quot; +count); 
-    } 
-
-    public void afterTextChanged(Editable s) { 
-        Log.d(TAG, &quot;afterTextChanged 被执行----&amp;gt;&quot; + s); 
-        selectionStart = source_des.getSelectionStart(); 
-        selectionEnd = source_des.getSelectionEnd(); 
-        if (temp.length() &amp;gt; MAX_LENGTH) { 
-            Toast.makeText(MainActivity.this, &quot;只能输入九个字&quot;, 
-              Toast.LENGTH_SHORT).show(); 
-            s.delete(selectionStart - 1, selectionEnd); 
-            int tempSelection = selectionEnd; 
-            source_des.setText(s); 
-            source_des.setSelection(tempSelection); 
-        } 
-    } 
-});
-</code></pre><p>如大家有什么疑问，欢迎交流。<br>小结：多总结。</p>
+        <p>由于最近做项目要检测EditText中输入的字数长度，从而接触到了Android中EditText的监听接口，TextWatcher。<br>它有三个成员方法，第一个after很简单，这个方法就是在EditText内容已经改变之后调用，重点看下面两个方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">beforeTextChanged(CharSequence s, <span class="keyword">int</span> start, <span class="keyword">int</span> count, <span class="keyword">int</span> after)</span><br></pre></td></tr></table></figure></p>
+<p>这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onTextChanged(CharSequence s, int start, int before, int count)</span><br></pre></td></tr></table></figure></p>
+<p>这个方法是在Text改变过程中触发调用的，它的意思就是说在原有的文本s中，从start开始的count个字符替换长度为before的旧文本，注意这里没有将要之类的字眼，也就是说一句执行了替换动作</p>
+<p>可能说起来比较抽象，我举个简单的例子，比如说我们监听一个EditText，默认开始的时候EditText中没有文本，当我们输入LOVE四个字母的时候，在打印信息中我输出各个参数看一下参数的变化。<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">10-18 16:40:21.528: D/Debug(4501): beforeTextChanged 被执行----&gt;s=----start=0----after=1----count=0</span><br><span class="line">10-18 16:40:21.528: D/Debug(4501): onTextChanged 被执行----&gt;s=L----start=0----before=0----count=1</span><br><span class="line">10-18 16:40:21.532: D/Debug(4501): afterTextChanged 被执行----&gt;L</span><br><span class="line">10-18 16:40:29.304: D/Debug(4501): beforeTextChanged 被执行----&gt; s=L----start=1----after=1----count=0</span><br><span class="line">10-18 16:40:29.308: D/Debug(4501): onTextChanged 被执行----&gt;s=LO----start=1----before=0----count=1</span><br><span class="line">10-18 16:40:29.308: D/Debug(4501): afterTextChanged 被执行----&gt;LO</span><br><span class="line">10-18 16:40:32.772: D/Debug(4501): beforeTextChanged 被执行----&gt;s=LO----start=2----after=1----count=0</span><br><span class="line">10-18 16:40:32.772: D/Debug(4501): onTextChanged 被执行----&gt;s=LOV----start=2----before=0----count=1</span><br><span class="line">10-18 16:40:32.776: D/Debug(4501): afterTextChanged 被执行----&gt;LOV</span><br><span class="line">10-18 16:40:34.772: D/Debug(4501): beforeTextChanged 被执行----&gt;s=LOV----start=3----after=1----count=0</span><br><span class="line">10-18 16:40:34.772: D/Debug(4501): onTextChanged 被执行----&gt;s=LOVE----start=3----before=0----count=1</span><br><span class="line">10-18 16:40:34.776: D/Debug(4501): afterTextChanged 被执行----&gt;LOVE</span><br></pre></td></tr></table></figure></p>
+<p>通过上面的打印信息我们可以发现在输入L之前<code>beforeTextChanged</code>被执行，s为空，所以s输入空，start=0，也就是从位置0开始，count=0，也就是0个字符将会被替换，after=1，也就是说0个字符将会被一个新的长度为after=1的文本(也就是L)替换。</p>
+<p>当输入发生改变的时候<code>onTextChanged</code>被执行，此时s=L也就是输入的字母L，从start=0开始，count=1个字符替换了长度为before=0的旧文本。通俗点将就是字母L从位置0开始替换了原来的空文本，下面的就可以依次类推了。那么我们如何利用这个接口监听EditText的文本变化来实现限制输入字数的功能呢，我相信大家都有自己的想法了，这里我给出自己的一个简单实现，主要代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">source_des.addTextChangedListener(<span class="keyword">new</span> TextWatcher() &#123;</span><br><span class="line">    <span class="keyword">private</span> CharSequence temp;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> selectionStart;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> selectionEnd;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTextChanged</span><span class="params">(CharSequence s, <span class="keyword">int</span> start, <span class="keyword">int</span> before, <span class="keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"onTextChanged 被执行----&gt; s="</span> + s + <span class="string">"----start="</span>+ start</span><br><span class="line">          + <span class="string">"----before="</span>+before + <span class="string">"----count"</span> +count); temp = s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeTextChanged</span><span class="params">(CharSequence s, <span class="keyword">int</span> start, <span class="keyword">int</span> count,<span class="keyword">int</span> after)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"beforeTextChanged 被执行----&gt;s="</span> + s+<span class="string">"----start="</span>+ start</span><br><span class="line">          + <span class="string">"----after="</span>+after + <span class="string">"----count"</span> +count);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterTextChanged</span><span class="params">(Editable s)</span> </span>&#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"afterTextChanged 被执行----&gt;"</span> + s);</span><br><span class="line">        selectionStart = source_des.getSelectionStart();</span><br><span class="line">        selectionEnd = source_des.getSelectionEnd();</span><br><span class="line">        <span class="keyword">if</span> (temp.length() &gt; MAX_LENGTH) &#123;</span><br><span class="line">            Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">"只能输入九个字"</span>,</span><br><span class="line">            Toast.LENGTH_SHORT).show();</span><br><span class="line">            s.delete(selectionStart - <span class="number">1</span>, selectionEnd);</span><br><span class="line">            <span class="keyword">int</span> tempSelection = selectionEnd;</span><br><span class="line">            source_des.setText(s);</span><br><span class="line">            source_des.setSelection(tempSelection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>如大家有什么疑问，欢迎交流</p>
 
       
     </div>
