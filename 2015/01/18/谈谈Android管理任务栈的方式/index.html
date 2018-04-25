@@ -81,20 +81,23 @@
 
 
 
-<meta name="description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习Android最好的教材就是Google官">
+<meta name="description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习技术最好的途径就是Google官方文档加代">
 <meta name="keywords" content="Android,Affinity,Back Stack,LaunchMode,Task,taskAffinity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅谈Android管理task方式">
-<meta property="og:url" content="http://picksomething.cn/2015/01/18/浅谈Android管理task方式/index.html">
+<meta property="og:title" content="谈谈Android管理任务栈的方式">
+<meta property="og:url" content="http://picksomething.cn/2015/01/18/谈谈Android管理任务栈的方式/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习Android最好的教材就是Google官">
+<meta property="og:description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习技术最好的途径就是Google官方文档加代">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_backstack_singletask_multiactivity.png">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_multitasking.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_multiple_instances.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack_singletask_multiactivity.png">
+<meta property="og:updated_time" content="2018-04-25T04:19:42.573Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="浅谈Android管理task方式">
-<meta name="twitter:description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习Android最好的教材就是Google官">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_backstack_singletask_multiactivity.png">
+<meta name="twitter:title" content="谈谈Android管理任务栈的方式">
+<meta name="twitter:description" content="之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。 学习技术最好的途径就是Google官方文档加代">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack.png">
 
 
 
@@ -124,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://picksomething.cn/2015/01/18/浅谈Android管理task方式/"/>
+  <link rel="canonical" href="http://picksomething.cn/2015/01/18/谈谈Android管理任务栈的方式/"/>
 
 
 
 
 
-  <title>浅谈Android管理task方式 | 一路追梦想</title>
+  <title>谈谈Android管理任务栈的方式 | 一路追梦想</title>
   
 
 
@@ -267,7 +270,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/01/18/浅谈Android管理task方式/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/01/18/谈谈Android管理任务栈的方式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -284,7 +287,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">浅谈Android管理task方式</h1>
+          <h1 class="post-title" itemprop="name headline">谈谈Android管理任务栈的方式</h1>
         
 
         <div class="post-meta">
@@ -357,52 +360,75 @@
 
       
         <p>之前在研究Android 四种LaunchMode的时候，有看到关于taskAffinity的内容，当时没有细看，现在突然发现同事提交代码的时候有写关于修改taskAffinity的东西，于是就有抽时间详细的研究了一下taskAffinity这个属性，发现还蛮复杂的，把自己的一些实践和见解写下来，供以后查看，涉及到的内容较多，可以重点查看红色的字体。</p>
-<p>学习Android最好的教材就是Google官方文档加代码实践，在开始说taskAffinity属性之前，我们可以先看一下官网对于Task的定义：</p>
-<pre><code>A task is a collection of activities that users interact with when 
-performing a certain job. The activities are arranged in a stack 
-(the back stack), in the order in which each activity is opened.`&lt;/pre&gt;
-简单来说:**task就是一组特定的activities集合，这些activities按照每一个被打开的顺序放到一个stack中。**
-&lt;!--more--&gt;
-当用户打开一个application的时候，该application的task来到前台，如果没有该application的task存在(application最近没有被打开过)，一个新的task将会被创建同时应用程序的主activity作为根activity在stack中打开。
-当当前的activity启动另一个activity的时候，新的activity被推到栈顶并获得焦点，之前的activity仍然在stack中，但是被stop了。当一个activity stop了，系统保留其UI的当前状态。当用户按返回键，当前的activity从栈顶被弹出(被destroy了)，之前的activity 恢复(resume)。栈中的activities重不会重新被排序，只有进栈和出栈。这样一来，返回stack以一种先进后出的对象结构进行操作。下图通过一个时间轴展现在不同的时间点属于当前返回stack的activities之间的进度来可视化这个行为。
-[![diagram_backstack](http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_backstack.png)](http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_backstack.png)
-
-如果用户继续点击返回键，直到所有的activities从栈中被移除，task将不再存在。
-一个task是一个有机的整体，当用户开始了一个新的task或者通过Home键来到Home screen，可以被移到后台。在后台，所有task中的activities被stop了，但是这个task的返回stack仍然保持不变-改task只是简单地丢失了焦点，被另一个stack取代，如下图所示：
-[![diagram_multitasking](http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_multitasking.png)](http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_multitasking.png)
-
-一个task可以返回到前台这样用户就可以在他们离开的地方重新拿起。假设，例如，当前的task(Task A)有三个activities在它的栈中-两个在当前的activity下面。用户按下Home键，然后启动另一个新的应用程序。当回到Home screen的时候，Task A进入到了后台，当新的应用程序启动的时候，系统启动了该应用程序的带有它自己activities栈的task(Task B)。在和新的应用程序交互后，用户在此返回到Home并且选择最初启动的Task A的应用程序。现在，Task A重新来到前台-所有的三个在它在栈中的activities都完好无损并且栈顶的activity恢复了。这个时候，用户可以切换回Task B通过回到Home并选择对应task的应用程序。这就是Android的多任务的例子。
-
-因为返回栈中的activities从来都不会被重新排序，如果你的应用程序允许用户启动一个特定的来自不止一个activity的activity。该activity的一个新的实例被创建并被push盗栈上(而不是将任何改activity之前的实例带到栈顶)。这样一来，你的应用程序中的一个activity可能会被初始化多次(甚至来自不同的tasks),如下图所示：
-[![diagram_multiple_instances](http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_multiple_instances.png)](http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_multiple_instances.png)
-
-这样一来，如果用户点击返回键，该activity的每一个实例按照它们被打开的顺序显露出来。然而，你可以修改这种行为如果你不想一个activity被实例化多次。
-
-简单总结如下：
-</code></pre><ol>
+<p>学习技术最好的途径就是Google官方文档加代码实践，在开始说taskAffinity属性之前，我们可以先看一下官网对于Task的定义：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A task is a collection of activities that users interact with when performing a certain job. The activities are arranged in a stack (the back stack), in the order in which each activity is opened.</span><br></pre></td></tr></table></figure></p>
+<p>简单来说就是:task就是一组特定的activities集合，这些activities按照每一个被打开的顺序放到一个stack中。<br><a id="more"></a></p>
+<p>当用户打开一个application的时候，该application的task来到前台，如果没有该application的task存在(application最近没有被打开过)，一个新的task将会被创建同时应用程序的主activity作为根activity在stack中打开。</p>
+<p>当当前的activity启动另一个activity的时候，新的activity被推到栈顶并获得焦点，之前的activity仍然在stack中，但是被stop了。当一个activity stop了，系统保留其UI的当前状态。当用户按返回键，当前的activity从栈顶被弹出(被destroy了)，之前的activity 恢复(resume)。栈中的activities重不会重新被排序，只有进栈和出栈。这样一来，返回stack以一种先进后出的对象结构进行操作。下图通过一个时间轴展现在不同的时间点属于当前返回stack的activities之间的进度来可视化这个行为。</p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack.png"></p>
+<p>如果用户继续点击返回键，直到所有的activities从栈中被移除，task将不再存在。</p>
+<p>一个task是一个有机的整体，当用户开始了一个新的task或者通过Home键来到Home screen，可以被移到后台。在后台，所有task中的activities被stop了，但是这个task的返回stack仍然保持不变-改task只是简单地丢失了焦点，被另一个stack取代，如下图所示：</p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_multitasking.png"></p>
+<p>一个task可以返回到前台这样用户就可以在他们离开的地方重新拿起。假设，例如，当前的task(Task A)有三个activities在它的栈中-两个在当前的activity下面。用户按下Home键，然后启动另一个新的应用程序。当回到Home screen的时候，Task A进入到了后台，当新的应用程序启动的时候，系统启动了该应用程序的带有它自己activities栈的task(Task B)。在和新的应用程序交互后，用户在此返回到Home并且选择最初启动的Task A的应用程序。现在，Task A重新来到前台-所有的三个在它在栈中的activities都完好无损并且栈顶的activity恢复了。这个时候，用户可以切换回Task B通过回到Home并选择对应task的应用程序。这就是Android的多任务的例子。</p>
+<p>因为返回栈中的activities从来都不会被重新排序，如果你的应用程序允许用户启动一个特定的来自不止一个activity的activity。该activity的一个新的实例被创建并被push盗栈上(而不是将任何改activity之前的实例带到栈顶)。这样一来，你的应用程序中的一个activity可能会被初始化多次(甚至来自不同的tasks),如下图所示：</p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_multiple_instances.png"></p>
+<p>这样一来，如果用户点击返回键，该activity的每一个实例按照它们被打开的顺序显露出来。然而，你可以修改这种行为如果你不想一个activity被实例化多次。</p>
+<p>简单总结如下：</p>
+<ol>
 <li>当Activity A启动 Activity B，Activity A is stopped，但是系统仍然保留其状态(比如滚动轴位置和表单中的文字啊)。如果用户在Activity B点击返回键，Activity A从它存储的状态中恢复。</li>
 <li>当用户通过点击Home键离开一个任务，当前的Activity停止了，它的task转到后台。系统保留task中每一个activity的状态。如果用户稍后选择开始该task的应用图标来恢复该task，该task就会来到前台并恢复栈顶的activity。</li>
 <li>如果用户点击返回键，当前的activity被从栈中弹出并被destroy。栈中之前的activity被恢复，当一个activity被destroy，系统将不会保留改activity的状态。</li>
-<li><p>Activities可以被实例化多次，即使来自其它tasks。<br>下面我们看看官网关于管理Task的内容，这个就是LaunchMode和taskAffinity密切相关了。</p>
-<p>Android管理任务的方式和<code>back stack</code>，如上面描述的一样-通过”先进后出”放置所有在同一个task中陆续打开的activities-对于大部分应用程序都工作的很好，你不必担心你的activities如何与task关联或者他们如何存在于back stack中。然而，你可能决定你想打断正常的方式。或许你想你应用程序中的一个activity开始一个新的task当它启动的时候(而不是被放置在当前task中)；或者，当你启动一个activity，你想讲它的一个存在的实例带到前台(而不是在back stack的栈顶重新创建一个它的实例)；或者，你想当用户离开task的时候，你的back stack中所有的activities被清除除了根activity。</p>
-<p>你可以做这些事情或者更多，使用activity manifest元素中的属性和intent标志你传给<code>startActivity()</code>方法的。<br>下面我将使用到的主要activity属性如下：<code>taskAffinity launchMode</code>和一些主要的intent标志：<br><pre><code>FLAG_ACTIVITY_NEW_TASK
-FLAG_ACTIVITY_CLEAR_TOP
-FLAG_ACTIVITY_SINGLE_TOP</code></pre><br>根据Google Android官方文档的建议：</p>
-</li>
-<li><p>定义启动模式：</p>
-<p>启动模式允许你定义一个activity的实例如何与当前的task关联，有两种方法来定义不同的启动模式：<br>使用manifest配置文件<br>当你在你的manifest文件中声明一个activity时，你可以指明activity如何和tasks关联当它启动的时候。2.  使用intent标志<br><strong>使用manifest配置文件：</strong><br>launchMode属性指明activity如何被启动到task的指令，有四种不同的启动模式你可以赋值给launchMode属性：<br><code>standard&quot;(默认模式)</code></p>
-<p><code>singleTop</code></p>
-<p><code>singleTask</code></p>
-<p><code>singleInstance</code></p>
-<p>再看一个例子：Android浏览器应用声明web browser activity应当总是在它自己的task中打开-通过在&lt;activity&gt;元素中指定singleTask启动模式。<br><strong>这意味着如果你的应用程序发送一个intent请求打开Android Browser，Android Browser的Activity不会放到和你的应用同一个task中。相反，要么一个针对Browser的新的task启动，或者如果早已经有了一个Browser的task在后台运行，该task将会转到前台处理新的intent。</strong><br>无论一个activity是在一个新的task中启动，还是和启动它的activity处于同一个task，返回键总是可以带用户回到之前的activity。<br>然而，如果你启动activity的时候指定singleTask启动模式，接着如果该activity的一个实例存在于一个后台task中，那整个task会被带到前台，这个时候，回退栈(back stack)栈顶现在包括带到前台的task中的所有activities。<br>如下图所示：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_backstack_singletask_multiactivity.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/01/diagram_backstack_singletask_multiactivity.png" alt="diagram_backstack_singletask_multiactivity"></a></p>
-<p><strong>使用Intent标志：</strong><br>当启动一个activity时，你可以修改一个activity和它的task的关联性通过在你用startActivity()方法传递的intent中包含标志，你可以包含的标志有：<br><pre><code>FLAG_ACTIVITY_NEW_TASK</code></pre><br>启动指定activity到一个新的task中，如果一个关联你现在正在启动的activity的task，该task将会以它最后存储的状态被带到前台并且改activity在它的onNewIntent()方法中接收新的intent。相同与上面的singleTask。<br><pre><code>FLAG_ACTIVITY_SINGLE_TOP</code></pre><br>如果正在启动的activity是当前activity(在back stack栈顶)，那么存在的实例将会在收到一个onNewIntent()的调用，而不是新创建一个该activity实例，相同与上面的singleTop。<br><pre>`FLAG_ACTIVITY_CLEAR_TOP</pre></p>
-</li>
+<li>Activities可以被实例化多次，即使来自其它tasks。</li>
 </ol>
-<p>如果正在启动的activity早已经运行在当前的task中，此时不会重新启动一个该activity的实例，而是所有在该activity上面其他的activities会被destroy，并且intent通过onNewIntent（）方法会被发送到恢复的activity实例(现在栈顶的activity)。<br><code>FLAG_ACTIVITY_CLEAR_TOP</code>是配合<code>FLAG_ACTIVITY_NEW_TASK</code>最长使用的。当一起使用的时候，这个标志是定位在另一个task中已存在的activity并把它放到可以响应intent的位置的一种方法。<br><strong>注意：如果特定的activity的启动模式是standard，它也会被从栈顶移除并且一个新的实例在它的位置被启动来处理进来的intent，因为当启动模式是standard时，一个针对新的new intent的新的实例总会被创建。</strong><br><strong>处理affinities</strong><br>affinity属性指明一个activity更喜欢属于哪个task。默认地，来自一个应用程序的所有activities彼此都有一个亲和性。所以，一般来说一个相同应用的所有activities倾向于在一个相同的task中。然而，你可以修改一个activity的默认affinity属性。定义在不同应用程序的activities可以共享一个affinity属性，或者定义在同一个应用程序的activities可以被赋予不同的task亲和性。<br>你可以通过&lt;activity&gt;元素的taskAffinity来修改任何给定的activities的亲和性。</p>
+<p>下面我们看看官网关于管理Task的内容，这个就是LaunchMode和taskAffinity密切相关了。</p>
+<p>Android管理任务的方式和<code>back stack</code>，如上面描述的一样-通过”先进后出”放置所有在同一个task中陆续打开的activities-对于大部分应用程序都工作的很好，你不必担心你的activities如何与task关联或者他们如何存在于back stack中。然而，你可能决定你想打断正常的方式。或许你想你应用程序中的一个activity开始一个新的task当它启动的时候(而不是被放置在当前task中)；或者，当你启动一个activity，你想讲它的一个存在的实例带到前台(而不是在back stack的栈顶重新创建一个它的实例)；或者，你想当用户离开task的时候，你的back stack中所有的activities被清除除了根activity。</p>
+<p>你可以做这些事情或者更多，使用activity manifest元素中的属性和intent标志你传给<code>startActivity()</code>方法的。</p>
+<p>下面我将使用到的主要activity属性如下：<code>taskAffinity launchMode</code>和一些主要的intent标志：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FLAG_ACTIVITY_NEW_TASK</span><br><span class="line">FLAG_ACTIVITY_CLEAR_TOP</span><br><span class="line">FLAG_ACTIVITY_SINGLE_TOP</span><br></pre></td></tr></table></figure>
+<p>根据Google Android官方文档的建议：</p>
+<ul>
+<li><p>定义启动模式：</p>
+<p>启动模式允许你定义一个activity的实例如何与当前的task关联，有两种方法来定义不同的启动模式：</p>
+<ul>
+<li><p>使用manifest配置文件<br>launchMode属性指明activity如何被启动到task的指令，有四种不同的启动模式你可以赋值给launchMode属性：</p>
+<ul>
+<li>standard (默认模式)</li>
+<li>singleTop</li>
+<li>singleTask</li>
+<li>singleInstance</li>
+</ul>
+<p>再看一个例子：Android浏览器应用声明web browser activity应当总是在它自己的task中打开-通过在<activity>元素中指定singleTask启动模式。</activity></p>
+<p>这意味着如果你的应用程序发送一个intent请求打开Android Browser，Android Browser的Activity不会放到和你的应用同一个task中。相反，要么一个针对Browser的新的task启动，或者如果早已经有了一个Browser的task在后台运行，该task将会转到前台处理新的intent。</p>
+<p>无论一个activity是在一个新的task中启动，还是和启动它的activity处于同一个task，返回键总是可以带用户回到之前的activity。</p>
+<p>然而，如果你启动activity的时候指定singleTask启动模式，接着如果该activity的一个实例存在于一个后台task中，那整个task会被带到前台，这个时候，回退栈(back stack)栈顶现在包括带到前台的task中的所有activities。<br>如下图所示：</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/diagram_backstack_singletask_multiactivity.png"></p>
+<ul>
+<li><p>使用Intent标志</p>
+<p>当启动一个activity时，你可以修改一个activity和它的task的关联性通过在你用startActivity()方法传递的intent中包含标志，你可以包含的标志有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLAG_ACTIVITY_NEW_TASK</span><br></pre></td></tr></table></figure>
+<p>启动指定activity到一个新的task中，如果一个关联你现在正在启动的activity的task，该task将会以它最后存储的状态被带到前台并且改activity在它的onNewIntent()方法中接收新的intent。相同与上面的singleTask。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLAG_ACTIVITY_SINGLE_TOP</span><br></pre></td></tr></table></figure>
+<p>如果正在启动的activity是当前activity(在back stack栈顶)，那么存在的实例将会在收到一个onNewIntent()的调用，而不是新创建一个该activity实例，与上面的singleTop相同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FLAG_ACTIVITY_CLEAR_TOP</span><br></pre></td></tr></table></figure>
+<p>如果正在启动的activity早已经运行在当前的task中，此时不会重新启动一个该activity的实例，而是所有在该activity上面其他的activities会被destroy，并且intent通过onNewIntent（）方法会被发送到恢复的activity实例(现在栈顶的activity)</p>
+<p><code>FLAG_ACTIVITY_CLEAR_TOP</code>是配合<code>FLAG_ACTIVITY_NEW_TASK</code>最长使用的。当一起使用的时候，这个标志是定位在另一个task中已存在的activity并把它放到可以响应intent的位置的一种方法。</p>
+<p>注意：如果特定的activity的启动模式是standard，它也会被从栈顶移除并且一个新的实例在它的位置被启动来处理进来的intent，因为当启动模式是standard时，一个针对新的new intent的新的实例总会被创建</p>
+</li>
+</ul>
+<ul>
+<li>处理affinities</li>
+</ul>
+<p>affinity属性指明一个activity更喜欢属于哪个task。默认地，来自一个应用程序的所有activities彼此都有一个亲和性。所以，一般来说一个相同应用的所有activities倾向于在一个相同的task中。然而，你可以修改一个activity的默认affinity属性。定义在不同应用程序的activities可以共享一个affinity属性，或者定义在同一个应用程序的activities可以被赋予不同的task亲和性。<br>你可以通过<activity>元素的taskAffinity来修改任何给定的activities的亲和性。</activity></p>
 <p>taskAffinity属性带有一个字符串值，该值必须和声明在manifest中的默认包名一样唯一，因为系统使用这个名字来识别应用程序的默认task亲和性。</p>
-<p>亲和性使用在两种情况下：<br>当一个包含FLAG_ACTIVITY_NEW_TASK标志的intent启动一个activity时。</p>
-<p>当一个activity它的allowTaskReparenting属性设置为true</p>
-<p>继续看官网对于taskAffinity属性的定义(水平有限，翻译的不是很好)：</p>
+<p>亲和性使用在两种情况下：</p>
+<ul>
+<li>当一个包含FLAG_ACTIVITY_NEW_TASK标志的intent启动一个activity时</li>
+<li>当一个activity它的allowTaskReparenting属性设置为true</li>
+</ul>
+<p>继续看官网对于taskAffinity属性的定义</p>
 
       
     </div>
