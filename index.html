@@ -1563,18 +1563,10 @@
 
       
         
-          <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>标题很简单，自定义带padding的水平进度条，也就是如下效果的进度条</p>
-<p><a href="http://www.picksomething.cn/wp-content/uploads/2016/10/progressbar.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2016/10/progressbar-744x82.png" alt="progressbar"></a></p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>标题很简单，自定义带padding的水平进度条，也就是如下效果的进度条：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/10/progressbar.png"></p>
 <p>其实很简单，但是因为有一个坑还是要提出来，话不多说了，首先看看正常的实现：</p>
-<hr>
-<h4 id="常规方案"><a href="#常规方案" class="headerlink" title="常规方案"></a>常规方案</h4><p>首先是布局文件中放一个ProgressBar控件：</p>
-<pre><code>ProgressBar
-    android:id=&quot;@+id/custom_horizontal_progress&quot;
-    style=&quot;?android:attr/progressBarStyleHorizontal&quot;
-    android:layout_width=&quot;match_parent&quot;
-    android:layout_height=&quot;16dp&quot;
-    android:progressDrawable=&quot;@drawable/progress_bg_drawable&quot;
-</code></pre><p>补充：为了更直观，我直接将16dp写到了布局文件中，规范写法这些值要放到dimen资源文件中引用</p>
+<h2 id="常规方案"><a href="#常规方案" class="headerlink" title="常规方案"></a>常规方案</h2><p>首先是布局文件中放一个ProgressBar控件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ProgressBar</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/custom_horizontal_progress"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">style</span>=<span class="string">"?android:attr/progressBarStyleHorizontal"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"16dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:progressDrawable</span>=<span class="string">"@drawable/progress_bg_drawable"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>补充：为了更直观，我直接将16dp写到了布局文件中，规范写法这些值要放到dimen资源文件中引用<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/10/26/Android自定义进度条时padding无效果/#more" rel="contents">
@@ -1863,7 +1855,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -1874,7 +1866,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">125</span>
+                  <span class="site-state-item-count">128</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
