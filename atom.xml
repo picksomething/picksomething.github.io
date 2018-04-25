@@ -304,21 +304,26 @@
     <link href="http://picksomething.cn/2016/10/21/%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E4%B8%80%E4%BA%9Bshell%E5%91%BD%E4%BB%A4/"/>
     <id>http://picksomething.cn/2016/10/21/工作中常用的一些shell命令/</id>
     <published>2016-10-21T04:31:13.000Z</published>
-    <updated>2018-04-24T07:46:37.427Z</updated>
+    <updated>2018-04-25T07:41:03.113Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>开发人员掌握一些常用的命令，对于提高效率(B格)是很有帮助的，本篇文章记录下平时工作中常用的shell命令，同时也是为了测试一下新安装的markdown editor插件</p><h5 id="查看签名文件信息"><a href="#查看签名文件信息" class="headerlink" title="查看签名文件信息"></a>查看签名文件信息</h5><p>主要用在不用先签名到apk上，可以直接查看签名文件的md5等一些信息</p><pre><code>keytool -list -v -keystore debug.keystore`&lt;/pre&gt;* * *##### 压缩命令主要用在传输文件的时候可以先压缩一下* * *&lt;!--more--&gt;##### grep命令主要用于在项目中或者在某个目录下查找某个字符串`-r 递归 -i 忽略大小写 -n显示行号(从1开始)``-l --files-with-mathches -L --file-without-mathch`* * *##### 查看app crash log信息主要用于当手机app发生crash的时候，能够在命令行里面查看crash信息，对调试很有帮助`-A num, --after-context=num 搜索内容后面显示多少行``-B num, --before-content=num 搜索内容前面显示多少行`&lt;pre&gt;`adb logcat | grep -i &quot;FATAL&quot; -A 25`&lt;/pre&gt;* * *##### 查看activity任务栈信息主要用于查看当前正在运行的任务栈信息，有助于分析activity的各种启动模式&lt;pre&gt;`adb shell dumpsys activity activities | grep -i run</code></pre><hr><h3 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h3><p>上面都是日常开发中经常用到的命令，熟练掌握这些命令是很有帮助的，如果想查看每个命令的更多用法可以使用<code>man xxx</code>去看</p>]]></content>
+    <content type="html"><![CDATA[<p>开发人员掌握一些常用的命令，对于提高效率(B格)是很有帮助的，本篇文章记录下平时工作中常用的shell命令，同时也是为了测试一下新安装的markdown editor插件</p><h2 id="查看签名文件信息"><a href="#查看签名文件信息" class="headerlink" title="查看签名文件信息"></a>查看签名文件信息</h2><p>当我们想查看一个签名文件的md5等信息的时候，这个命令就很实用了，现在的一些应用市场认领应用啊，接入一些第三方的sdk啊，一般都需要apk的签名信息<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -list -v -keystore debug.keystore</span><br></pre></td></tr></table></figure></p><h2 id="压缩命令"><a href="#压缩命令" class="headerlink" title="压缩命令"></a>压缩命令</h2><p>平时打完渠道包发给商务运营人员的时候，这个命令很常用</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//压缩文件a.apk到a.zip中</span><br><span class="line">zip a.zip a.apk</span><br><span class="line"></span><br><span class="line">//压缩文件夹a到a.zip中</span><br><span class="line">zip -i a.zip a</span><br><span class="line"></span><br><span class="line">//加密压缩文件a.apk</span><br><span class="line">zip -e a.zip a.apk</span><br></pre></td></tr></table></figure><h2 id="grep命令"><a href="#grep命令" class="headerlink" title="grep命令"></a>grep命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//grep 查找某个字符串</span><br><span class="line">grep -rin baidu ./ 查找当前目录下所有包含baidu字段内容，并显示行号</span><br><span class="line">//grep 查找包含某个字符串的文件</span><br><span class="line">grep -rl baidu ./ 查找当前目录侠所有包含baidu的文件名</span><br><span class="line">-r 递归 -i 忽略大小写 -n显示行号(从1开始)</span><br><span class="line">-l --files-with-mathches -L --file-without-mathch</span><br></pre></td></tr></table></figure><p>比如当平时Android手机发生应用FC的时候，我们可以通过grep命令去在杂乱logcat找出crash信息：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//抓取crash logcat信息(-A显示结果附近20行)</span><br><span class="line">adb logcat | grep -i "FATAL" -A 20</span><br><span class="line">-A num, --after-context=num 搜索内容后面显示多少行</span><br><span class="line">-B num, --before-content=num 搜索内容前面显示多少行</span><br></pre></td></tr></table></figure><h2 id="查看activity任务栈信息"><a href="#查看activity任务栈信息" class="headerlink" title="查看activity任务栈信息"></a>查看activity任务栈信息</h2><p>主要用于查看当前正在运行的任务栈信息，有助于分析activity的各种启动模式<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell dumpsys activity activities | grep -i run</span><br></pre></td></tr></table></figure></p><h2 id="删除空文件"><a href="#删除空文件" class="headerlink" title="删除空文件"></a>删除空文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -type f -size 0 -delete</span><br></pre></td></tr></table></figure><p>上面这些都是自己日常开发中经常用到的命令，熟练掌握这些命令是很有帮助的，如果想查看每个命令的更多用法可以使用<code>man xxx</code>去看官方用法说明</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;开发人员掌握一些常用的命令，对于提高效率(B格)是很有帮助的，本篇文章记录下平时工作中常用的shell命令，同时也是为了测试一下新安装的ma
+        &lt;p&gt;开发人员掌握一些常用的命令，对于提高效率(B格)是很有帮助的，本篇文章记录下平时工作中常用的shell命令，同时也是为了测试一下新安装的markdown editor插件&lt;/p&gt;
+&lt;h2 id=&quot;查看签名文件信息&quot;&gt;&lt;a href=&quot;#查看签名文件信息&quot; class=&quot;he
       
     
     </summary>
     
       <category term="Shell" scheme="http://picksomething.cn/categories/Shell/"/>
     
+    
+      <category term="shell" scheme="http://picksomething.cn/tags/shell/"/>
+    
+      <category term="命令行" scheme="http://picksomething.cn/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/"/>
     
   </entry>
   
