@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,Ubuntu,Gnome,截屏," />
+  <meta name="keywords" content="Android,Ripple,涟漪动画," />
 
 
 
@@ -81,18 +81,22 @@
 
 
 
-<meta name="description" content="今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk啊，xface啊之列的下面的内容就对你不适合了。 gnome-screenshot -a //是局部截图,自己选择区域 gnome">
-<meta name="keywords" content="Linux,Ubuntu,Gnome,截屏">
+<meta name="description" content="需求因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下：  然后动画的具体细节要求是这样的：">
+<meta name="keywords" content="Android,Ripple,涟漪动画">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu gnome桌面环境下截屏命令">
-<meta property="og:url" content="http://picksomething.cn/2012/12/29/ubuntu-gnome-e6-a1-8c-e9-9d-a2-e7-8e-af-e5-a2-83-e4-b8-8b-e6-88-aa-e5-b1-8f-e5-91-bd-e4-bb-a4/index.html">
+<meta property="og:title" content="Android实现涟漪动画">
+<meta property="og:url" content="http://picksomething.cn/2015/09/28/Android实现涟漪动画/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk啊，xface啊之列的下面的内容就对你不适合了。 gnome-screenshot -a //是局部截图,自己选择区域 gnome">
+<meta property="og:description" content="需求因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下：  然后动画的具体细节要求是这样的：">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.423Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/ezgif.com-crop.gif">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/QQ20150928-2@2x.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/QQ20150928-3@2x.png">
+<meta property="og:updated_time" content="2018-04-25T06:17:59.490Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu gnome桌面环境下截屏命令">
-<meta name="twitter:description" content="今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk啊，xface啊之列的下面的内容就对你不适合了。 gnome-screenshot -a //是局部截图,自己选择区域 gnome">
+<meta name="twitter:title" content="Android实现涟漪动画">
+<meta name="twitter:description" content="需求因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下：  然后动画的具体细节要求是这样的：">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/ezgif.com-crop.gif">
 
 
 
@@ -122,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://picksomething.cn/2012/12/29/ubuntu-gnome-e6-a1-8c-e9-9d-a2-e7-8e-af-e5-a2-83-e4-b8-8b-e6-88-aa-e5-b1-8f-e5-91-bd-e4-bb-a4/"/>
+  <link rel="canonical" href="http://picksomething.cn/2015/09/28/Android实现涟漪动画/"/>
 
 
 
 
 
-  <title>ubuntu gnome桌面环境下截屏命令 | 一路追梦想</title>
+  <title>Android实现涟漪动画 | 一路追梦想</title>
   
 
 
@@ -265,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2012/12/29/ubuntu-gnome-e6-a1-8c-e9-9d-a2-e7-8e-af-e5-a2-83-e4-b8-8b-e6-88-aa-e5-b1-8f-e5-91-bd-e4-bb-a4/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/09/28/Android实现涟漪动画/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -282,7 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ubuntu gnome桌面环境下截屏命令</h1>
+          <h1 class="post-title" itemprop="name headline">Android实现涟漪动画</h1>
         
 
         <div class="post-meta">
@@ -294,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2012-12-29T21:24:29+08:00">
-                2012-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-28T23:16:20+08:00">
+                2015-09-28
               </time>
             
 
@@ -317,8 +321,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
                   </a>
                 </span>
 
@@ -354,33 +358,26 @@
       
 
       
-        <p>今天在ubuntu下截屏的时候才发现截屏的命令又忘了，索性就把这些命令记到博客里吧，以后用的时候也不用到处搜，到处找了，这个截屏命令还是很方面的，感觉很酷，这个是gnome环境下的截屏命令，也就是Ubuntu默认的桌面环境下的截屏命令，如果你安装了其他桌面环境比如gtk啊，<code>xface</code>啊之列的下面的内容就对你不适合了。</p>
-<pre><code>gnome-screenshot -a
-//是局部截图,自己选择区域
-gnome-screenshot -w
-//全屏截图,相当于快捷键print screen。
-`&lt;/pre&gt;
-下面是常用的截屏命令。
-&lt;!--more--&gt;
-&lt;pre&gt;`gnome-screenshot
-
-gnome-screenshot -help
-Usage: gnome-screenshot [OPTION...] Take a picture of the screen
-Help Options:
-  -h, --help                    Show help options
-  --help-all                    Show all help options
-  --help-gtk                    Show GTK+ Options
-
-Application Options:
-  -w, --window                  Grab a window instead of the entire screen
-  -a, --area                    Grab an area of the screen instead of the entire screen
-  -b, --include-border          Include the window border with the screenshot
-  -B, --remove-border            Remove the window border from the screenshot
-  -d, --delay=seconds            Take screenshot after specified delay [in seconds]
-  -e, --border-effect=effect    Effect to add to the border (shadow, border or none)
-  -i, --interactive              Interactively set options
-  --display=DISPLAY              X display to use
-</code></pre><p>小结：多操作，多总结。</p>
+        <h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>因为开发launcher的桌面启动动画的时候，根据设计师的要求，需要实现一个涟漪的效果，具体效果如下：</p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/ezgif.com-crop.gif"></p>
+<p>然后动画的具体细节要求是这样的：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/QQ20150928-2@2x.png"><br><a id="more"></a></p>
+<p>我Google搜索了一下涟漪效果，发现Github上有一些类似的开源库，但是发现大部分都是点击按钮然后开始出现涟漪效果，与自己要做的这个涟漪动画不太符合，所以在dwl的启发下，想着干脆自己实现一个算了，于是就尝试着自定义这个涟漪动画，最终实现的效果就和上面的是一样的，下面阐述一下实现原理</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>首先我们将这个动画看成是一个圆环，圆环里面的小圆是一个空心的透明圆，外面是一个透明的大圆，draw圆环的原理很简单，就是在draw透明圆的基础上，将画笔paint的strokeWidth设置成外面的环的宽度</p>
+<blockquote>
+<p>这里需要注意的是，事实上通过设置strokeWidth之后draw出来的外面大圆的半径并不是简单的内圆的半径加上圆环的宽度，而是内圆的半径+1/2圆环的宽度</p>
+</blockquote>
+<p>如下图所示，红色的就是半径就是我们在draw圆环外面大圆的时候应该设置的半径，然后将笔宽strokeWidth设置为圆环的宽度即可：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/09/QQ20150928-3@2x.png"></p>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>那么知道draw圆环的原理之后，下面就可以开始draw了，里面的小圆很简单：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawCircle(centerX, centerY, mCircleRadius, mCirclePaint);</span><br></pre></td></tr></table></figure></p>
+<p>外面的大圆：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawCircle(centerX, centerY, mCircleRadius + mRippleWidth / <span class="number">2</span>, mRipplePaint);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>重点就是mRippleWidth这个变量，根据动画介绍可以，波纹的宽度是从0到mRippleWidth，那么根据上面我们说的外圆的半径为内圆的半径+1/2(圆环)波纹的宽度，所以大圆的半径是mCircleRadius+mRippleWidth/2</p>
+</blockquote>
+<p>半径的变化规律知道了，只有半径的变化显然是不够的，为了达到波纹从0到mRippleWidth的效果，我们必须同步更改大圆画笔paint的strokeWidth的值，也就是画出圆环效果，strokeWidth的变化规律和波纹宽度是一样的，从0到mRippleWidth。ok，知道了半径和大圆画笔的变化规律，接下来就是按照规律去改变对应的值，然后刷新界面了，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ValueAnimator va = ValueAnimator.ofInt(<span class="number">0</span>, sRippleWidth);</span><br><span class="line">va.setDuration(RIPPLE_ANIM_DURATION * <span class="number">2</span>);</span><br><span class="line">va.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator animation)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> value = (<span class="keyword">int</span>) animation.getAnimatedValue();</span><br><span class="line">        mRippleWidth = value;</span><br><span class="line">        mRipplePaint.setStrokeWidth(value);</span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">va.start();</span><br></pre></td></tr></table></figure>
+<p>在初始化代码片段中，我们将外面的大圆画笔paint的strokeWidth初始化为0，颜色初始化成波纹的颜色：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mRipplePaint.setStyle(Paint.Style.STROKE);</span><br><span class="line">mRipplePaint.setStrokeWidth(<span class="number">0</span>);</span><br><span class="line">mRipplePaint.setARGB(<span class="number">127</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>);</span><br></pre></td></tr></table></figure></p>
+<p>然后根据动画的定义，我们逐渐地将画笔的宽度设置为从0到最终波纹宽度的每一个临时宽度，同时也将波纹变化过程中的的每一个临时宽度值赋值给mRippleWidth用来更新大圆的半径。然后调用invalidata()刷新界面，这样效果就出来了</p>
+<p>当然还有一些细节，比如波纹宽度渐变的过程中，要伴随着alpha变化，同时要求波纹到指定时间后自动开始(这里是3000毫秒开始)，都需要我们去实现，但这些不是主要难点了，相信大家都能搞定</p>
+<p>就这样了，欢迎大家交流意见</p>
 
       
     </div>
@@ -398,13 +395,11 @@ Application Options:
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
+            <a href="/tags/Android/" rel="tag"># Android</a>
           
-            <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+            <a href="/tags/Ripple/" rel="tag"># Ripple</a>
           
-            <a href="/tags/Gnome/" rel="tag"># Gnome</a>
-          
-            <a href="/tags/截屏/" rel="tag"># 截屏</a>
+            <a href="/tags/涟漪动画/" rel="tag"># 涟漪动画</a>
           
         </div>
       
@@ -417,8 +412,8 @@ Application Options:
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2012/10/15/关于动态内存传递的一些知识/" rel="next" title="关于动态内存传递的一些知识">
-                <i class="fa fa-chevron-left"></i> 关于动态内存传递的一些知识
+              <a href="/2015/09/27/来杭半年/" rel="next" title="来杭半年">
+                <i class="fa fa-chevron-left"></i> 来杭半年
               </a>
             
           </div>
@@ -427,8 +422,8 @@ Application Options:
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2013/03/31/浅述java中创建线程到两种方法/" rel="prev" title="浅述java中创建线程到两种方法">
-                浅述java中创建线程到两种方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2015/10/15/使用merge标签替换FrameLayout布局/" rel="prev" title="使用merge标签替换FrameLayout布局">
+                使用merge标签替换FrameLayout布局 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -481,8 +476,17 @@ Application Options:
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -523,7 +527,7 @@ Application Options:
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -553,6 +557,22 @@ Application Options:
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#需求"><span class="nav-number">1.</span> <span class="nav-text">需求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-number">3.</span> <span class="nav-text">实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -944,7 +944,7 @@ android:layout_height=&quot;match_parent&quot;&amp;gt;
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2014/12/30/Android Studio ADB not responding/" itemprop="url">Android Studio ADB not responding...</a></h1>
+                <a class="post-title-link" href="/2014/12/30/Android Studio ADB not responding/" itemprop="url">Android Studio ADB not responding</a></h1>
         
 
         <div class="post-meta">
@@ -1018,14 +1018,13 @@ android:layout_height=&quot;match_parent&quot;&amp;gt;
       
         
           <p>今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示:</p>
-<pre><code>ADB not responding. If you&apos;d like to retry
-then please manually kill &quot;adb&quot; and click &apos;Restart&apos;
-`&lt;/pre&gt;
-刚开始我以为是刚导出的原因,是不是之前Eclipse的adb连着这个Genymotion虚拟机,导致出现这样的错误,于是我就开始尝试:
-</code></pre><ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ADB not responding. If you\'d like to retry</span><br><span class="line">then please manually kill "adb" and click \'Restart\'</span><br></pre></td></tr></table></figure>
+<p>刚开始我以为是刚导出的原因,是不是之前Eclipse的adb连着这个Genymotion虚拟机,导致出现这样的错误,于是我就开始尝试:</p>
+<ul>
 <li>关闭Genymotion虚拟机,重新在Studio中通过Genymotion的插件启动Genymotion虚拟机,结果是:Not work</li>
-<li>重启电脑,依然Not work<br>我试着Google了一下,发现好像蛮多人遇到这个问题,但是要么就是别人在Stack Overflow提问没人回答,要么就是有人给出答案,无非就是说因为电脑里面有两个sdk目录(一个eclipse的sdk,一个studio的sdk),需要重启一下adb服务,也就是执行下面这两行代码:<br><pre><code>adb kill-server
-adb start-server</code></pre>
+<li>重启电脑,依然Not work</li>
+</ul>
+<p>我试着Google了一下,发现好像蛮多人遇到这个问题,但是要么就是别人在Stack Overflow提问没人回答,要么就是有人给出答案,无非就是说因为电脑里面有两个sdk目录(一个eclipse的sdk,一个studio的sdk),需要重启一下adb服务,也就是执行下面这两行代码:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb kill-server</span><br><span class="line">adb start-server</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2014/12/30/Android Studio ADB not responding/#more" rel="contents">
@@ -1782,87 +1781,25 @@ output_config_file:
 
       
         
-          
-            <p>虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服。比如<code>android4.0</code>以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题：</p>
-<p><code>Titlebar</code>就是activity最上面显示app name的那个东东，今天在coding的时候遇到一个需要自定义titlebar的，当然这个很简单了，就是自己根据需要写一个布局然后替换掉默认的titlebar就可以了，替换代码baidu一下有很多，简单的说就是在activity的onCreate方法中加入下面两句：</p>
-<p>1.告诉activity我要使用自己定义的titlebar，不用你默认的</p>
-<pre><code>requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-`&lt;/pre&gt;
-2.让activity加载自己定义的titlebar的布局
-&lt;pre&gt;`getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);`&lt;/pre&gt;
-然后在`manifest`中自定义titlebar的那个activity中加入自定义的theme，贴上我自定义theme的代码，我使用的是4.4的版本
-&lt;pre&gt;`&amp;lt;style name=&quot;HomePage&quot; parent=&quot;AppTheme&quot;&amp;gt;
-    &amp;lt;item name=&quot;android:windowTitleSize&quot;&amp;gt;60dp&amp;lt;/item&amp;gt;
-    &amp;lt;item name=&quot;android:windowTitleBackgroundStyle&quot;&amp;gt;@style/WindowTitleBackground&amp;lt;/item&amp;gt;
-&amp;lt;/style&amp;gt;
-&amp;lt;style name=&quot;WindowTitleBackground&quot;&amp;gt;
-    &amp;lt;item name=&quot;android:background&quot;&amp;gt;@color/blue&amp;lt;/item&amp;gt;
-&amp;lt;/style&amp;gt;
-`&lt;/pre&gt;
-这个时候第一个坑出现了
-&lt;!--more--&gt;
-**坑一：**报如下错误：
-&lt;pre&gt;`android.util.AndroidRuntimeException: 
-You cannot combine custom titles with other title features
-`&lt;/pre&gt;
-原因是说android4.0以上使用actionbar替代titlebar了，所以调用
-&lt;pre&gt;`requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);`&lt;/pre&gt;
-** 网上解决办法：**使用android自带的主题就OK了，也就是将`parent=“AppTheme”`
-换成`parent=“android:Theme”`,自己试了一下发现确实不报错了，可以正常运行了，但是问题来了：整个app背景都变成黑色的了，这根本不是我想要的颜色啊。。。于是查看`android:Theme`的源码(一部分)发现是这样写的：
-&lt;pre&gt;`&amp;lt;style name=&quot;Theme&quot;&amp;gt;
-    &amp;lt;item name=&quot;colorForeground&quot;&amp;gt;@android:color/bright_foreground_dark&amp;lt;/item&amp;gt;
-    &amp;lt;item name=&quot;colorForegroundInverse&quot;&amp;gt;@android:color/bright_foreground_dark_inverse&amp;lt;/item&amp;gt;
-    &amp;lt;item name=&quot;colorBackground&quot;&amp;gt;@android:color/background_dark&amp;lt;/item&amp;gt;
-    &amp;lt;item name=&quot;colorBackgroundCacheHint&quot;&amp;gt;?android:attr/colorBackground&amp;lt;/item&amp;gt;
-    ....
-&amp;lt;/style&amp;gt;
-`&lt;/pre&gt;
-看到colorBackground那句了吗，明白为什么黑了吧。
-
-**最终解决办法：**但是我不想要黑的啊，那就继续想办法解决呗，最终在一国外网址上看到一个老外也遇到这个问题了，他给的解决方法是在自定义的主题中加入这样一句代码：
-&lt;pre&gt;`&amp;lt;item name=&quot;android:windowActionBar&quot;&amp;gt;false&amp;lt;/item&amp;gt;`&lt;/pre&gt;
-那么更改过后的自定义主题就变成这样的了
-&lt;pre&gt;`&amp;lt;style name=&quot;HomePage&quot; parent=&quot;AppTheme&quot;&amp;gt;
-    &amp;lt;item name=&quot;android:windowTitleSize&quot;&amp;gt;60dp&amp;lt;/item&amp;gt;
-    &amp;lt;item name=&quot;android:windowTitleBackgroundStyle&quot;&amp;gt;@style/WindowTitleBackground&amp;lt;/item&amp;gt;
-    &amp;lt;item name=&quot;android:windowActionBar&quot;&amp;gt;false&amp;lt;/item&amp;gt;
-&amp;lt;/style&amp;gt;
-&amp;lt;style name=&quot;WindowTitleBackground&quot;&amp;gt;
-    &amp;lt;item name=&quot;android:background&quot;&amp;gt;@color/blue&amp;lt;/item&amp;gt;
-&amp;lt;/style&amp;gt;
-`&lt;/pre&gt;
-这样这个问题就顺利解决了，这句话的用处就是`disable actionbar`。
-
-**坑二：**启动activity时默认的titlebar会瞬间闪一下
-
-第一个坑填平之后就开始遇到第二个坑了，为什么我每次启动这个自定义title的activity时候，都会闪一下默认的titlebar才加载自定义的titlebar呢，我不是自己定义了吗？为毛默认的还要闪一下，刷存在感吗。。。
-
-**原因：**首先google了一下，发现是这样的：在启动一个application的时候，为了尽快地响应用户，`application`会先从`manifest`中读取相关属性，然后尽快展现一个预览界面给用户，这个界面的展现是可能先于activity的加载的，所以预览界面读取到manifest中有定义theme这个属性，且属性值并不是`@android:style/Theme.NoTitleBar`，默认就会加载显示app name的titlebar，等到activity加载的时候执行到了要自定义titlebar的代码，并且加载了自定义的titlebar，那么就会变成显示自定义的titlebar，所以会出现闪了一下默认的titlebar的情况
-
-**解决办法：**我们可以将activity的theme属性设置为@android:style/Theme.NoTitleBar，告诉app 我不需要titlebar，那样就不会预加载带app name的titlebar了，但是我们自定义的标题栏就没法加载了，现在就需要在activity加载自定义的标题栏的时候让activity知道我还是要加载titlebar的，那么就需要加上这么一句代码：
-&lt;pre&gt;`setTheme(R.style.HomePage);`&lt;/pre&gt;
-还有一点我需要特别强调的是：如果没有加这句
-&lt;pre&gt;`&amp;lt;item name=&quot;android:windowActionBar&quot;&amp;gt;false&amp;lt;/item&amp;gt;`&lt;/pre&gt;
-那么`setTheme`方法要放到`super.onCreate(savedInstanceState);`之前的，否则会报错。
-查看super.onCreate(savedInstanceState)的代码可以知道是和`actionbar`有关系的：
-&lt;pre&gt;`protected void onCreate(Bundle savedInstanceState) {
-    if (DEBUG_LIFECYCLE) 
-        Slog.v(TAG, &quot;onCreate &quot; + this + &quot;: &quot; + savedInstanceState);
-    if (mLastNonConfigurationInstances != null) {
-        mAllLoaderManagers = mLastNonConfigurationInstances.loaders;
-    }
-    if (mActivityInfo.parentActivityName != null) {
-        if (mActionBar == null) {
-            mEnableDefaultActionBarUp = true;
-        } else {
-            mActionBar.setDefaultDisplayHomeAsUpEnabled(true);
-        }
-    }
- ...
-}
-</code></pre><p>哎，遇到的两个坑总算解决了，贴一张运行的效果图<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/12.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/12.png" alt="1"></a></p>
-
-          
+          <p>虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服，比如<code>android4.0</code>以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题：</p>
+<p><code>Titlebar</code>就是Activity最上面显示app name的那个东东，今天在coding的时候遇到一个需要自定义titlebar的，当然这个很简单了，就是自己根据需要写一个布局然后替换掉默认的titlebar就可以了，替换代码baidu一下有很多，简单的说就是在activity的onCreate方法中加入下面两句：</p>
+<ol>
+<li><p>告诉activity我要使用自己定义的titlebar，不用你默认的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>让activity加载自己定义的titlebar的布局</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>然后在<code>manifest</code>中自定义titlebar的那个activity中加入自定义的theme，贴上我自定义theme的代码，我使用的是4.4的版本<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"HomePage"</span> <span class="attr">parent</span>=<span class="string">"AppTheme"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTitleSize"</span>&gt;</span>60dp<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTitleBackgroundStyle"</span>&gt;</span>@style/WindowTitleBackground<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"WindowTitleBackground"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:background"</span>&gt;</span>@color/blue<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="第一个坑，报如下错误："><a href="#第一个坑，报如下错误：" class="headerlink" title="第一个坑，报如下错误："></a>第一个坑，报如下错误：</h3>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2140,7 +2077,7 @@ You cannot combine custom titles with other title features
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

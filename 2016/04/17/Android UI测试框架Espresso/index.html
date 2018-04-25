@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Android,Conflict with dependecy,Espresso,UI自动化测试," />
+  <meta name="keywords" content="Android,Espresso,自动化测试," />
 
 
 
@@ -81,20 +81,22 @@
 
 
 
-<meta name="description" content="前言最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例 简介Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了官方项目地址：点击查看Espresso测试框架详细信息  安装在dependenci">
-<meta name="keywords" content="Android,Conflict with dependecy,Espresso,UI自动化测试">
+<meta name="description" content="前言最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例 简介Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了官方项目地址：点击查看Espresso测试框架详细信息 安装在dependencie">
+<meta name="keywords" content="Android,Espresso,自动化测试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android UI测试框架Espresso">
 <meta property="og:url" content="http://picksomething.cn/2016/04/17/Android UI测试框架Espresso/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="前言最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例 简介Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了官方项目地址：点击查看Espresso测试框架详细信息  安装在dependenci">
+<meta property="og:description" content="前言最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例 简介Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了官方项目地址：点击查看Espresso测试框架详细信息 安装在dependencie">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2016/04/espresso-cheat-sheet-2.1.0-420x587.png">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.427Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/QQ20160417-0@2x.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/QQ20160417-1@2x.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/espresso-cheat-sheet-2.1.0.png">
+<meta property="og:updated_time" content="2018-04-25T06:35:49.292Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android UI测试框架Espresso">
-<meta name="twitter:description" content="前言最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例 简介Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了官方项目地址：点击查看Espresso测试框架详细信息  安装在dependenci">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2016/04/espresso-cheat-sheet-2.1.0-420x587.png">
+<meta name="twitter:description" content="前言最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例 简介Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了官方项目地址：点击查看Espresso测试框架详细信息 安装在dependencie">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/QQ20160417-0@2x.png">
 
 
 
@@ -356,120 +358,45 @@
       
 
       
-        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例</p>
-<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了<br>官方项目地址：<a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="noopener">点击查看Espresso测试框架详细信息</a></p>
-<hr>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>在dependencies里面添加引用</p>
-<pre><code>// App dependencies
-compile &apos;com.android.support:support-annotations:23.0.1&apos;
-
-// Testing-only dependencies
-// Force usage of support annotations in the test app, since it is internally used by the runner module.
-androidTestCompile &apos;com.android.support:support-annotations:23.0.1&apos;
-androidTestCompile &apos;com.android.support.test:runner:0.4.1&apos;
-androidTestCompile &apos;com.android.support.test:rules:0.4.1&apos;
-androidTestCompile &apos;com.android.support.test.espresso:espresso-core:2.2.1&apos;`&lt;/pre&gt;
-
-在`android.defaultConfig`设置`instrumentation runner`
-
-&lt;!--more--&gt;
-
-&lt;pre&gt;`testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;`&lt;/pre&gt;
-
-这里有一点需要注意的是官方文档中添加依赖的样例是这样的
-
-&lt;pre&gt;`dependencies {
-    // App&apos;s dependencies, including test
-    compile &apos;com.android.support:support-annotations:22.2.0&apos;
-
-    // Testing-only dependencies
-    androidTestCompile &apos;com.android.support.test:runner:0.5&apos;
-    androidTestCompile &apos;com.android.support.test.espresso:espresso-core:2.2.2&apos;
-}`&lt;/pre&gt;
-
-如果按照官方的这个来，build的时候你会遇到这样一个错误：
-
-&gt; Error:Conflict with dependency &apos;com.android.support:support-annotations&apos;
-
-###### 详情如下图所示：
-
-[![QQ20160417-0@2x](http://www.picksomething.cn/wp-content/uploads/2016/04/QQ20160417-0@2x-420x123.png)](http://www.picksomething.cn/wp-content/uploads/2016/04/QQ20160417-0@2x.png)
-
-##### 产生这种错误的原因如下：
-
-&gt; 通常是因为你的主程序和测试程序使用了相同的库，但是使用的版本却不一样，你可能会觉得奇怪，看代码里面测试依赖并没有引用`support-annotations`库啊，为什么会说测试程序和主程序使用了相同的库，这是因为在测试库`runner`中内部使用了`support-annotations`库，而且我们知道在运行的时候主程序apk和测试apk是共享同一个进程和相同的class path，这就代表主程序和测试程序必须使用相同版本的任何依赖库，一旦版本不同，所以才会出现上面的冲突错误
-
-###### 形象说明见下图：
-
-[![QQ20160417-1@2x](http://www.picksomething.cn/wp-content/uploads/2016/04/QQ20160417-1@2x-420x163.png)](http://www.picksomething.cn/wp-content/uploads/2016/04/QQ20160417-1@2x.png)
-
-###### 解决办法:
-
-既然知道了问题产生的原因，那么解决办法也很简单，两种方式：1.更改主程序里面对应冲突库的版本使其于测试程序里面的版本一致 2.更改测试程序里面冲突库的版本使其于主程序中的版本一致
-通常比较简单的做法就是在build.gradle文件中显式加入另一个test dependencies和主程序代码中的冲突库版本一致的库，这样就强制要求测试程序也使用和主程序相同版本的库文件，像这样：
-
-&lt;pre&gt;`dependencies {
-    // App&apos;s dependencies, including test
-    compile &apos;...:support-annotations:23.3.0&apos;
-
-    // Testing-only dependencies
-    Force the same version of support-annotations
-    compile &apos;...:support-annotations:23.3.0&apos;
-}`&lt;/pre&gt;
-
-* * *
-
-#### 编写测试用例
-
-这个很简单，只要结合官方文档给出的例子，看看文档说明和对应的API，很容易上手，下面是我写的一个打开NavigationView的测试用例：
-
-&lt;pre&gt;`@Test
-public void openNavigationView() {
-    onView(withId(R.id.drawer_layout)).perform(
-        actionOpenNavigationView());
-}
-
-private ViewAction actionOpenDrawer() {
-    return new ViewAction() {
-        @Override
-        public Matcher&lt;View&gt; getConstraints() {
-            return isAssignableFrom(DrawerLayout.class);
-        }
-
-        @Override
-        public String getDescription() {
-            return &quot;open drawer&quot;;
-        }
-
-        @Override
-        public void perform(UiController uiController, View view) {
-            ((DrawerLayout) view).openDrawer(GravityCompat.START);
-        }
-    };
-}
-`&lt;/pre&gt;
-</code></pre><ul>
-<li><strong>Espresso</strong> – 和视图views的交互切入点(通过onView和onData),而且也会暴露不需要依赖任何view的API(eg.pressBack).<p></p></li>
-<li><strong>ViewMatchers</strong> – 这个是我们如何find views的方式. ViewMatchers包含一个允许你在视图层次结构中找到指定的view的matchers的集合.以上，我们使用withId(R.id.etInput)来指明我们正在寻找的一个EditText，通过id = R.id.etInput.</li>
-<li><strong>ViewActions</strong> – 这是我们如何和views交互，我们使用typeText(…)方法来在EditText写入hello.</li>
-<li><p><strong>ViewAssertions</strong> – 这是我们的验证类. 我们使用ViewAssertions来验证views的指定属性. 大部分时候你将会使用由ViewMatchers下驱动的ViewAssertions. 在我们上面的例子中withText(…)方法实际上返回一个我们已经使用matchs(…)方法转换成一个ViewAssertion的ViewMatcher.</p>
-<blockquote>
-<p></p><p>Espresso测试的标准模式是find a view(ViewMatchers), 在view上做一些事情(ViewActions), 然后验证view的一些属性(ViewAssertions).</p>
-</blockquote>
-<p>例子：</p>
-<p><pre>`onView(withId(R.id.my_view))      // withId(R.id.my_view) is a ViewMatcher<br>  .perform(click())               // click() is a ViewAction<br>  .check(matches(isDisplayed())); // matches(isDisplayed()) is a ViewAssertion</pre></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近这两周工作相对不那么忙了，所以就抽空结合官方文档研究了一下Android UI测试框架Espresso，从框架的setup到测试用例编写到执行测试用例</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Espresso是Google官方推出的开源UI测试框架，它的特点就是简洁，很容易上手编写测试用例，而且关于UI测试Espresso支持的也越来越完善了<br>官方项目地址：<a href="https://google.github.io/android-testing-support-library/docs/espresso/index.html" target="_blank" rel="noopener">点击查看Espresso测试框架详细信息</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在dependencies里面添加引用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// App dependencies</span><br><span class="line">compile 'com.android.support:support-annotations:23.0.1'</span><br><span class="line">// Testing-only dependencies</span><br><span class="line">// Force usage of support annotations in the test app, since it is internally used by the runner module.</span><br><span class="line">androidTestCompile 'com.android.support:support-annotations:23.0.1'</span><br><span class="line">androidTestCompile 'com.android.support.test:runner:0.4.1'</span><br><span class="line">androidTestCompile 'com.android.support.test:rules:0.4.1'</span><br><span class="line">androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'</span><br></pre></td></tr></table></figure></p>
+<p>在<code>android.defaultConfig</code>设置<code>instrumentation runner</code><br><a id="more"></a><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"</span><br></pre></td></tr></table></figure></p>
+<p>这里有一点需要注意的是官方文档中添加依赖的样例是这样的<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    // App\'s dependencies, including test</span><br><span class="line">    compile 'com.android.support:support-annotations:22.2.0'</span><br><span class="line"></span><br><span class="line">    // Testing-only dependencies</span><br><span class="line">    androidTestCompile 'com.android.support.test:runner:0.5'</span><br><span class="line">    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果按照官方的这个来，build的时候你会遇到这样一个错误：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error:Conflict with dependency 'com.android.support:support-annotations'</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>详情如下图所示：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/QQ20160417-0@2x.png"></p>
+</li>
+<li><p>产生这种错误的原因如下：<br>通常是因为你的主程序和测试程序使用了相同的库，但是使用的版本却不一样，你可能会觉得奇怪，看代码里面测试依赖并没有引用<code>support-annotations</code>库啊，为什么会说测试程序和主程序使用了相同的库，这是因为在测试库<code>runner</code>中内部使用了<code>support-annotations</code>库，而且我们知道在运行的时候主程序apk和测试apk是共享同一个进程和相同的class path，这就代表主程序和测试程序必须使用相同版本的任何依赖库，一旦版本不同，所以才会出现上面的冲突错误</p>
+</li>
+<li><p>形象说明见下图：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/QQ20160417-1@2x.png"></p>
+</li>
+<li><p>解决办法:<br>既然知道了问题产生的原因，那么解决办法也很简单，两种方法：</p>
 </li>
 </ul>
+<ol>
+<li>更改主程序里面对应冲突库的版本使其于测试程序里面的版本一致</li>
+<li>更改测试程序里面冲突库的版本使其于主程序中的版本一致<br>通常比较简单的做法就是在build.gradle文件中显式加入另一个test dependencies和主程序代码中的冲突库版本一致的库，这样就强制要求测试程序也使用和主程序相同版本的库文件，像这样：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">  // App\'s dependencies, including test</span><br><span class="line">  compile '...:support-annotations:23.3.0'</span><br><span class="line"></span><br><span class="line">  // Testing-only dependencies</span><br><span class="line">  // Force the same version of support-annotations</span><br><span class="line">  compile '...:support-annotations:23.3.0'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="编写测试用例"><a href="#编写测试用例" class="headerlink" title="编写测试用例"></a>编写测试用例</h2><p>这个很简单，只要结合官方文档给出的例子，看看文档说明和对应的API，很容易上手，下面是我写的一个打开NavigationView的测试用例：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">openNavigationView</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    onView(withId(R.id.drawer_layout)).perform(</span><br><span class="line">        actionOpenNavigationView());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> ViewAction <span class="title">actionOpenDrawer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ViewAction() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Matcher&lt;View&gt; <span class="title">getConstraints</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> isAssignableFrom(DrawerLayout.class);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">getDescription</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"open drawer"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">perform</span><span class="params">(UiController uiController, View view)</span> </span>&#123;</span><br><span class="line">            ((DrawerLayout) view).openDrawer(GravityCompat.START);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>解释几个关键类：</p>
+<h3 id="Espresso"><a href="#Espresso" class="headerlink" title="Espresso"></a>Espresso</h3><p>和视图views的交互切入点(通过onView和onData),而且也会暴露不需要依赖任何view的API(eg.pressBack)</p>
+<h3 id="ViewMatchers"><a href="#ViewMatchers" class="headerlink" title="ViewMatchers"></a>ViewMatchers</h3><p>这个是我们如何find views的方式. ViewMatchers包含一个允许你在视图层次结构中找到指定的view的matchers的集合.以上，我们使用withId(R.id.etInput)来指明我们正在寻找的一个EditText，通过id = R.id.etInput</p>
+<h2 id="ViewActions"><a href="#ViewActions" class="headerlink" title="ViewActions"></a>ViewActions</h2><p>这是我们如何和views交互，我们使用typeText(…)方法来在EditText写入hello</p>
+<p>##ViewAssertions<br>这是我们的验证类. 我们使用ViewAssertions来验证views的指定属性. 大部分时候你将会使用由ViewMatchers下驱动的ViewAssertions. 在我们上面的例子中withText(…)方法实际上返回一个我们已经使用matchs(…)方法转换成一个ViewAssertion的ViewMatcher</p>
+<blockquote>
+<p>Espresso测试的标准模式是find a view(ViewMatchers), 在view上做一些事情(ViewActions), 然后验证view的一些属性(ViewAssertions).</p>
+</blockquote>
+<p>例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">onView(withId(R.id.my_view))      <span class="comment">// withId(R.id.my_view) is a ViewMatcher</span></span><br><span class="line">  .perform(click())               <span class="comment">// click() is a ViewAction</span></span><br><span class="line">  .check(matches(isDisplayed())); <span class="comment">// matches(isDisplayed()) is a ViewAssertion</span></span><br></pre></td></tr></table></figure></p>
 <p>附上一张官网帮助记忆的小抄：</p>
-<p><a href="http://www.picksomething.cn/wp-content/uploads/2016/04/espresso-cheat-sheet-2.1.0.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2016/04/espresso-cheat-sheet-2.1.0-420x587.png" alt="espresso-cheat-sheet-2.1.0"></a></p>
-<hr>
-<h4 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h4><p>执行测试用例有两种方法：</p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/04/espresso-cheat-sheet-2.1.0.png"></p>
+<h2 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h2><p>执行测试用例有两种方法：</p>
 <ol>
 <li>直接像运行app一样，通过Android Studio选择执行对应的测试程序</li>
 <li>在项目根目录执行：./gradlew :testPreject:connectedAndroidTest</li>
 </ol>
-<hr>
-<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a href="https://google.github.io/android-testing-support-library/" target="_blank" rel="noopener">https://google.github.io/android-testing-support-library/</a></li>
 <li><a href="https://guides.codepath.com/android/UI-Testing-with-Espresso" target="_blank" rel="noopener">https://guides.codepath.com/android/UI-Testing-with-Espresso</a></li>
 <li><a href="https://www.youtube.com/watch?v=OOEDKf06WqA" target="_blank" rel="noopener">https://www.youtube.com/watch?v=OOEDKf06WqA</a></li>
@@ -493,11 +420,9 @@ private ViewAction actionOpenDrawer() {
           
             <a href="/tags/Android/" rel="tag"># Android</a>
           
-            <a href="/tags/Conflict-with-dependecy/" rel="tag"># Conflict with dependecy</a>
-          
             <a href="/tags/Espresso/" rel="tag"># Espresso</a>
           
-            <a href="/tags/UI自动化测试/" rel="tag"># UI自动化测试</a>
+            <a href="/tags/自动化测试/" rel="tag"># 自动化测试</a>
           
         </div>
       
@@ -625,7 +550,7 @@ private ViewAction actionOpenDrawer() {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -665,7 +590,7 @@ private ViewAction actionOpenDrawer() {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行"><span class="nav-number">1.3.</span> <span class="nav-text">执行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#参考"><span class="nav-number">1.3.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写测试用例"><span class="nav-number">4.</span> <span class="nav-text">编写测试用例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Espresso"><span class="nav-number">4.1.</span> <span class="nav-text">Espresso</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewMatchers"><span class="nav-number">4.2.</span> <span class="nav-text">ViewMatchers</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ViewActions"><span class="nav-number">5.</span> <span class="nav-text">ViewActions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行"><span class="nav-number">6.</span> <span class="nav-text">执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

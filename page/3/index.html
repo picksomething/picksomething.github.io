@@ -264,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/07/09/Android activity切换动画一致性/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/07/09/Activity进入和退出时动画的一致性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -283,7 +283,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/07/09/Android activity切换动画一致性/" itemprop="url">Android activity切换动画一致性</a></h1>
+                <a class="post-title-link" href="/2015/07/09/Activity进入和退出时动画的一致性/" itemprop="url">Activity进入和退出时动画的一致性</a></h1>
         
 
         <div class="post-meta">
@@ -356,10 +356,12 @@
 
       
         
-          <p>今天把开发好的产品拿给设计师看，设计师说打开设置菜单的动画在不同的手机上表现不同，有的手机上是从中间展开的，有的手机是从右边出来的，有的手机上压根没有动画，说让最好统一成从右边出来的，那么既然启动设置activity的时候从右边出来，退出设置的时候应该也是从右边消失，这样才能保证动画的一致性。<br>都知道activity切换动画是通过overridePendingTransition(int enterAnim, int exitAnim)来实现的，重写这个方法然后传递进入和退出动画就可以实现activity启动时候的切换动画了。那假如我们现在是要在activity1启动activity2的时候加入切换动画，要求activity2从右边出现，那么就是在activity1调用startactivity之后和activity2调用finish之后分别调用overridePendingTransition然后传入两个进出动画就好了，如下图所示：<br>
+          <p>今天把开发好的产品拿给设计师看，设计师说打开设置菜单的动画在不同的手机上表现不同，有的手机上是从中间展开的，有的手机是从右边出来的，有的手机上压根没有动画，说让最好统一成从右边出来的，那么既然启动设置activity的时候从右边出来，退出设置的时候应该也是从右边消失，这样才能保证动画的一致性。</p>
+<p>都知道activity切换动画是通过overridePendingTransition(int enterAnim, int exitAnim)来实现的，重写这个方法然后传递进入和退出动画就可以实现activity启动时候的切换动画了。那假如我们现在是要在activity1启动activity2的时候加入切换动画，要求activity2从右边出现，那么就是在activity1调用startactivity之后和activity2调用finish之后分别调用overridePendingTransition然后传入两个进出动画就好了，如下图所示：</p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/07/Activity切换-1.png"><br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/07/09/Android activity切换动画一致性/#more" rel="contents">
+            <a class="btn" href="/2015/07/09/Activity进入和退出时动画的一致性/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2048,7 +2050,7 @@ Terry Jones
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

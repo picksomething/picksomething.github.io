@@ -81,21 +81,21 @@
 
 
 
-<meta name="description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: ADB not responding">
+<meta name="description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: 12ADB not respondi">
 <meta name="keywords" content="Android,ADB,Eclipse,Genymotion,Studio">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Android Studio ADB not responding...">
+<meta property="og:title" content="Android Studio ADB not responding">
 <meta property="og:url" content="http://picksomething.cn/2014/12/30/Android Studio ADB not responding/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: ADB not responding">
+<meta property="og:description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: 12ADB not respondi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4-300x163.png">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图5-300x278.png">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/抓图4.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/抓图5.png">
+<meta property="og:updated_time" content="2018-04-25T06:23:08.849Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Android Studio ADB not responding...">
-<meta name="twitter:description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: ADB not responding">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4-300x163.png">
+<meta name="twitter:title" content="Android Studio ADB not responding">
+<meta name="twitter:description" content="今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示: 12ADB not respondi">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/抓图4.png">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <title>Android Studio ADB not responding... | 一路追梦想</title>
+  <title>Android Studio ADB not responding | 一路追梦想</title>
   
 
 
@@ -285,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Android Studio ADB not responding...</h1>
+          <h1 class="post-title" itemprop="name headline">Android Studio ADB not responding</h1>
         
 
         <div class="post-meta">
@@ -358,21 +358,19 @@
 
       
         <p>今天想把一个Android Eclipse项目导出到Android Studio中之后,就Google了一下教程,整个导出过程也挺顺利,但是后面还是遇到了一个棘手的问题,我调试用的虚拟机是Genymotion,之前eclipse 和studio都是公用这一个Genymotion虚拟机调试,但是这次在运行从Eclipse导出到Studio的项目的时候,一直提示:</p>
-<pre><code>ADB not responding. If you&apos;d like to retry
-then please manually kill &quot;adb&quot; and click &apos;Restart&apos;
-`&lt;/pre&gt;
-刚开始我以为是刚导出的原因,是不是之前Eclipse的adb连着这个Genymotion虚拟机,导致出现这样的错误,于是我就开始尝试:
-</code></pre><ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ADB not responding. If you\'d like to retry</span><br><span class="line">then please manually kill "adb" and click \'Restart\'</span><br></pre></td></tr></table></figure>
+<p>刚开始我以为是刚导出的原因,是不是之前Eclipse的adb连着这个Genymotion虚拟机,导致出现这样的错误,于是我就开始尝试:</p>
+<ul>
 <li>关闭Genymotion虚拟机,重新在Studio中通过Genymotion的插件启动Genymotion虚拟机,结果是:Not work</li>
-<li>重启电脑,依然Not work<br>我试着Google了一下,发现好像蛮多人遇到这个问题,但是要么就是别人在Stack Overflow提问没人回答,要么就是有人给出答案,无非就是说因为电脑里面有两个sdk目录(一个eclipse的sdk,一个studio的sdk),需要重启一下adb服务,也就是执行下面这两行代码:<br><pre><code>adb kill-server
-adb start-server</code></pre><a id="more"></a>
-但是还是没用,还有答案就是说通过<br><pre>`ps aux | grep adb</pre></li>
-</ol>
-<p>获取adb的进程号,然后kill掉,在我这里一样不起作用,就在我想暂时放弃<code>Genymotion</code>虚拟机使用studio自带的avd创建一个虚拟机的时候,突然发现有一个日文博客(<a href="http://banbara.hatenablog.com/entry/2014/11/11/011738" target="_blank" rel="noopener">点击这里</a>) 给了我一点思路,也就是打开<code>Genymotion</code>的主界面,如图:<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图4-300x163.png" alt="抓图4"></a></p>
-<p>然后点击<code>Settings</code>,打开设置界面,选择<code>ADB</code><br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图5.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/抓图5-300x278.png" alt="抓图5"></a></p>
-<p>我虽然看不懂日文,但是感觉博主的意思是之前选择了<code>Use custom Android SDK tools</code>让改成选择<code>Use Genymotion Android tools</code>来解决问题,但是我的设置里面选择的就是第一项:使用<code>Genymotion</code>默认的android工具,但是都到这里了我不如试一下第二项,将<code>android-sdk</code>的目录指向我的studio使用的sdk目录,(如果有多个sdk目录的,别选择错了),完事之后,我重新启动了一下<code>Genymotion</code>虚拟机,然后重新执行studio中的从eclipse导出的项目,居然OK了,我自己都不敢相信.</p>
+<li>重启电脑,依然Not work</li>
+</ul>
+<p>我试着Google了一下,发现好像蛮多人遇到这个问题,但是要么就是别人在Stack Overflow提问没人回答,要么就是有人给出答案,无非就是说因为电脑里面有两个sdk目录(一个eclipse的sdk,一个studio的sdk),需要重启一下adb服务,也就是执行下面这两行代码:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb kill-server</span><br><span class="line">adb start-server</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>但是还是没用,还有答案就是说通过<br><code>ps aux | grep adb</code>获取adb的进程号,然后kill掉，在我这里一样不起作用,就在我想暂时放弃<code>Genymotion</code>虚拟机使用AS自带的avd创建一个虚拟机的时候，突然发现有一个日文博客(<a href="http://banbara.hatenablog.com/entry/2014/11/11/011738" target="_blank" rel="noopener">点击这里</a>) 给了我一点思路,也就是打开<code>Genymotion</code>的主界面，如图:<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/抓图4.png"></p>
+<p>然后点击<code>Settings</code>,打开设置界面,选择<code>ADB</code><br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/抓图5.png"></p>
+<p>我虽然看不懂日文,但是感觉博主的意思是之前选择了<code>Use custom Android SDK tools</code>让改成选择<code>Use Genymotion Android tools</code>来解决问题,但是我的设置里面选择的就是第一项:使用<code>Genymotion</code>默认的android工具,但是都到这里了我不如试一下第二项,将<code>android-sdk</code>的目录指向我的studio使用的sdk目录,(如果有多个sdk目录的,别选择错了),完事之后,我重新启动了一下<code>Genymotion</code>虚拟机,然后重新执行studio中的从eclipse导出的项目，居然OK了，我自己都不敢相信。。</p>
 <p>PS:我的操作系统是<code>Linux mint 64</code>位</p>
-<p>疑惑:我后面又重新将ADB选项改为第一个(默认的),再次重新启动Genymotion试了一下,也不会报之前的错误了,我就不大明白了…</p>
+<p>疑惑:我后面又重新将ADB选项改为第一个(默认的)，再次重新启动Genymotion试了一下，也不会报之前的错误了,我就不大明白了。。。</p>
 
       
     </div>
@@ -517,7 +515,7 @@ adb start-server</code></pre><a id="more"></a>
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">128</span>
+                  <span class="site-state-item-count">125</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
