@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-25T08:06:11.819Z">
+<meta property="og:updated_time" content="2018-04-25T10:47:15.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android中Activity的四种加载模式">
 <meta name="twitter:description" content="之前看Android深入理解Activity和Fragment这一章的时候，看到过Activity的四种加载模式，当时一方面觉得有点晦涩难懂，一方面觉得可能在以后的开发过程中用不到，所以就没有怎么细看。今天在看师兄做的项目代码时，发现在配置文件中都会指定加载模式android:launchMode属性。问了一下师兄，才知道这和属性和效率是有点关系的，于是又回头看了一下，顺便做下笔记，方便以后不懂的">
@@ -381,7 +381,7 @@
 <li><p>如果将要启动的Activity已经存在，但没有位于Task栈顶，系统将会把位于该Activity上面的所有Activity移出Task栈，从而使目标Activity转入栈顶</p>
 </li>
 </ol>
-<h1 id="singleInstance模式"><a href="#singleInstance模式" class="headerlink" title="singleInstance模式"></a>singleInstance模式</h1><p>在这种加载模式下，系统保证无论从哪个Task中启动目标Activity，只会创建一个目标Activity实例，并会使用一个全新的Task栈来装载该Activity实例。<br>当系统采用该模式启动Activity时，可分为以下两种情况：</p>
+<h2 id="singleInstance模式"><a href="#singleInstance模式" class="headerlink" title="singleInstance模式"></a>singleInstance模式</h2><p>在这种加载模式下，系统保证无论从哪个Task中启动目标Activity，只会创建一个目标Activity实例，并会使用一个全新的Task栈来装载该Activity实例。<br>当系统采用该模式启动Activity时，可分为以下两种情况：</p>
 <ul>
 <li>如果将要启动的目标Activity不存在，系统会先创建一个全新的Task，再创建一个目标Activity的实例，并将它加载到新的Task的栈顶。</li>
 <li>如果目标Activity已经存在，无论它在哪个应用程序中，无论它位于哪个Task中，系统将会把该Activity所在的Task转到前台，从而使该Activity显示出来</li>
@@ -576,7 +576,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#standard模式"><span class="nav-number">1.</span> <span class="nav-text">standard模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singlTop模式"><span class="nav-number">2.</span> <span class="nav-text">singlTop模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTask模式"><span class="nav-number">3.</span> <span class="nav-text">singleTask模式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#singleInstance模式"><span class="nav-number"></span> <span class="nav-text">singleInstance模式</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#standard模式"><span class="nav-number">1.</span> <span class="nav-text">standard模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singlTop模式"><span class="nav-number">2.</span> <span class="nav-text">singlTop模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTask模式"><span class="nav-number">3.</span> <span class="nav-text">singleTask模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleInstance模式"><span class="nav-number">4.</span> <span class="nav-text">singleInstance模式</span></a></li></ol></div>
             
 
           </div>
