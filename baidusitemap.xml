@@ -4,6 +4,54 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2013/10/23/Android%E5%9C%A8%E9%9D%9EUI%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%9B%B4%E6%96%B0UI%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%89%A9%E5%B1%95/</loc>
+    <lastmod>2018-04-26T03:10:19.925Z</lastmod>
+    <data>
+        <display>
+        <title>Android在非UI线程中更新UI的方法与扩展</title>
+        <pubTime>2013-10-23T14:01:03.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Handler</tag>
+         
+        <tag>UI线程</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2016/01/12/ViewPager+Fragment+%E8%87%AA%E5%AE%9A%E4%B9%89Tab%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2018-04-26T03:03:39.296Z</lastmod>
+    <data>
+        <display>
+        <title>ViewPager+Fragment+自定义Tab的使用</title>
+        <pubTime>2016-01-12T06:19:15.000Z</pubTime>
+        
+        <tag>Fragment</tag>
+         
+        <tag>Tab</tag>
+         
+        <tag>ViewPager</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2014/12/23/echo%E5%91%BD%E4%BB%A4%E5%9C%A8bash%E5%92%8Cdash%E4%B8%8A%E7%9A%84%E5%8C%BA%E5%88%AB/</loc>
     <lastmod>2018-04-26T02:58:45.127Z</lastmod>
     <data>
@@ -92,30 +140,6 @@
         <tag>framework</tag>
          
         <tag>待机</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2016/01/12/ViewPager+Fragment+%E8%87%AA%E5%AE%9A%E4%B9%89Tab%E7%9A%84%E4%BD%BF%E7%94%A8/</loc>
-    <lastmod>2018-04-26T02:19:07.710Z</lastmod>
-    <data>
-        <display>
-        <title>ViewPager+Fragment+自定义Tab的使用</title>
-        <pubTime>2016-01-12T06:19:15.000Z</pubTime>
-        
-        <tag>Fragment</tag>
-         
-        <tag>Tab</tag>
-         
-        <tag>ViewPager</tag>
          
          
            
@@ -1125,9 +1149,9 @@
         <title>Android Studio ADB not responding</title>
         <pubTime>2014-12-29T17:15:41.000Z</pubTime>
         
-        <tag>ADB</tag>
-         
         <tag>Android</tag>
+         
+        <tag>ADB</tag>
          
         <tag>Eclipse</tag>
          
@@ -1225,9 +1249,9 @@
         <title>Activity进入和退出时动画的一致性</title>
         <pubTime>2015-07-08T18:41:04.000Z</pubTime>
         
-        <tag>Android</tag>
-         
         <tag>Activity</tag>
+         
+        <tag>Android</tag>
          
          
            
@@ -1421,30 +1445,6 @@
            
              
               <breadCrumb title="Twitter" url="http://picksomething.cn/categories/Twitter/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2013/10/23/Android%E5%9C%A8%E9%9D%9EUI%E7%BA%BF%E7%A8%8B%E4%B8%AD%E6%9B%B4%E6%96%B0UI%E7%9A%84%E6%96%B9%E6%B3%95%E4%B8%8E%E6%89%A9%E5%B1%95/</loc>
-    <lastmod>2018-04-24T07:46:37.424Z</lastmod>
-    <data>
-        <display>
-        <title>Android在非UI线程中更新UI的方法与扩展</title>
-        <pubTime>2013-10-23T14:01:03.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Handler</tag>
-         
-        <tag>UI线程</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>

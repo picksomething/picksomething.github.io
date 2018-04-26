@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="很多时候我们开发Android程序的时候都会遇到一些耗时的操作，比如获取网络资源啊，比如截图并保存啊等等，我们不可能把这些耗时的任务放到主线程中来完成，因为那样的话很容易就会出现ANR，那么我们一般的思路应该就是开辟一个新的线程来执行耗时操作，举个例子：我们需要获取某深圳的天气预报，界面上有一个Button，点击Button开始获取，还有一个TextView控件用于显示获取的天气，获取天气是一个耗">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.424Z">
+<meta property="og:updated_time" content="2018-04-26T03:10:19.925Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android在非UI线程中更新UI的方法与扩展">
 <meta name="twitter:description" content="很多时候我们开发Android程序的时候都会遇到一些耗时的操作，比如获取网络资源啊，比如截图并保存啊等等，我们不可能把这些耗时的任务放到主线程中来完成，因为那样的话很容易就会出现ANR，那么我们一般的思路应该就是开辟一个新的线程来执行耗时操作，举个例子：我们需要获取某深圳的天气预报，界面上有一个Button，点击Button开始获取，还有一个TextView控件用于显示获取的天气，获取天气是一个耗">
@@ -219,16 +219,6 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
           </a>
         </li>
       
@@ -364,77 +354,20 @@
       
 
       
-        <p>很多时候我们开发Android程序的时候都会遇到一些耗时的操作，比如获取网络资源啊，比如截图并保存啊等等，我们不可能把这些耗时的任务放到主线程中来完成，因为那样的话很容易就会出现ANR，那么我们一般的思路应该就是开辟一个新的线程来执行耗时操作，举个例子：我们需要获取某深圳的天气预报，界面上有一个Button，点击Button开始获取，还有一个TextView控件用于显示获取的天气，获取天气是一个耗时操作，我们应该单独开一个线程，于是很容易想到这么做：</p>
-<pre><code>public void onClick(View v) {
-    //创建一个子线程执行耗时的从网络上获得天气信息的操作
-    new Thread() {
-        @Override
-        public void run() {
-            //调用Google中的结构获取天气信息
-            String weather = getWetherByCity(&quot;深圳&quot;);
-            //把图片显示到ImageView中
-            textView.setText(weather.toString());
-        }
-    }.start();
-}
-`&lt;/pre&gt;
-但是很不幸，你会发现Android会提示程序由于异常而终止。看起来合情合理的一段代码为什么会出错呢？
-&lt;!--more--&gt;
-这是因为出于性能考虑，Android的UI操作并不是线程安全的，这意味着如果有多个线程并发操作UI组件，可能导致线程安全问题，为了解决这个问题，Android制定了一条简单的规则：只允许UI线程修改Activity里的UI组件。
-本例中显示天气信息的textView实际是就是一个由UI线程所创建的TextView，所以试图在一个子线程中去更改TextView的肯定会报错了
-在这种机制下，为了解决类似的问题，Android设计了一个`MessageQueue`(消息队列)，线程间可以通过该`MessageQueue`并结合Handler和线程的Looper组件进行信息交换，简单介绍一下：
-**Handler**
-Handler的官方解释是
-A Handler allows you to send and process [Message](file:///F:/android%E5%AD%A6%E4%B9%A0/docs-3.0_r01-linux/docs/reference/android/os/Message.html) and Runnable objects associated with a thread’s [MessageQueue](file:///F:/android%E5%AD%A6%E4%B9%A0/docs-3.0_r01-linux/docs/reference/android/os/MessageQueue.html). Each Handler instance is associated with a single thread and that thread’s message queue.
-翻译过来的意思大致就是：&lt;span style=&quot;color: #008000;&quot;&gt;Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。如果要在其他线程执行，可以使用HandlerThread。也就是说，假如你通过Handler发布消息的话，消息将只会发送到与它关联的这个消息队列，当然也只能处理该消息队列中的消息。&lt;/span&gt;
-**Message**
-Handler接收和处理的消息对象。
-**Looper**
-每个线程只能拥有一个**Looper**。它的loop方法负责读取**MessageQueue**中的消息，程序首先通过Handler把消息传送给Looper，Looper把消息放入队列，同时Looper也把消息队列里的消息广播给所有的Handler，Handler接受到消息后调用handleMessage进行处理。
-1)   可以通过Looper类的静态方法Looper.myLooper得到当前线程的Looper实例，假如当前线程未关联一个Looper实例，该方法将返回空。
-2)   可以通过静态方法Looper. getMainLooper方法得到主线程的Looper实例
-**MessageQueue**
-`MessageQueue`是一个消息队列，它采用先进先出的方式来管理Message，程序创建Looper对象的时候会在它的构造器中创建MessageQueue对象。用来存放通过Handler发送的消息。消息队列通常附属于某一个创建它的线程，可以通过`Looper.myQueue()`得到当前线程的消息队列。Android在第一启动程序时会默认会为UI thread创建一个关联的消息队列，用来管理程序的一些上层组件，activities，broadcast receivers 等等。你可以在自己的子线程中创建Handler与UI thread通讯。
-在了解Android的这些设计机制和消息队列之后，我们可以改进获取天气的方法：
-&lt;pre&gt;`private Handler messageHandler;
-
-@Override
-public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.main);
-    //得到当前线程的Looper实例，由于当前线程是UI线程也可以通过Looper.getMainLooper()得到
-    Looper looper = Looper.myLooper();
-    //此处甚至可以不需要设置Looper，因为 Handler默认就使用当前线程的Looper
-    messageHandler = new MessageHandler(looper);
-}
-
-public void onClick(View v) {
-    //创建一个子线程去做耗时的网络连接工作
-    new Thread() {
-        @Override
-        public void run() {
-            //调用Google 天气API查询指定城市的当日天气情况
-            String weather = getWetherByCity(city);
-            //创建一个Message对象，并把得到的天气信息赋值给Message对象
-            Message message = Message.obtain();
-            message.obj = weather;
-            //通过Handler发布携带有天气情况的消息
-            messageHandler.sendMessage(message);
-        }
-    }.start();
-}
-
-//重写一个Handler构造函数使用指定Looper的那个构造函数
-class MessageHandler extends Handler {
-    public MessageHandler(Looper looper) {
-        super(looper);
-    }
-    public void handleMessage(Message msg) {
-        //处理收到的消息，把天气信息显示在textView上
-        textView.setText((String) msg.obj);
-    }
-}
-</code></pre><p>通过消息队列改写过后的天气预告程序已经可以成功运行，因为Handler的<code>handleMessage</code>方法实际是由关联有该消息队列的UI thread调用，而在UI thread中更新title并没有违反Android的单线程模型的原则。<br>小结：遇到不会的问题了不要急于搜索，要查找出错信息，然后查看官方文档，重要的是对Android的机制有不错的理解。</p>
+        <p>很多时候我们开发Android程序的时候都会遇到一些耗时的操作，比如获取网络资源啊，比如截图并保存啊等等，我们不可能把这些耗时的任务放到主线程中来完成，因为那样的话很容易就会出现ANR，那么我们一般的思路应该就是开辟一个新的线程来执行耗时操作，举个例子：我们需要获取某深圳的天气预报，界面上有一个Button，点击Button开始获取，还有一个TextView控件用于显示获取的天气，获取天气是一个耗时操作，我们应该单独开一个线程，于是很容易想到这么做：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//创建一个子线程执行耗时的从网络上获得天气信息的操作</span></span><br><span class="line">    <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">//调用Google中的结构获取天气信息</span></span><br><span class="line">            String weather = getWetherByCity(<span class="string">"深圳"</span>);</span><br><span class="line">            <span class="comment">//把图片显示到ImageView中</span></span><br><span class="line">            textView.setText(weather.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>但是很不幸，你会发现Android会提示程序由于异常而终止。看起来合情合理的一段代码为什么会出错呢？这是因为出于性能考虑，Android的UI操作并不是线程安全的，这意味着如果有多个线程并发操作UI组件，可能导致线程安全问题，为了解决这个问题，Android制定了一条简单的规则：只允许UI线程修改Activity里的UI组件</p>
+<p>本例中显示天气信息的textView实际是就是一个由UI线程所创建的TextView，所以试图在一个子线程中去更改TextView的肯定会报错了，在这种机制下，为了解决类似的问题，Android设计了一个<code>MessageQueue</code>(消息队列)，线程间可以通过该<code>MessageQueue</code>并结合Handler和线程的Looper组件进行信息交换，简单介绍一下：<br><a id="more"></a></p>
+<h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p>Handler的官方解释是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A Handler allows you to send and process [Message](file:///F:/android%E5%AD%A6%E4%B9%A0/docs-3.0_r01-linux/docs/reference/android/os/Message.html) and Runnable objects associated with a thread’s [MessageQueue](file:///F:/android%E5%AD%A6%E4%B9%A0/docs-3.0_r01-linux/docs/reference/android/os/MessageQueue.html). Each Handler instance is associated with a single thread and that thread’s message queue.</span><br></pre></td></tr></table></figure></p>
+<p>翻译过来的意思大致就是：Handler会关联一个单独的线程和消息队列。Handler默认关联主线程，虽然要提供Runnable参数 ，但默认是直接调用Runnable中的run()方法。也就是默认下会在主线程执行，如果在这里面的操作会有阻塞，界面也会卡住。如果要在其他线程执行，可以使用HandlerThread。也就是说，假如你通过Handler发布消息的话，消息将只会发送到与它关联的这个消息队列，当然也只能处理该消息队列中的消息</p>
+<h2 id="Message"><a href="#Message" class="headerlink" title="Message"></a>Message</h2><p>Handler接收和处理的消息对象。</p>
+<h2 id="Looper"><a href="#Looper" class="headerlink" title="Looper"></a>Looper</h2><p>每个线程只能拥有一个<strong>Looper</strong>。它的loop方法负责读取<strong>MessageQueue</strong>中的消息，程序首先通过Handler把消息传送给Looper，Looper把消息放入队列，同时Looper也把消息队列里的消息广播给所有的Handler，Handler接受到消息后调用handleMessage进行处理</p>
+<ul>
+<li>可以通过Looper类的静态方法Looper.myLooper得到当前线程的Looper实例，假如当前线程未关联一个Looper实例，该方法将返回空。</li>
+<li>可以通过静态方法Looper. getMainLooper方法得到主线程的Looper实例<h2 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h2><code>MessageQueue</code>是一个消息队列，它采用先进先出的方式来管理Message，程序创建Looper对象的时候会在它的构造器中创建MessageQueue对象。用来存放通过Handler发送的消息。消息队列通常附属于某一个创建它的线程，可以通过<code>Looper.myQueue()</code>得到当前线程的消息队列。Android在第一启动程序时会默认会为UI thread创建一个关联的消息队列，用来管理程序的一些上层组件，activities，broadcast receivers 等等。你可以在自己的子线程中创建Handler与UI thread通讯</li>
+</ul>
+<p>在了解Android的这些设计机制和消息队列之后，我们可以改进获取天气的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Handler messageHandler;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">    setContentView(R.layout.main);</span><br><span class="line">    <span class="comment">//得到当前线程的Looper实例，由于当前线程是UI线程也可以通过Looper.getMainLooper()得到</span></span><br><span class="line">    Looper looper = Looper.myLooper();</span><br><span class="line">    <span class="comment">//此处甚至可以不需要设置Looper，因为 Handler默认就使用当前线程的Looper</span></span><br><span class="line">    messageHandler = <span class="keyword">new</span> MessageHandler(looper);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//创建一个子线程去做耗时的网络连接工作</span></span><br><span class="line">    <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">//调用Google 天气API查询指定城市的当日天气情况</span></span><br><span class="line">            String weather = getWetherByCity(city);</span><br><span class="line">            <span class="comment">//创建一个Message对象，并把得到的天气信息赋值给Message对象</span></span><br><span class="line">            Message message = Message.obtain();</span><br><span class="line">            message.obj = weather;</span><br><span class="line">            <span class="comment">//通过Handler发布携带有天气情况的消息</span></span><br><span class="line">            messageHandler.sendMessage(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//重写一个Handler构造函数使用指定Looper的那个构造函数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MessageHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MessageHandler</span><span class="params">(Looper looper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(looper);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//处理收到的消息，把天气信息显示在textView上</span></span><br><span class="line">        textView.setText((String) msg.obj);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过消息队列改写过后的天气预告程序已经可以成功运行，因为Handler的<code>handleMessage</code>方法实际是由关联有该消息队列的UI thread调用，而在UI thread中更新title并没有违反Android的单线程模型的原则</p>
+<p>遇到不会的问题了不要急于搜索，要查找出错信息，然后查看官方文档，重要的是对Android的机制有不错的理解。</p>
 
       
     </div>
@@ -533,8 +466,17 @@ class MessageHandler extends Handler {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -605,6 +547,22 @@ class MessageHandler extends Handler {
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler"><span class="nav-number">1.</span> <span class="nav-text">Handler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Message"><span class="nav-number">2.</span> <span class="nav-text">Message</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Looper"><span class="nav-number">3.</span> <span class="nav-text">Looper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MessageQueue"><span class="nav-number">4.</span> <span class="nav-text">MessageQueue</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
