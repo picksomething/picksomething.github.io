@@ -222,6 +222,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -801,8 +811,9 @@
       
         
           <p>我们知道，Google在Android Design Supprot Library增加了很多Material Design控件，使我们能够更加轻松地开发出很多美观又灵活的UI。</p>
-<p>其中新增的Tabs就是一个很实用的控件，我们可以使用Tabs+ViewPager+Fragment写出很多实用的控件，如图一所示，关于Tabs控件的更多信息，大家可以阅读官方文档：<a href="https://www.google.com/design/spec/components/tabs.html#" target="_blank" rel="noopener">点击这里</a><br><a href="http://www.picksomething.cn/wp-content/uploads/2016/01/components_tabs_usage_mobile4.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2016/01/components_tabs_usage_mobile4-420x355.png" alt="components_tabs_usage_mobile4"></a></p>
-<p>但是，有些时候我们的需求可能不是正好会和官方提供的控件相吻合，受限于这些官方Material Design控件都是遵循固定的设计标准，有些时候我们不得不自己重写控件，或者寻求其它实现方式，比如如图二所示的UI：<br><a href="http://www.picksomething.cn/wp-content/uploads/2016/01/QQ20160112-0.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2016/01/QQ20160112-0.png" alt="QQ20160112-0"></a><br>因为官方的Tabs控件每个Tab是有最小宽度的(看源码好像是56dp)，也就是说无论你字体设置多小，每个Tab的最小宽度都不会变，而且图二在Tab的右边还要添加一些单个的控件，这个时候显然我们自己定义Tab布局，然后结合ViewPager和Fragment使用起来更方便，图二中的每个Tab项的宽度我们可以随便调，在右边可以随意添加单独控件。<br>
+<p>其中新增的Tabs就是一个很实用的控件，我们可以使用Tabs+ViewPager+Fragment写出很多实用的控件，如图一所示，关于Tabs控件的更多信息，大家可以阅读官方文档：<a href="https://www.google.com/design/spec/components/tabs.html#" target="_blank" rel="noopener">点击这里</a><br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/01/components_tabs_usage_mobile4.png"></p>
+<p>但是，有些时候我们的需求可能不是正好会和官方提供的控件相吻合，受限于这些官方Material Design控件都是遵循固定的设计标准，有些时候我们不得不自己重写控件，或者寻求其它实现方式，比如如图二所示的UI：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/01/QQ20160112-0.png"></p>
+<p>因为官方的Tabs控件每个Tab是有最小宽度的(看源码好像是56dp)，也就是说无论你字体设置多小，每个Tab的最小宽度都不会变，而且图二在Tab的右边还要添加一些单个的控件，这个时候显然我们自己定义Tab布局，然后结合ViewPager和Fragment使用起来更方便，图二中的每个Tab项的宽度我们可以随便调，在右边可以随意添加单独控件<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/01/12/ViewPager+Fragment+自定义Tab的使用/#more" rel="contents">
@@ -1097,10 +1108,10 @@
       
         
           <p>最近在实现图1这个设置页面的时候，第一眼看到设计稿的时候只是想着普通的LinearLayout加一些常见的ui控件就足够了，但是细想一下觉得这样布局里面重复的代码太多，而且后面要是再多添加几项设置或者删除某项设置，改动也挺大的，想着用RecyclerView带上header合footer实现起来更加合理，于是就使用RecyclerView实现了。</p>
-<p><a href="http://www.picksomething.cn/wp-content/uploads/2015/11/QQ20151106-0.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/11/QQ20151106-0.png" alt="QQ20151106-0"></a><strong>图1</strong></p>
-<p>在用带header和footer的RecyclerView实现之前必须先确定好header和footer的布局，我是这样分类header和footer的，见图2:</p>
-<p><a href="http://www.picksomething.cn/wp-content/uploads/2015/11/QQ20151106-1.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/11/QQ20151106-1.png" alt="QQ20151106-1"></a><strong>图2</strong></p>
-<p>之所以把记录提醒也算到header里面而不是普通的一个item里面是因为记录提醒这个设置项点击开启之后，会在其下方出来一个提示时间的显示和修改的布局，当然这并不是说不能把记录提醒当做一个item处理，完全可以的，我只是偷点懒而已<br>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/11/QQ20151106-0.png"></p>
+<p>在用带header和footer的RecyclerView实现之前必须先确定好header和footer的布局，我是这样分类header和footer的，见图：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/11/QQ20151106-1.png"></p>
+<p>之所以把记录提醒也算到header里面而不是普通的一个item里面是因为记录提醒这个设置项点击开启之后，会在其下方出来一个提示时间的显示和修改的布局，当然这并不是说不能把记录提醒当做一个item处理，完全可以的，我只是偷点懒而已</p>
+<p>那么选择好header和footer之后，接下来就是编程实现了，这里主要是适配器的代码来控制header，item和footer，所以只贴出适配器的代码，其他在activity为RecyclerView设置LayoutManager和适配器这部分代码都很简单了，适配器代码如下，部分地方已标注：<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2015/11/06/RecyclerView with header and footer/#more" rel="contents">

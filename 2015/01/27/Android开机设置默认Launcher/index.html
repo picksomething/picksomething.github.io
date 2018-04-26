@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="讲到设置默认Launcher，必须先说说Provision.apk这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过Provision.apk这个应用来实现的。 首先我们知道Android启动HomeLauncher的最后一步是在ActivityManagerService.java中的startHomeActivityLocked方法中发送一个带有androi">
+<meta name="description" content="讲到设置默认Launcher，必须先说说Provision.apk这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过Provision.apk这个应用来实现的 首先我们知道Android启动HomeLauncher的最后一步是在ActivityManagerService.java中的startHomeActivityLocked方法中发送一个带有android">
 <meta name="keywords" content="Android,Launcher,Provision">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android开机设置默认Launcher">
 <meta property="og:url" content="http://picksomething.cn/2015/01/27/Android开机设置默认Launcher/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="讲到设置默认Launcher，必须先说说Provision.apk这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过Provision.apk这个应用来实现的。 首先我们知道Android启动HomeLauncher的最后一步是在ActivityManagerService.java中的startHomeActivityLocked方法中发送一个带有androi">
+<meta property="og:description" content="讲到设置默认Launcher，必须先说说Provision.apk这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过Provision.apk这个应用来实现的 首先我们知道Android启动HomeLauncher的最后一步是在ActivityManagerService.java中的startHomeActivityLocked方法中发送一个带有android">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/provision-300x94.jpg">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/provision.jpg">
+<meta property="og:updated_time" content="2018-04-26T02:38:37.068Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android开机设置默认Launcher">
-<meta name="twitter:description" content="讲到设置默认Launcher，必须先说说Provision.apk这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过Provision.apk这个应用来实现的。 首先我们知道Android启动HomeLauncher的最后一步是在ActivityManagerService.java中的startHomeActivityLocked方法中发送一个带有androi">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/provision-300x94.jpg">
+<meta name="twitter:description" content="讲到设置默认Launcher，必须先说说Provision.apk这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过Provision.apk这个应用来实现的 首先我们知道Android启动HomeLauncher的最后一步是在ActivityManagerService.java中的startHomeActivityLocked方法中发送一个带有android">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/provision.jpg">
 
 
 
@@ -221,6 +221,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -356,221 +366,21 @@
       
 
       
-        <p>讲到设置默认Launcher，必须先说说<code>Provision.apk</code>这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过<code>Provision.apk</code>这个应用来实现的。</p>
-<p>首先我们知道Android启动HomeLauncher的最后一步是在<code>ActivityManagerService.java</code>中的<code>startHomeActivityLocked</code>方法中发送一个带有<code>android.intent.category.HOME</code><br>的intent来启动响应该属性的应用，一般Launcher的Manifest配置文件中都会有此属性，所以系统中的Launcher就是这样被启动了。关于Android启动Launcher的流程，找时间可以再写一篇文章分析，暂时介绍到这里。<br>接下来就要说Provision这个应用了，该应用的源码在<code>packages/apps/</code>下的Provision这个文件夹中，看一下该应用的目录结构：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/01/provision.jpg" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/01/provision-300x94.jpg" alt="provision"></a><br>该应用只有一个java文件DefaultActivity.java，我们看一下该应用的配置文件<code>AndroidManifest.xml</code></p>
-<pre><code>&amp;lt;!-- For miscellaneous settings --&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&amp;gt;
-&lt;!--more--&gt;
-    &amp;lt;application&amp;gt;
-        &amp;lt;activity android:name=&quot;DefaultActivity&quot;
-                android:excludeFromRecents=&quot;true&quot;&amp;gt;
-            &amp;lt;intent-filter android:priority=&quot;1&quot;&amp;gt;
-                &amp;lt;action android:name=&quot;android.intent.action.MAIN&quot; /&amp;gt;
-                &amp;lt;category android:name=&quot;android.intent.category.HOME&quot; /&amp;gt;
-                &amp;lt;category android:name=&quot;android.intent.category.DEFAULT&quot; /&amp;gt;
-            &amp;lt;/intent-filter&amp;gt;
-        &amp;lt;/activity&amp;gt;
-    &amp;lt;/application&amp;gt;`&lt;/pre&gt;
-我们注意到其实Provision也会响应`android.intent.category.HOME`属性，并且从这句android:priority=1可以看出起优先级是比一般Launcher都要高的，所以在AMS的startHomeActivityLocked启动Launcher的时候会先启动Provision应用，然后才是启动HomeLauncher，那接着我们看看在Provision中都做了些什么，我们知道默认是启动DefaultActivity.java这个文件，看一下源码：
-&lt;pre&gt;`/**
- * Application that sets the provisioned bit, like SetupWizard does.
- */
-public class DefaultActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-
-        // Add a persistent setting to allow other apps to know the device has been provisioned.
-        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
-        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
-
-        // remove this activity from the package manager.
-        PackageManager pm = getPackageManager();
-        ComponentName name = new ComponentName(this, DefaultActivity.class);
-        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        // terminate the activity.
-        finish();
-    }
-}`&lt;/pre&gt;
-代码很简洁，首先是在Settings的`Global`表中将`DEVICE_PROVISIONED`属性设置为1(这一点还是相当重要的，因为很多地方都会检查该标志是否被置成1来决定是不是要走正常的流程)，在`Secure`表中将`USER_SETUP_COMPLETE`属性设置为1。其实获取一个PackageManager对象，通过该对象的`setComponentEnabledSetting`方法来吧自己给disable掉。看一下该方法的解释和说明：
-&lt;pre&gt;`void setComponentEnabledSetting (ComponentName componentName, int newState, int flags)
-componentName：组件名称 
-newState：组件新的状态，可以设置三个值，分别是如下： 
-　　不可用状态：COMPONENT_ENABLED_STATE_DISABLED 
-　　可用状态：COMPONENT_ENABLED_STATE_ENABLED 
-　　默认状态：COMPONENT_ENABLED_STATE_DEFAULT 
-flags:行为标签，值可以是DONT_KILL_APP或者0。 0说明杀死包含该组件的app`&lt;/pre&gt;
-流程很清楚，Provision将`DEVICE_PROVISIONED`标志设置成1之后，然后就将自己从PM中removed掉了，以后就不会再启动，除非系统被重置，或者data目录被删除。
-
-接下来就是讲如何设置默认Launcher了，思路就是在Provision中设置好默认Launcher，Provision启动之后就直接启动默认Launcher了，就不会存在如果系统中有多个Launcher的时候，弹出让用户选择的情况了。
-
-首先说一下我们公司的需要，我们智能电视默认带有三个Launcher，然后默认Launcher是放到system/etc下面的一个DefaultLauncher的配置文件中，第一次启动系统的时候就是根据改配置文件来决定默认Launcher的，首先看一下我们是怎么修改DefaultActivity.java文件的：
-&lt;pre&gt;`public class DefaultActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
-        // Add a persistent setting to allow other apps to know the device has been provisioned.
-        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, 1);
-        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, 1);
-
-        // remove this activity from the package manager.
-        PackageManager pm = getPackageManager();
-        ComponentName name = new ComponentName(this, DefaultActivity.class);
-        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);
-        setDefaultLauncher();
-        // terminate the activity.
-        finish();
-    }
-
-    private String getDefaultLauncherPkgName() {
-        final String path = &quot;/system/etc/defaultlauncher.dat&quot;;
-        System.out.println(&quot;in getDefaultLauncherPkgName&quot;);
-        String PackageName = null;
-        File f = new File(path);
-        if (!f.exists()) {
-            System.out.println(&quot;/system/etc/defaultlauncher.dat is not exit&quot;);
-            return null;
-        }
-        if (f == null) {
-            System.out.println(&quot;File f is null&quot;);
-            return null;
-        }
-        try {
-            FileReader r = new FileReader(f);
-            BufferedReader br = new BufferedReader(r);
-            String temp = null;
-            try {
-                while ((temp = br.readLine()) != null) {
-                    if (temp.indexOf(&quot;defaultlauncher&quot;) != -1) {
-                        Pattern p = Pattern.compile(&quot;\\s*|\t|\r|\n&quot;);
-                        Matcher m = p.matcher(temp);
-                        String dest = m.replaceAll(&quot;&quot;);
-                        PackageName = (dest).substring((dest).indexOf(&quot;=&quot;) + 1);
-                        break;
-                    }
-                }
-                br.close();
-                r.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        System.out.println(&quot;getDefaultLauncherPkgName PackageName = &quot; + PackageName);
-        return PackageName;
-    }
-
-    private boolean setDefaultLauncher() {
-        // get default component   
-        System.out.println(&quot;Come in setDefaultLauncher&quot;);
-        PackageManager pm = getPackageManager();
-        ArrayList&lt;IntentFilter&gt; LauncherIntentList = new ArrayList&lt;IntentFilter&gt;();
-        ArrayList&lt;ComponentName&gt; LauncherList = new ArrayList&lt;ComponentName&gt;();
-        //clear the current preferred launcher
-        ArrayList&lt;IntentFilter&gt; intentList = new ArrayList&lt;IntentFilter&gt;();
-        ArrayList&lt;ComponentName&gt; cnList = new ArrayList&lt;ComponentName&gt;();
-        pm.getPreferredActivities(intentList, cnList, null);
-        IntentFilter dhIF;
-        for (int i = 0; i &lt; cnList.size(); i++) {
-            dhIF = intentList.get(i);
-            if (dhIF.hasAction(Intent.ACTION_MAIN) &amp;&amp; dhIF.hasCategory(Intent.CATEGORY_HOME)) {
-                LauncherIntentList.add(intentList.get(i));
-                LauncherList.add(cnList.get(i));
-            }
-        }
-        if (LauncherList.size() == 1) {
-            System.out.println(&quot;Already have set default launcher&quot;);
-            return true;
-        }
-        if (LauncherList.size() &gt; 1) {
-            for (int i = 0; i &lt; LauncherList.size(); i++)
-                pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());
-        }
-        String defaultLauncherPkg = getDefaultLauncherPkgName();
-        if (defaultLauncherPkg == null) {
-            System.out.println(&quot;In ActivityManagerService setDefaultLauncher defaultLauncherPkg = null&quot;);
-            return false;
-        }
-        // get all Launcher activities     
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        List&lt;ResolveInfo&gt; list = new ArrayList&lt;ResolveInfo&gt;();
-        list = pm.queryIntentActivities(intent, 0);
-        // get all components and the best match   
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MAIN);
-        filter.addCategory(Intent.CATEGORY_HOME);
-        filter.addCategory(Intent.CATEGORY_DEFAULT);
-        final int N = list.size();
-        ComponentName[] set = new ComponentName[N];
-        int bestMatch = IntentFilter.MATCH_CATEGORY_EMPTY;
-        int defaultLauncherIndex = -1;
-        for (int i = 0; i &lt; N; i++) {
-            ResolveInfo r = list.get(i);
-            set[i] = new ComponentName(r.activityInfo.packageName, r.activityInfo.name);
-            if (defaultLauncherPkg.equals(r.activityInfo.packageName))
-                defaultLauncherIndex = i;
-            System.out.println(&quot;SetDefaultLauncher: &quot; + set[i].getPackageName() + &quot; &quot; + set[i].getClassName());
-            //if (r.match &gt; bestMatch) bestMatch = r.match;  
-        }
-        // add the default launcher as the preferred launcher
-        if (defaultLauncherIndex == -1) {
-            return false;
-        }
-        ComponentName launcher = new ComponentName(set[defaultLauncherIndex].getPackageName(),
-                set[defaultLauncherIndex].getClassName());
-        pm.addPreferredActivity(filter, bestMatch, set, launcher);
-        return true;
-    }
-}
-`&lt;/pre&gt;
-这里需要重点说明的就是这两个方法：
-&lt;pre&gt;`//清除之前默认选择的Launcher
-pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());
-//添加默认Launcher
-pm.addPreferredActivity(filter, bestMatch, set, launcher);`&lt;/pre&gt;
-PS：这两句能够执行成功的前提是必须在AndroidManifest.xml文件中加入权限：
-&lt;pre&gt;`&amp;lt;!-- For miscellaneous settings --&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&amp;gt;
-    &amp;lt;!-- Konka Patch Start --&amp;gt;
-    &amp;lt;uses-permission android:name=&quot;android.permission.SET_PREFERRED_APPLICATIONS&quot;/&amp;gt;
-    &amp;lt;!-- Konka Patch End --&amp;gt;`&lt;/pre&gt;
-这样系统开机就会进入默认设置的Launcher了，用户可以在我这基础上修改默认Launcher的设置方式，或者在Provision程序中设置一些需要在启动Launcher之前进行的设置等等。
-
-网上还有其他一些设置默认Launcher的方式
-
-&lt;pre&gt;`readPermissions();
-String firstBoot = SystemProperties.get(&quot;persist.sys.preactivity&quot;); 
-if (&quot;0&quot;.equals(firstBoot)) {
-    addPreferredActivityForULauncher();
-}
-SystemProperties.set(&quot;persist.sys.preactivity&quot;, &quot;1&quot;);
-mRestoredSettings = mSettings.readLPw();
-private void addPreferredActivityForULauncher() {
-    IntentFilter filter = new IntentFilter();
-    filter.addAction(&quot;android.intent.action.MAIN&quot;);
-    filter.addCategory(&quot;android.intent.category.HOME&quot;); 
-    filter.addCategory(&quot;android.intent.category.DEFAULT&quot;);
-    ComponentName preActivity = new ComponentName(&quot;com.android.ulauncher&quot;
-        ,&quot;com.android.ulauncher.Launcher&quot;); 
-    ComponentName[] set = new ComponentName[] {
-        new ComponentName(&quot;com.android.launcher&quot;, 
-           &quot;com.android.launcher2.Launcher&quot;),preActivity
-    }; 
-    mSettings.mPreferredActivities.addFilter(
-            new PreferredActivity(filter,
-                IntentFilter.MATCH_CATEGORY_EMPTY, set, preActivity));
-    scheduleWriteSettingsLocked();
-}
-</code></pre><ol>
-<li>在startHomeActivityLocked方法中加入setDefaultLauncher方法<br>感兴趣的大家可以继续研究，亲身经历才会有大的收获。</li>
-</ol>
+        <p>讲到设置默认Launcher，必须先说说<code>Provision.apk</code>这个应用，这个是Android原生自带的应用，本文讲解设置默认Launcher就是通过<code>Provision.apk</code>这个应用来实现的</p>
+<p>首先我们知道Android启动HomeLauncher的最后一步是在<code>ActivityManagerService.java</code>中的<code>startHomeActivityLocked</code>方法中发送一个带有<code>android.intent.category.HOME</code><br>的intent来启动响应该属性的应用，一般Launcher的Manifest配置文件中都会有此属性，所以系统中的Launcher就是这样被启动了。关于Android启动Launcher的流程，找时间可以再写一篇文章分析，暂时介绍到这里</p>
+<p>接下来就要说Provision这个应用了，该应用的源码在<code>packages/apps/</code>下的Provision这个文件夹中，看一下该应用的目录结构：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/provision.jpg"></p>
+<p>该应用只有一个java文件DefaultActivity.java，我们看一下该应用的配置文件<code>AndroidManifest.xml</code><br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- For miscellaneous settings --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_SETTINGS"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.WRITE_SECURE_SETTINGS"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">application</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">"DefaultActivity"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:excludeFromRecents</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">intent-filter</span> <span class="attr">android:priority</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.HOME"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>我们注意到其实Provision也会响应<code>android.intent.category.HOME</code>属性，并且从这句android:priority=1可以看出起优先级是比一般Launcher都要高的，所以在AMS的startHomeActivityLocked启动Launcher的时候会先启动Provision应用，然后才是启动HomeLauncher，那接着我们看看在Provision中都做了些什么，我们知道默认是启动DefaultActivity.java这个文件，看一下源码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Application that sets the provisioned bit, like SetupWizard does.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle icicle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(icicle);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Add a persistent setting to allow other apps to know the device has been provisioned.</span></span><br><span class="line">        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, <span class="number">1</span>);</span><br><span class="line">        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// remove this activity from the package manager.</span></span><br><span class="line">        PackageManager pm = getPackageManager();</span><br><span class="line">        ComponentName name = <span class="keyword">new</span> ComponentName(<span class="keyword">this</span>, DefaultActivity.class);</span><br><span class="line">        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,</span><br><span class="line">                PackageManager.DONT_KILL_APP);</span><br><span class="line">        <span class="comment">// terminate the activity.</span></span><br><span class="line">        finish();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>代码很简洁，首先是在Settings的<code>Global</code>表中将<code>DEVICE_PROVISIONED</code>属性设置为1(这一点还是相当重要的，因为很多地方都会检查该标志是否被置成1来决定是不是要走正常的流程)，在<code>Secure</code>表中将<code>USER_SETUP_COMPLETE</code>属性设置为1。其实获取一个PackageManager对象，通过该对象的<code>setComponentEnabledSetting</code>方法来吧自己给disable掉。看一下该方法的解释和说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">void setComponentEnabledSetting (ComponentName componentName, int newState, int flags)</span><br><span class="line">componentName：组件名称</span><br><span class="line">newState：组件新的状态，可以设置三个值，分别是如下：</span><br><span class="line">    不可用状态：COMPONENT_ENABLED_STATE_DISABLED</span><br><span class="line">    可用状态：COMPONENT_ENABLED_STATE_ENABLED</span><br><span class="line">    默认状态：COMPONENT_ENABLED_STATE_DEFAULT</span><br><span class="line">flags:行为标签，值可以是DONT_KILL_APP或者0。 0说明杀死包含该组件的app</span><br></pre></td></tr></table></figure></p>
+<p>流程很清楚，Provision将<code>DEVICE_PROVISIONED</code>标志设置成1之后，然后就将自己从PM中removed掉了，以后就不会再启动，除非系统被重置，或者data目录被删除</p>
+<p>接下来就是讲如何设置默认Launcher了，思路就是在Provision中设置好默认Launcher，Provision启动之后就直接启动默认Launcher了，就不会存在如果系统中有多个Launcher的时候，弹出让用户选择的情况了。</p>
+<p>首先说一下我们公司的需要，我们智能电视默认带有三个Launcher，然后默认Launcher是放到system/etc下面的一个DefaultLauncher的配置文件中，第一次启动系统的时候就是根据改配置文件来决定默认Launcher的，首先看一下我们是怎么修改DefaultActivity.java文件的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle icicle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(icicle);</span><br><span class="line">        <span class="comment">// Add a persistent setting to allow other apps to know the device has been provisioned.</span></span><br><span class="line">        Settings.Global.putInt(getContentResolver(), Settings.Global.DEVICE_PROVISIONED, <span class="number">1</span>);</span><br><span class="line">        Settings.Secure.putInt(getContentResolver(), Settings.Secure.USER_SETUP_COMPLETE, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// remove this activity from the package manager.</span></span><br><span class="line">        PackageManager pm = getPackageManager();</span><br><span class="line">        ComponentName name = <span class="keyword">new</span> ComponentName(<span class="keyword">this</span>, DefaultActivity.class);</span><br><span class="line">        pm.setComponentEnabledSetting(name, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,</span><br><span class="line">                PackageManager.DONT_KILL_APP);</span><br><span class="line">        setDefaultLauncher();</span><br><span class="line">        <span class="comment">// terminate the activity.</span></span><br><span class="line">        finish();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getDefaultLauncherPkgName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> String path = <span class="string">"/system/etc/defaultlauncher.dat"</span>;</span><br><span class="line">        System.out.println(<span class="string">"in getDefaultLauncherPkgName"</span>);</span><br><span class="line">        String PackageName = <span class="keyword">null</span>;</span><br><span class="line">        File f = <span class="keyword">new</span> File(path);</span><br><span class="line">        <span class="keyword">if</span> (!f.exists()) &#123;</span><br><span class="line">            System.out.println(<span class="string">"/system/etc/defaultlauncher.dat is not exit"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (f == <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"File f is null"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            FileReader r = <span class="keyword">new</span> FileReader(f);</span><br><span class="line">            BufferedReader br = <span class="keyword">new</span> BufferedReader(r);</span><br><span class="line">            String temp = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">while</span> ((temp = br.readLine()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (temp.indexOf(<span class="string">"defaultlauncher"</span>) != -<span class="number">1</span>) &#123;</span><br><span class="line">                        Pattern p = Pattern.compile(<span class="string">"\\s*|\t|\r|\n"</span>);</span><br><span class="line">                        Matcher m = p.matcher(temp);</span><br><span class="line">                        String dest = m.replaceAll(<span class="string">""</span>);</span><br><span class="line">                        PackageName = (dest).substring((dest).indexOf(<span class="string">"="</span>) + <span class="number">1</span>);</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                br.close();</span><br><span class="line">                r.close();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">"getDefaultLauncherPkgName PackageName = "</span> + PackageName);</span><br><span class="line">        <span class="keyword">return</span> PackageName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">setDefaultLauncher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// get default component   </span></span><br><span class="line">        System.out.println(<span class="string">"Come in setDefaultLauncher"</span>);</span><br><span class="line">        PackageManager pm = getPackageManager();</span><br><span class="line">        ArrayList&lt;IntentFilter&gt; LauncherIntentList = <span class="keyword">new</span> ArrayList&lt;IntentFilter&gt;();</span><br><span class="line">        ArrayList&lt;ComponentName&gt; LauncherList = <span class="keyword">new</span> ArrayList&lt;ComponentName&gt;();</span><br><span class="line">        <span class="comment">//clear the current preferred launcher</span></span><br><span class="line">        ArrayList&lt;IntentFilter&gt; intentList = <span class="keyword">new</span> ArrayList&lt;IntentFilter&gt;();</span><br><span class="line">        ArrayList&lt;ComponentName&gt; cnList = <span class="keyword">new</span> ArrayList&lt;ComponentName&gt;();</span><br><span class="line">        pm.getPreferredActivities(intentList, cnList, <span class="keyword">null</span>);</span><br><span class="line">        IntentFilter dhIF;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cnList.size(); i++) &#123;</span><br><span class="line">            dhIF = intentList.get(i);</span><br><span class="line">            <span class="keyword">if</span> (dhIF.hasAction(Intent.ACTION_MAIN) &amp;&amp; dhIF.hasCategory(Intent.CATEGORY_HOME)) &#123;</span><br><span class="line">                LauncherIntentList.add(intentList.get(i));</span><br><span class="line">                LauncherList.add(cnList.get(i));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (LauncherList.size() == <span class="number">1</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"Already have set default launcher"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (LauncherList.size() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; LauncherList.size(); i++)</span><br><span class="line">                pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());</span><br><span class="line">        &#125;</span><br><span class="line">        String defaultLauncherPkg = getDefaultLauncherPkgName();</span><br><span class="line">        <span class="keyword">if</span> (defaultLauncherPkg == <span class="keyword">null</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">"In ActivityManagerService setDefaultLauncher defaultLauncherPkg = null"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// get all Launcher activities	 </span></span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_MAIN);</span><br><span class="line">        intent.addCategory(Intent.CATEGORY_HOME);</span><br><span class="line">        List&lt;ResolveInfo&gt; list = <span class="keyword">new</span> ArrayList&lt;ResolveInfo&gt;();</span><br><span class="line">        list = pm.queryIntentActivities(intent, <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// get all components and the best match   </span></span><br><span class="line">        IntentFilter filter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">        filter.addAction(Intent.ACTION_MAIN);</span><br><span class="line">        filter.addCategory(Intent.CATEGORY_HOME);</span><br><span class="line">        filter.addCategory(Intent.CATEGORY_DEFAULT);</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> N = list.size();</span><br><span class="line">        ComponentName[] set = <span class="keyword">new</span> ComponentName[N];</span><br><span class="line">        <span class="keyword">int</span> bestMatch = IntentFilter.MATCH_CATEGORY_EMPTY;</span><br><span class="line">        <span class="keyword">int</span> defaultLauncherIndex = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">            ResolveInfo r = list.get(i);</span><br><span class="line">            set[i] = <span class="keyword">new</span> ComponentName(r.activityInfo.packageName, r.activityInfo.name);</span><br><span class="line">            <span class="keyword">if</span> (defaultLauncherPkg.equals(r.activityInfo.packageName))</span><br><span class="line">                defaultLauncherIndex = i;</span><br><span class="line">            System.out.println(<span class="string">"SetDefaultLauncher: "</span> + set[i].getPackageName() + <span class="string">" "</span> + set[i].getClassName());</span><br><span class="line">            <span class="comment">//if (r.match &gt; bestMatch) bestMatch = r.match;  </span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// add the default launcher as the preferred launcher</span></span><br><span class="line">        <span class="keyword">if</span> (defaultLauncherIndex == -<span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ComponentName launcher = <span class="keyword">new</span> ComponentName(set[defaultLauncherIndex].getPackageName(),</span><br><span class="line">                set[defaultLauncherIndex].getClassName());</span><br><span class="line">        pm.addPreferredActivity(filter, bestMatch, set, launcher);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里需要重点说明的就是这两个方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//清除之前默认选择的Launcher</span></span><br><span class="line">pm.clearPackagePreferredActivities(LauncherList.get(i).getPackageName());</span><br><span class="line"><span class="comment">//添加默认Launcher</span></span><br><span class="line">pm.addPreferredActivity(filter, bestMatch, set, launcher);</span><br></pre></td></tr></table></figure></p>
+<p>PS：这两句能够执行成功的前提是必须在AndroidManifest.xml文件中加入权限：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- For miscellaneous settings --&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.WRITE_SETTINGS&quot; /&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.WRITE_SECURE_SETTINGS&quot; /&gt;</span><br><span class="line">&lt;!-- Konka Patch Start --&gt;</span><br><span class="line">&lt;uses-permission android:name=&quot;android.permission.SET_PREFERRED_APPLICATIONS&quot;/&gt;</span><br><span class="line">&lt;!-- Konka Patch End --&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样系统开机就会进入默认设置的Launcher了，用户可以在我这基础上修改默认Launcher的设置方式，或者在Provision程序中设置一些需要在启动Launcher之前进行的设置等等</p>
+<p>网上还有其他一些设置默认Launcher的方式，亲测也是可以的，列举如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">readPermissions();</span><br><span class="line">String firstBoot = SystemProperties.get(<span class="string">"persist.sys.preactivity"</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="string">"0"</span>.equals(firstBoot)) &#123;</span><br><span class="line">    addPreferredActivityForULauncher();</span><br><span class="line">&#125;</span><br><span class="line">SystemProperties.set(<span class="string">"persist.sys.preactivity"</span>, <span class="string">"1"</span>);</span><br><span class="line">mRestoredSettings = mSettings.readLPw();</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addPreferredActivityForULauncher</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    IntentFilter filter = <span class="keyword">new</span> IntentFilter();</span><br><span class="line">    filter.addAction(<span class="string">"android.intent.action.MAIN"</span>);</span><br><span class="line">    filter.addCategory(<span class="string">"android.intent.category.HOME"</span>);</span><br><span class="line">    filter.addCategory(<span class="string">"android.intent.category.DEFAULT"</span>);</span><br><span class="line">    ComponentName preActivity = <span class="keyword">new</span> ComponentName(<span class="string">"com.android.ulauncher"</span></span><br><span class="line">        ,<span class="string">"com.android.ulauncher.Launcher"</span>);</span><br><span class="line">    ComponentName[] set = <span class="keyword">new</span> ComponentName[] &#123;</span><br><span class="line">        <span class="keyword">new</span> ComponentName(<span class="string">"com.android.launcher"</span>,</span><br><span class="line">            <span class="string">"com.android.launcher2.Launcher"</span>),preActivity</span><br><span class="line">    &#125;;</span><br><span class="line">    mSettings.mPreferredActivities.addFilter(</span><br><span class="line">            <span class="keyword">new</span> PreferredActivity(filter,</span><br><span class="line">                IntentFilter.MATCH_CATEGORY_EMPTY, set, preActivity));</span><br><span class="line">    scheduleWriteSettingsLocked();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在startHomeActivityLocked方法中加入setDefaultLauncher方法，感兴趣的大家可以继续研究，亲身经历才会有大的收获。</p>
 
       
     </div>

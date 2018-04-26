@@ -225,6 +225,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -364,8 +374,8 @@
 <h3 id="如果希望用代码库中的文件完全覆盖本地工作版本"><a href="#如果希望用代码库中的文件完全覆盖本地工作版本" class="headerlink" title="如果希望用代码库中的文件完全覆盖本地工作版本"></a>如果希望用代码库中的文件完全覆盖本地工作版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
 <p>其中git reset是针对版本,如果想针对文件回退本地修改,使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD file_to_restore</span><br></pre></td></tr></table></figure></p>
 <h2 id="更新本地代码"><a href="#更新本地代码" class="headerlink" title="更新本地代码"></a>更新本地代码</h2><p>最好不要用<code>git pul</code>要使用<code>git fetch</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pull = fetch + merge</span><br><span class="line">fetch = fetch</span><br></pre></td></tr></table></figure></p>
-<h2 id="版本库初始化"><a href="#版本库初始化" class="headerlink" title="版本库初始化"></a>版本库初始化</h2><h3 id="本地建立一个Git版本库"><a href="#本地建立一个Git版本库" class="headerlink" title="本地建立一个Git版本库"></a>本地建立一个Git版本库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mkdir helloworld</span><br><span class="line"><span class="meta">$</span> cd helloworld</span><br><span class="line"><span class="meta">$</span> git init</span><br></pre></td></tr></table></figure>
-<h3 id="在版本库中添加示例文件，如README-md文件"><a href="#在版本库中添加示例文件，如README-md文件" class="headerlink" title="在版本库中添加示例文件，如README.md文件"></a>在版本库中添加示例文件，如README.md文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> git add README.md</span><br><span class="line"><span class="meta">$</span> git commit -m "README for this project."</span><br></pre></td></tr></table></figure>
+<h2 id="版本库初始化"><a href="#版本库初始化" class="headerlink" title="版本库初始化"></a>版本库初始化</h2><h3 id="本地建立一个Git版本库"><a href="#本地建立一个Git版本库" class="headerlink" title="本地建立一个Git版本库"></a>本地建立一个Git版本库</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir helloworld</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> helloworld</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git init</span></span><br></pre></td></tr></table></figure>
+<h3 id="在版本库中添加示例文件，如README-md文件"><a href="#在版本库中添加示例文件，如README-md文件" class="headerlink" title="在版本库中添加示例文件，如README.md文件"></a>在版本库中添加示例文件，如README.md文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git add README.md</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git commit -m <span class="string">"README for this project."</span></span></span><br></pre></td></tr></table></figure>
 <h3 id="为版本库添加名为origin的远程版本库"><a href="#为版本库添加名为origin的远程版本库" class="headerlink" title="为版本库添加名为origin的远程版本库"></a>为版本库添加名为origin的远程版本库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git remote add origin git@github.com:gotgithub/helloworld.git</span><br></pre></td></tr></table></figure>
 <h3 id="执行推送命令，完成GitHub版本库的初始化"><a href="#执行推送命令，完成GitHub版本库的初始化" class="headerlink" title="执行推送命令，完成GitHub版本库的初始化"></a>执行推送命令，完成GitHub版本库的初始化</h3><p>注意命令行中的-u参数，在推送成功后自动建立本地分支与远程版本库分支的追踪。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git push -u origin master</span><br></pre></td></tr></table></figure></p>
 <h2 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h2><p>当我们在分之上改动完毕，问题解决之后，需要将分支的修改合并到主分支上，需要用到合并分支命令。<br>切换到主分支，执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge branch-name</span><br></pre></td></tr></table></figure></p>

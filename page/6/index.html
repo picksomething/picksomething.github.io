@@ -222,6 +222,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -367,7 +377,12 @@
 
       
         
-          <p>现在进入部门了，有了自己的办公桌和电脑，感觉还是很棒的。虽然还是在轮岗期，不过部门负责人还是给我们新员工每人分配了一个课题，就是在两周的时间做一个安卓小应用。由于平时轮岗也有很多事要做，所以每天在公司写一些代码，然后用优盘拷贝回宿舍继续写。觉得这样挺麻烦的，想起以前用github保存代码，正好现在我还是在用ubuntu，就打算继续使用github来保存。因为以前配置在ubuntu下配置git的时候有大神fookwood的帮助，现在只能自己摸索了，网上搜了很多，不过最后都有各种问题，今天夜里又重新整理了一下，终于配置成功了，现在把过程写下来，分享给需要的，也备以后自己参考。<br>准备工作：首先要现在github上注册一个帐号，右上角有个<code>sign up</code>注册帐号，要是已经有了就点<code>sign in</code>直接登录就好。登录成功之后点击右上角一个图标(create a new repo)新建一个代码仓库就是存放你以后项目的仓库（repositories），当然可以创建很多个，这个都应该会，就不多说了。下面开始安装和配置过程了。<br>
+          <p>现在进入部门了，有了自己的办公桌和电脑，感觉还是很棒的。虽然还是在轮岗期，不过部门负责人还是给我们新员工每人分配了一个课题，就是在两周的时间做一个安卓小应用。由于平时轮岗也有很多事要做，所以每天在公司写一些代码，然后用优盘拷贝回宿舍继续写。觉得这样挺麻烦的，想起以前用github保存代码，正好现在我还是在用ubuntu，就打算继续使用github来保存。因为以前配置在ubuntu下配置git的时候有大神fookwood的帮助，现在只能自己摸索了，网上搜了很多，不过最后都有各种问题，今天夜里又重新整理了一下，终于配置成功了，现在把过程写下来，分享给需要的，也备以后自己参考。<br>准备工作：首先要现在github上注册一个帐号，右上角有个<code>sign up</code>注册帐号，要是已经有了就点<code>sign in</code>直接登录就好。登录成功之后点击右上角一个图标(create a new repo)新建一个代码仓库就是存放你以后项目的仓库（repositories），当然可以创建很多个，这个都应该会，就不多说了。下面开始安装和配置过程了。</p>
+<h2 id="安装git，后面的-y是打包安装这三个程序"><a href="#安装git，后面的-y是打包安装这三个程序" class="headerlink" title="安装git，后面的-y是打包安装这三个程序"></a>安装git，后面的-y是打包安装这三个程序</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-core git-gui git-doc -y</span><br></pre></td></tr></table></figure>
+<h2 id="生成本地SSH密匙-这是关键的一步"><a href="#生成本地SSH密匙-这是关键的一步" class="headerlink" title="生成本地SSH密匙(这是关键的一步)"></a>生成本地SSH密匙(这是关键的一步)</h2><p>如果用户是第一次使用git，就需要现在家目录创建一个.ssh文件夹，生成密匙用的默认文件夹，由于是隐藏的，用户可以在家目录按Ctrl+h来显示隐藏文件夹，看看是否已经有这个.ssh文件夹，如果没有，就打开终端输入如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/.ssh</span><br></pre></td></tr></table></figure></p>
+<p>PS:要是没有创建之前已经有的.ssh目录的话，切换到.ssh，用ls命令查看目录下是否有id_rsa.pub与id_rsa两个文件，有的话就代表密匙已经生成过，就不需要再执行生产密匙的步骤。</p>
+<p>创建好目录之后，就开始输入如下命令生成密匙。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;your_email@example.com&quot;</span><br></pre></td></tr></table></figure></p>
+<p>注意，为了保证是默认设置，当提示让输入保存密匙的文件的时候，直接按回车键就可以了。之后会让输入密码，和确认密码，可以输要保证两次一样，也可以都按回车键不输密码。执行结束之后终端会输出如下信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Your identification has been saved in /home/you/.ssh/id_rsa.</span><br><span class="line"># Your public key has been saved in /home/you/.ssh/id_rsa.pub.</span><br><span class="line"># The key fingerprint is:</span><br><span class="line"># 01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db your_email@example.com</span><br></pre></td></tr></table></figure></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2013/08/25/Ubuntu下git的配置和使用/#more" rel="contents">

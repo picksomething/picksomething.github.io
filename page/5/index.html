@@ -222,6 +222,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -503,245 +513,18 @@
 
       
         
-          
-            <p>上一篇简单分析了Android原生的待机流程，这一篇分析一下我们康佳智能电视的STR待机流程。智能电视的待机流程和Android原生的还是有一些差别的。STR是Suspend to RAM的缩写，顾名思义就是挂起到内存。所以我们官方给STR待机起的名字叫做快速待机，也就是待机时间快，待机起来之后还会会到待机前的状态。</p>
-<p>OK，言归正传，同样我们先把大致的流程图贴出来<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/11.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/11-300x268.png" alt="1"></a><br>智能电视是通过遥控器上的待机键来使电视待机的，当用户按下Power key的时候，会在interceptKeyBeforeQueueing中拦截判断，代码片段如下所示：</p>
-<pre><code>    int keyCode = event.getKeyCode();
-&lt;!--more--&gt;
-    if (enable_str == true) {
-        if (&quot;1&quot;.equals(SystemProperties.get(&quot;mstar.str.suspending&quot;))) {
-            Log.d(TAG, &quot;STR forbid keyCode=&quot; + keyCode + &quot;,down=&quot; +down);
-            return 0;
-        }
-        if (&quot;2&quot;.equals(SystemProperties.get(&quot;mstar.str.suspending&quot;))) {
-            //Fake key for STR power on
-            if (keyCode == KeyEvent.KEYCODE_TV_POWER) {
-                Log.d(TAG, &quot;STR dc on down=&quot; + down);
-                keyCode = KeyEvent.KEYCODE_POWER;
-                if (down == false) {
-                    if (mPowerKeyHandled == false) {
-                        Log.d(TAG, &quot;STR power key down is missing !!!&quot;);
-                        return 0;
-                    } else {
-                        Log.d(TAG, &quot;STR dc on mstar.str.suspending = 1&quot;);
-                        SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;);
-                    }
-               }
-            } else {
-                Log.d(TAG, &quot;STR dc on forbid keyCode=&quot; + keyCode);
-           return 0;
-        }
-    }
-}
-`&lt;/pre&gt;
-我们可以看到在这个方法中有一句`SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;)`;也就是当Power key第一次被按下的时候会执行该动作，将`mstar.str.suspending`变量的值置为1，然后如果这个过程中用户再次按下任意一个按键的时候就会进入第一个判断语句，然后被return掉不处理，这就是挡key机制。
-
-补充一下挡key机制：为了防止待机时乱按key导致问题，会加入一套挡key机制：一旦待机，任何key(包括Power key)都会被挡掉。知道SRT待机回来才会放开，具体实现是这样的：
-
-1.收到Power key(value == 26)之后,会在其key down时，把`mstar.str.suspending`置为1，此时会挡掉所有的key。
-
-2.SRT开机后，SuperNova(MStar的芯片系统，类似C++库)那边会把`mstar.str.suspending`置为2，并发一个假的Power key (value == 117) (之所以不用原来的Power key，是因为第1步中把所有的key都挡掉了，原来的Power key没作用了)，来触发开机。但是，此时Android还没有ready好，仍然不能响应任何key，所以再一次把mstar.str.suspending置为1。给人感觉好像是啥都没做，值从1-2-1，但是通过这一步，我们获得了开机的事件，就可以继续跑Android的开机流程了。
-
-3.最后，等到Android那边ready，也就是`ActivityManagerService.java`中的`comOutOfSleepIfNeededLocked`里面把mstar.str.suspending置为0。到此SRT就结束了，开始响应所有的key。
-
-上面插播了一段挡key机制，我们继续之前的话题。用户第一次按下Power key之后，mstar.str.suspending被置为1.同时通过如下代码还会将mSystemSuspend(str早期的标志位)置为true。
-&lt;pre&gt;`case KeyEvent.KEYCODE_POWER: {
-    // KONKA Patch Start (+caobin 2014-01-03)
-    if (down) {
-        if (!mSystemSuspend) {
-            result = ACTION_PASS_TO_USER;
-            mSystemSuspend = true;
-            Log.d(TAG, &quot;make mSystemSuspend = true, result = &quot; + result);
-        } else {
-            result &amp;amp;= ~ACTION_PASS_TO_USER;
-            mSystemSuspend = false;
-            Log.d(TAG, &quot;STR resume, make mSystemSuspend false, result = &quot; + result);
-        }
-        if (isScreenOn &amp;amp;&amp;amp; !mPowerKeyTriggered
-                &amp;amp;&amp;amp; (event.getFlags() &amp;amp; KeyEvent.FLAG_FALLBACK) == 0) {
-            mPowerKeyTriggered = true;
-            mPowerKeyTime = event.getDownTime();
-            interceptScreenshotChord();
-        }
-
-        ITelephony telephonyService = getTelephonyService();
-        boolean hungUp = false;
-        if (telephonyService != null) {
-            try {
-                if (telephonyService.isRinging()) {
-                    // Pressing Power while there&apos;s a ringing incoming
-                    // call should silence the ringer.
-                    telephonyService.silenceRinger();
-                } else if ((mIncallPowerBehavior
-                     &amp;amp; Settings.Secure.INCALL_POWER_BUTTON_BEHAVIOR_HANGUP) != 0
-                     &amp;amp;&amp;amp; telephonyService.isOffhook()) {
-                    // Otherwise, if &quot;Power button ends call&quot; is enabled,
-                    // the Power button will hang up any current active call.
-                    hungUp = telephonyService.endCall();
-                }
-            } catch (RemoteException ex) {
-                Log.w(TAG, &quot;ITelephony threw RemoteException&quot;, ex);
-            }
-        }
-        interceptPowerKeyDown(!isScreenOn || hungUp
-               || mVolumeDownKeyTriggered || mVolumeUpKeyTriggered);
-        Log.d(TAG, &quot;str power key down.before Queeing POWER_KEY down, 
-            result = &quot; + result);
-        } 
-        else {
-            Log.d(TAG, &quot;str power key up&quot;);
-            // MStar Android Patch Begin
-            // normal dc off
-            if (enable_str == true) {
-                mPowerKeyTriggered = false;
-                cancelPendingScreenshotChordAction();
-                if (interceptPowerKeyUp(canceled || mPendingPowerKeyUpCanceled)) {
-                    result = (result &amp;amp; ~ACTION_WAKE_UP) | ACTION_GO_TO_SLEEP;
-                }
-            mPendingPowerKeyUpCanceled = false;
-            Log.d(TAG, &quot;mSystemSuspend = &quot; + mSystemSuspend + &quot;, result = &quot; + result);
-            if (mSystemSuspend) {
-                Log.d(TAG, &quot;we need wait shutdown logo finish&quot;);
-                SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;); 
-                int alreadyWait = 0;
-                while (!isStandbyLogoFinish) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    alreadyWait += 200;
-                    if (alreadyWait &amp;gt;= STANDBY_LOGO_WAIT_TIME_OUT) {
-                        Log.d(TAG, &quot;!!!!!! WRONG !!!! STADNBY WAIT TOO LONG !!!!!&quot;);
-                        break;
-                    }
-                }
-                isStandbyLogoFinish = false;
-            }
-            Log.d(TAG, &quot;enter str = &quot; + System.currentTimeMillis());
-        }
-        // MStar Android Patch End
-        Log.d(TAG, &quot;before Queeing POWER_KEY up, result = &quot; + result);
-    }
-//KONKA Patch End
-`&lt;/pre&gt;
-然后会在`interceptKeyBeforeDispatching`方法中拦截Powerkey down事件
-&lt;pre&gt;`// KONKA Patch Start (+caobin 2014-01-03)
-else if (keyCode == KeyEvent.KEYCODE_POWER) {
-    if (STANDBY_WANT_EXIT == mInVeryQuickStandby) {
-        Log.d(TAG, &quot;before dispatching POWER_KEY, STANDBY_WANT_EXIT&quot;);
-        if (!down) {
-            Log.d(TAG, &quot;powerkey up, exitVeryQuickStandby&quot;);
-            exitVeryQuickStandby();
-        } else {
-            Log.d(TAG, &quot;powerkey down, throw key&quot;);
-            return -1;
-        }
-    } else {
-        if (down &amp;amp;&amp;amp; (0 == repeatCount)) {
-            if (isStandbyHintNeeded()) {
-                Log.d(TAG, &quot;before dispatching POWER_KEY, STR, powerkey down&quot;);
-                isStandbyLogoFinish = false;
-                mHandler.post(rStandbyDialogConfirmCallback);
-                // killCNTVBeforeStandby();
-                // setSleepModeToDongle();
-                return -1;
-            }
-        }
-    }
-}
-// KONKA Patch End
-`&lt;/pre&gt;
-此时会走else中的流程，因为`int mInVeryQuickStandby = STANDBY_NORMAL`可以看出`mInVeryQuickStandby` 初始值不是`STANDBY_WANT_EXIT`。到这里会首先将`isStandbyLogoFinish`置为false就是说提示框还没有消失，同时会调用`rStandbyDialogConfirmCallback`线程来绘制提示框。我们看一下这个线程的代码：
-&lt;pre&gt;`final Runnable rStandbyDialogConfirmCallback = new Runnable() {
-    @Override 
-    public void run() {
-        Log.d(TAG, &quot;standbyDialog, in confirm callback -- modify by caobin&quot;);
-        if (null == standbyHintDialog) {
-            standbyHintDialog = StandbyHintDialog.create(mContext, mHandler);
-        }
-        Log.d(TAG, &quot;standby logo shown = &quot; + System.currentTimeMillis());
-        closeDoubleWhenStandy();
-        ((AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE)).
-             setMasterMute(true, -10);
-        standbyHintDialog.setHintEndCallback(rStandbyHintEndCallback);
-        standbyHintDialog.setBeforDismissCallback(rDisableBacklight);
-        standbyHintDialog.show();
-        Intent intent = new Intent(&quot;com.konka.tv.hotkey.service.UNMUTE&quot;);
-        mContext.sendBroadcastAsUser(intent, UserHandle.CURRENT);
-        if (!isNeedVeryQuickStandby()) {
-            mContext.sendBroadcastAsUser(new Intent(Intent.ACTION_SCREEN_OFF), 
-              UserHandle.CURRENT);
-        }
-    }
-};
-`&lt;/pre&gt;
-该方法中首先会调用`StandbyHintDialog`类中的create创建对话框，然后会执行一些其他动作，比如关闭双通道之类的，接下来的两句
-&lt;pre&gt;`standbyHintDialog.setHintEndCallback(rStandbyHintEndCallback);
-standbyHintDialog.setBeforDismissCallback(rDisableBacklight);
-`&lt;/pre&gt;
-我们从`StandbyHintDialog.java`这个类中找到这两个方法如下：
-&lt;pre&gt;`public void setHintEndCallback(Runnable callback) {
-    mCallbackRef = new WeakReference&amp;lt;Runnable&amp;gt;(callback);
-}
-public void setBeforDismissCallback(Runnable callback) {
-    mBeforDismiss = new WeakReference&amp;lt;Runnable&amp;gt;(callback);
-}
-`&lt;/pre&gt;
-其实就是设置回调线程而已，找出回调的线程，源码如下，这个是rStandbyHintEndCallback线程源码：
-&lt;pre&gt;`final Runnable rStandbyHintEndCallback = new Runnable() {
-    @Override 
-    public void run() {
-        Log.d(TAG, &quot;standbyHintDialog, in hint end callback -- modify by caobin&quot;);
-        if (null != standbyHintDialog) {
-            standbyHintDialog = null;
-        }
-        if (null != standbyDialog) {
-            standbyDialog = null;
-        }
-        if (isNeedVeryQuickStandby()) {
-            if (!keyguardOn()) {
-                try {
-                    Intent fakeStandby = new Intent();
-                    fakeStandby.setClassName(&quot;com.konka.fakestandby&quot;, 
-                                    &quot;com.konka.fakestandby.MainActivity&quot;);
-                    fakeStandby.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                    | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                    mContext.startActivityAsUser(fakeStandby, UserHandle.CURRENT);
-                } catch (ActivityNotFoundException e) {}
-                }
-                enterVeryQuickStandby();
-            } else {}
-        isStandbyLogoFinish = true;
-    }
-};
-`&lt;/pre&gt;
-这个是`rDisableBacklight`线程源码：
-&lt;pre&gt;`final Runnable rDisableBacklight = new Runnable() {
-    @Override 
-    public void run() {
-        if (mSystemSuspend) {
-            if (isNeedVeryQuickStandby()) {
-                Log.d(TAG, &quot;entering fakeStandby, we can close backlight&quot;);
-            } else {
-                Log.d(TAG, &quot;entering STR, we can close backlight&quot;);
-            }
-            try {
-                if (null != TvManager.getInstance()) {
-                    TvManager.getInstance().getPictureManager().disableBacklight();
-                }
-            } catch (TvCommonException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-};
-</code></pre><p><code>rStandbyHintEndCallback</code>线程是在对话框显示结束之后，<strong><span style="color: #ff0000;">启动一个Activity，其实这是一个假的Activity，其目的就是起一个Activity从而使电视待机前的Activity调用onstop方法，免得用户在玩游戏的时候，等待机起来发现游戏已经Game over了多不好啊</span>。</strong>然后将isStandbyLogoFinish置为true，这个变量在STR线程中要读，一旦为true，STR认为待机前的工作做完了，就开始进入STR待机了。</p>
-<p>而<code>rDisableBacklight</code>线程则是关闭电视背光的功能。<code>enterVeryQuickStandby()</code>里面会设置一些待机呼吸灯的模式。</p>
-<p>此时当<code>Power key up</code>的时候，会在<code>interceptKeyBeforeQueueing</code>中进行处理，如果发现<code>isStandbyLogoFinish</code>已经为true，那么久进入SuperNova的待机。</p>
-<p>这就是KONKA智能电视待机的大致流程。</p>
-
-          
+          <p>上一篇简单分析了Android原生的待机流程，这一篇分析一下我们康佳智能电视的STR待机流程。智能电视的待机流程和Android原生的还是有一些差别的。STR是Suspend to RAM的缩写，顾名思义就是挂起到内存。所以我们官方给STR待机起的名字叫做快速待机，也就是待机时间快，待机起来之后还会会到待机前的状态</p>
+<p>OK，言归正传，同样我们先把大致的流程图贴出来<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/11.png"></p>
+<p>智能电视是通过遥控器上的待机键来使电视待机的，当用户按下Power key的时候，会在interceptKeyBeforeQueueing中拦截判断，代码片段如下所示：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> keyCode = event.getKeyCode();</span><br><span class="line"><span class="keyword">if</span> (enable_str == <span class="keyword">true</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"1"</span>.equals(SystemProperties.get(<span class="string">"mstar.str.suspending"</span>))) &#123;</span><br><span class="line">        Log.d(TAG, <span class="string">"STR forbid keyCode="</span> + keyCode + <span class="string">",down="</span> +down);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">"2"</span>.equals(SystemProperties.get(<span class="string">"mstar.str.suspending"</span>))) &#123;</span><br><span class="line">        <span class="comment">//Fake key for STR power on</span></span><br><span class="line">        <span class="keyword">if</span> (keyCode == KeyEvent.KEYCODE_TV_POWER) &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"STR dc on down="</span> + down);</span><br><span class="line">            keyCode = KeyEvent.KEYCODE_POWER;</span><br><span class="line">            <span class="keyword">if</span> (down == <span class="keyword">false</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (mPowerKeyHandled == <span class="keyword">false</span>) &#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"STR power key down is missing !!!"</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    Log.d(TAG, <span class="string">"STR dc on mstar.str.suspending = 1"</span>);</span><br><span class="line">                    SystemProperties.set(<span class="string">"mstar.str.suspending"</span>, <span class="string">"1"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Log.d(TAG, <span class="string">"STR dc on forbid keyCode="</span> + keyCode);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看到在这个方法中有一句<code>SystemProperties.set(&quot;mstar.str.suspending&quot;, &quot;1&quot;)</code>;也就是当Power key第一次被按下的时候会执行该动作，将<code>mstar.str.suspending</code>变量的值置为1，然后如果这个过程中用户再次按下任意一个按键的时候就会进入第一个判断语句，然后被return掉不处理，这就是挡key机制</p>
+<p>补充一下挡key机制：为了防止待机时乱按key导致问题，会加入一套挡key机制：一旦待机，任何key(包括Power key)都会被挡掉。知道SRT待机回来才会放开，具体实现是这样的：<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/05/03/Android智能电视待机流程分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -880,148 +663,17 @@ public void setBeforDismissCallback(Runnable callback) {
 
       
         
-          
-            <p>之前做平台项目的时候，关于待机这一块真的是出现了很多问题，因为我们开发智能电视的待机流程和Android原生待机又有一些不同，我们在Android原生的基础上增加了一些我们自己的东西，比如待机前会给出警示等。自己没事的时候也研究过Android原生的待机和我们自己的待机流程，最近又有负责SRT待机这一块的一个同事做过一次技术分享，然后就趁五一放假有时间好好整理一下。</p>
+          <p>之前做平台项目的时候，关于待机这一块真的是出现了很多问题，因为我们开发智能电视的待机流程和Android原生待机又有一些不同，我们在Android原生的基础上增加了一些我们自己的东西，比如待机前会给出警示等。自己没事的时候也研究过Android原生的待机和我们自己的待机流程，最近又有负责SRT待机这一块的一个同事做过一次技术分享，然后就趁五一放假有时间好好整理一下。</p>
 <p>PS：以下分析都是基于Android4.3的</p>
-<p>一、Android原生待机流程</p>
-<p>Android原生待机流程如下图所示：<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/1.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/1-134x300.png" alt="1"></a></p>
-<p>用户在长按Android的电源键的时候会在Android的frameworks层被捕获，具体文件路径是</p>
-<pre><code>frameworks\base\policy\src\com\android\internal\policy\impl`&lt;/pre&gt;
-中的`PhoneWindowManager.java`进行处理。
-&lt;!--more--&gt;
-当按下待机键时会在`PhoneWindowManager`中的`interceptKeyBeforeQueueing`方法中将PowerKey拦下，然后进行判断是一次动作还是长按，是长按的话就会触发mPowerLongPress这个线程，我们来看一下这个线程的代码：
-&lt;pre&gt;`private final Runnable mPowerLongPress = new Runnable() {
-    @Override
-    public void run() {
-        // The context isn&apos;t read
-        if (mLongPressOnPowerBehavior &amp;lt; 0) {
-            mLongPressOnPowerBehavior = mContext.getResources().getInteger(
-               com.android.internal.R.integer.config_longPressOnPowerBehavior);
-        }
-        int resolvedBehavior = mLongPressOnPowerBehavior;
-        if (FactoryTest.isLongPressOnPowerOffEnabled()) {
-            resolvedBehavior = LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM;
-        }
-
-        switch (resolvedBehavior) {
-            case LONG_PRESS_POWER_NOTHING:
-                break;
-            case LONG_PRESS_POWER_GLOBAL_ACTIONS:
-                mPowerKeyHandled = true; 
-                if(!performHapticFeedbackLw(null,HapticFeedbackConstants.LONG_PRESS,
-                false)) {
-                    performAuditoryFeedbackForAccessibilityIfNeed();
-                }
-                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);
-                showGlobalActionsDialog();
-                break;
-            case LONG_PRESS_POWER_SHUT_OFF:
-            case LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM:
-                mPowerKeyHandled = true;
-                performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, false);
-                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);
-                mWindowManagerFuncs.shutdown(resolvedBehavior == LONG_PRESS_POWER_SHUT_OFF);
-                break;
-        }
-    }
-};
-`&lt;/pre&gt;
-1.从开头这句`int mLongPressOnPowerBehavior = -1`;我们可以知道`mLongPressOnPowerBehavior`最开始是被初始化成-1的。所以最开的if条件成立，然后`mLongPressOnPowerBehavior`的值会从`config_longPressOnPowerBehavior`配置中读取，然后赋值给`resolvedBehavior`。
-
-2.判断`FactoryTest`中长按关机是否设置了，如果设置了就将`LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM`复制给`resolvedBehavior`，这种模式下不会弹出提示对话框就直接关机。
-
-3.然后判断`resolvedBehavior`的值，根据其值来决定下一步执行什么动作。正常情况下改值等于`LONG_PRESS_POWER_GLOBAL_ACTIONS=1`，这是正常关机的流程，先设置`mPowerKeyHandled`值为true，告诉系统待机键已经处理了。然后开始发送消息告诉系统可以弹出提示对话框让用户选择下一步操作了。最后`showGlobalActionsDialog()`就会show出对话框。
-
-我们可以简单看一下`showGlobalActionDialog()`的代码：
-&lt;pre&gt;`void showGlobalActionsDialog() {
-    if (mGlobalActions == null) {
-        mGlobalActions = new GlobalActions(mContext, mWindowManagerFuncs);
-    }
-    final boolean keyguardShowing = keyguardIsShowingTq();
-    mGlobalActions.showDialog(keyguardShowing, isDeviceProvisioned());
-    if (keyguardShowing) {
-        // since it took two seconds of long press to bring this up,
-        // poke the wake lock so they have some time to see the dialog.
-        mKeyguardMediator.userActivity();
-    }
-}
-`&lt;/pre&gt;
-首先会实例化一个`GlobalActions`对象`mGlobalActions`，通过查看源代码可以看到`GlobalActions`是实现了接口`DialogInterface.OnDismissListener和DialogInterface.OnClickListener`的一个普通类，里面定义的是关于对话框的一些方法和属性。然后`showDialog()`,最后根据`keyguardShowing`的值，该值代表是否在锁屏状态，决定是否要调用`userActivity()`,该方法是保持屏幕常亮。
-
-接下来看一下showDialog这个方法的源代码
-&lt;pre&gt;`/**
-  * Show the global actions dialog (creating if necessary)
-  * @param keyguardShowing True if keyguard is showing
-  */
-public void showDialog(boolean keyguardShowing, boolean isDeviceProvisioned) {
-    mKeyguardShowing = keyguardShowing;
-    mDeviceProvisioned = isDeviceProvisioned;
-    if (mDialog != null) {
-        mDialog.dismiss();
-        mDialog = null;
-        // Show delayed, so that the dismiss of the previous dialog completes
-        mHandler.sendEmptyMessage(MESSAGE_SHOW);
-    } else {
-        handleShow();
-    }
-}
-`&lt;/pre&gt;
-注释已经写的很清楚了，如果该对话框存在就直接show出来，否则调用`handleShow()`,我们可以再看一下`handleShow()`的源代码
-&lt;pre&gt;`private void handleShow() {
-    awakenIfNecessary();
-    mDialog = createDialog();
-    prepareDialog();
-
-    WindowManager.LayoutParams attrs = mDialog.getWindow().getAttributes();
-    attrs.setTitle(&quot;GlobalActions&quot;);
-    mDialog.getWindow().setAttributes(attrs);
-    mDialog.show();
-    mDialog.getWindow().getDecorView().
-      setSystemUiVisibility(View.STATUS_BAR_DISABLE_EXPAND);
-}
-`&lt;/pre&gt;
-看到这一句`mDialog=createDialog()`,我们就应该知道是创建对话框了，`createDialog()`方法主要就是创建提示对话框，将提示框上需要显示的选项显示出来，因为该方法太长，就不贴出来了，有兴趣的可以看源码，路径是
-&lt;pre&gt;`frameworks\base\policy\src\com\android\internal\policy\impl\GlobalActions.java
-`&lt;/pre&gt;
-我们可以看一下关键代码
-&lt;pre&gt;`// first: power off
-mItems.add(new SinglePressAction(
-    com.android.internal.R.drawable.ic_lock_power_off,
-      R.string.global_action_power_off) {
-    public void onPress() {
-        // shutdown by making sure radio and power are handled accordingly.
-        mWindowManagerFuncs.shutdown(true);
-    }
-
-    public boolean onLongPress() {
-        mWindowManagerFuncs.rebootSafeMode(true);
-        return true;
-    }
-
-    public boolean showDuringKeyguard() {
-        return true;
-    }
-
-    public boolean showBeforeProvisioning() {
-        return true;
-    }
-});
-`&lt;/pre&gt;
-从这段代码中可以看出，提示框上会添加Power off试图，点击的话就会调用`shutdown`，顺着分析下去，会在
-&lt;pre&gt;`/frameworks/base/core/java/android/view/WindowManagerPolicy.java
-`&lt;/pre&gt;
-中找到`public void shutdown(boolean confirm)`,但是只有声明，实现并不在这里，grep搜索一下会发现实现是在
-&lt;pre&gt;`/frameworks/base/services/java/com/android/server/wm/WindowManagerService.java
-`&lt;/pre&gt;
-中实现的。
-[![2](http://www.picksomething.cn/wp-content/uploads/2014/12/2-300x19.png)](http://www.picksomething.cn/wp-content/uploads/2014/12/2.png)
-
-在这里就会调用关机线程，关机线程在
-&lt;pre&gt;`\frameworks\base\services\java\com\android\server\power\ShutdownThread.java
-</code></pre><p>中，线程中会调用<code>PowerManagerService.lowLevelShutdown()</code>;再下来就是JNI调用C++层了。<br>整个流程图如下所示：<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/3.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/3-300x181.png" alt="3"></a></p>
-<p>上层的分析就到这里了，这是Android原生的待机流程，下一篇我写一下我们智能电视的SRT待机流程。</p>
-
-          
+<h2 id="Android原生待机流程"><a href="#Android原生待机流程" class="headerlink" title="Android原生待机流程"></a>Android原生待机流程</h2><p>Android原生待机流程如下图所示：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/1.png"><br>用户在长按Android的电源键的时候会在Android的frameworks层被捕获，具体文件路径是<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks\base\policy\src\com\android\internal\policy\impl</span><br></pre></td></tr></table></figure></p>
+<p>中的<code>PhoneWindowManager.java</code>进行处理，当按下待机键时会在<code>PhoneWindowManager</code>中的<code>interceptKeyBeforeQueueing</code>方法中将PowerKey拦下，然后进行判断是一次动作还是长按，是长按的话就会触发mPowerLongPress这个线程，我们来看一下这个线程的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Runnable mPowerLongPress = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// The context isn't read</span></span><br><span class="line">        <span class="keyword">if</span> (mLongPressOnPowerBehavior &amp;lt; <span class="number">0</span>) &#123;</span><br><span class="line">            mLongPressOnPowerBehavior = mContext.getResources().getInteger(</span><br><span class="line">               com.android.internal.R.integer.config_longPressOnPowerBehavior);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> resolvedBehavior = mLongPressOnPowerBehavior;</span><br><span class="line">        <span class="keyword">if</span> (FactoryTest.isLongPressOnPowerOffEnabled()) &#123;</span><br><span class="line">            resolvedBehavior = LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (resolvedBehavior) &#123;</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_NOTHING:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_GLOBAL_ACTIONS:</span><br><span class="line">                mPowerKeyHandled = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">if</span>(!performHapticFeedbackLw(<span class="keyword">null</span>,HapticFeedbackConstants.LONG_PRESS,<span class="keyword">false</span>)) &#123;</span><br><span class="line">                    performAuditoryFeedbackForAccessibilityIfNeed();</span><br><span class="line">                &#125;</span><br><span class="line">                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);</span><br><span class="line">                showGlobalActionsDialog();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_SHUT_OFF:</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM:</span><br><span class="line">                mPowerKeyHandled = <span class="keyword">true</span>;</span><br><span class="line">                performHapticFeedbackLw(<span class="keyword">null</span>, HapticFeedbackConstants.LONG_PRESS, <span class="keyword">false</span>);</span><br><span class="line">                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);                    mWindowManagerFuncs.shutdown(resolvedBehavior == LONG_PRESS_POWER_SHUT_OFF);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2014/05/03/Android原生待机流程frameworks层分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

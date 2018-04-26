@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="Android Gradle构建系统支持Resource Shrinking一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用:自动Resource Shrinking功能默认是关闭的，">
+<meta name="description" content="Android Gradle构建系统支持Resource Shrinking一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用 自动Resource Shrinking功能默认是关闭的，">
 <meta name="keywords" content="Android,Gradle,shrink">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Resource Shrinking in Android">
-<meta property="og:url" content="http://picksomething.cn/2015/04/02/resource shrinking in android/index.html">
+<meta property="og:title" content="Resources Shrinking in Android">
+<meta property="og:url" content="http://picksomething.cn/2015/04/02/Resources Shrinking in Android/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="Android Gradle构建系统支持Resource Shrinking一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用:自动Resource Shrinking功能默认是关闭的，">
+<meta property="og:description" content="Android Gradle构建系统支持Resource Shrinking一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用 自动Resource Shrinking功能默认是关闭的，">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:updated_time" content="2018-04-26T02:09:20.823Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Resource Shrinking in Android">
-<meta name="twitter:description" content="Android Gradle构建系统支持Resource Shrinking一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用:自动Resource Shrinking功能默认是关闭的，">
+<meta name="twitter:title" content="Resources Shrinking in Android">
+<meta name="twitter:description" content="Android Gradle构建系统支持Resource Shrinking一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用 自动Resource Shrinking功能默认是关闭的，">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://picksomething.cn/2015/04/02/resource shrinking in android/"/>
+  <link rel="canonical" href="http://picksomething.cn/2015/04/02/Resources Shrinking in Android/"/>
 
 
 
 
 
-  <title>Resource Shrinking in Android | 一路追梦想</title>
+  <title>Resources Shrinking in Android | 一路追梦想</title>
   
 
 
@@ -223,6 +223,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
@@ -265,7 +275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/04/02/resource shrinking in android/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/04/02/Resources Shrinking in Android/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -282,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Resource Shrinking in Android</h1>
+          <h1 class="post-title" itemprop="name headline">Resources Shrinking in Android</h1>
         
 
         <div class="post-meta">
@@ -354,17 +364,9 @@
       
 
       
-        <p>Android Gradle构建系统支持<code>Resource Shrinking</code>一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用:<br>自动<code>Resource Shrinking</code>功能默认是关闭的，要打开这个功能，需要在你的<code>buildType</code>中添加<code>shrinkResources true</code>，需要特别注意的是：这个功能依赖于代码削减，所以需要先打开minifyEnabled，整体代码如下：</p>
-<pre><code>android {
-    ...
-    buildTypes {
-        release {
-            minifyEnabled true
-            shrinkResources true
-        }
-    }
-}
-</code></pre><a id="more"></a>
+        <p>Android Gradle构建系统支持<code>Resource Shrinking</code>一种在构建的时候自动删除打包的APP中无用的资源的规则。其最大的优点是它不仅仅自动可以删除你自己代码中的无用资源，而且还可以删除你为了增强你自己APP的一些功能而使用的外部jar包中你的APP没有用到的资源，大家在开发自己的APP的过程中可以试试，下面讲讲怎么使用</p>
+<p>自动<code>Resource Shrinking</code>功能默认是关闭的，要打开这个功能，需要在你的<code>buildType</code>中添加<code>shrinkResources true</code>，需要特别注意的是：这个功能依赖于代码削减，所以需要先打开minifyEnabled，整体代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    ...</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled <span class="keyword">true</span></span><br><span class="line">            shrinkResources <span class="keyword">true</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     

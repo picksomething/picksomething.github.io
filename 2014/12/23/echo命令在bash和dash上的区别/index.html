@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每行">
+<meta name="description" content="今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？ 根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每">
 <meta name="keywords" content="Linux,bash,dash,Makefile,Shell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="echo命令在bash和dash上的区别">
 <meta property="og:url" content="http://picksomething.cn/2014/12/23/echo命令在bash和dash上的区别/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每行">
+<meta property="og:description" content="今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？ 根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:updated_time" content="2018-04-26T02:58:45.127Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="echo命令在bash和dash上的区别">
-<meta name="twitter:description" content="今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每行">
+<meta name="twitter:description" content="今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？ 根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每">
 
 
 
@@ -219,6 +219,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -354,34 +364,19 @@
       
 
       
-        <p>今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？<br>根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每行前面都有一个-e，我就很纳闷了，然后我就看了一下MakeFile中生成这个配置文件的这一段代码，基本都是这样的</p>
-<pre><code>output_config_file: BUILD_CFG:=${SAVE_FOLDER}/cfg_build.ini
-output_config_file:
-        @echo -e &quot;[CFG_BUILD]&quot; &amp;gt; ${BUILD_CFG}
-        @echo -e &quot;BOARD = $(BOARD_ID)&quot; &amp;gt;&amp;gt; ${BUILD_CFG}
-`&lt;/pre&gt;
-上面这段代码的内容很简单啊，无非就是在生成的cfg_build.ini中输出一些需要的内容，为什么会在cfg_build.ini的每行前面多处一个-e，实在搞不明白之后就找负责服务器的同事问了一下，他说也不太清楚要问一下这个Makefile脚本的作者，于是又找到了Makefile脚本的作者，他告诉了我一句bash和dash的区别，自己也不太清楚，就Google了一下，慢慢地就搞清楚了，然后惊叹：哦，原来是这样的。
-&lt;!--more--&gt;
-这个是因为Ubuntu在从6.10开始，就将先前默认的`bash shell`更换成了`dash shell`，据说是因为`bash`更小巧，运行更快，还与POSIX标准相兼容，也就是将`/bin/sh`链接到了`/bin/dash`而不是`/bin/bash`。我们可以验证一下是不是这样的，首先在打开一个Ubuntu的Terminal，我们输入如下命令：
-&lt;pre&gt;`ls -l /bin/sh`&lt;/pre&gt;
-我们可以看到输出是这样的
-&lt;pre&gt;`/bin/sh -&amp;gt; dash`&lt;/pre&gt;
-这就证实了`Ubuntu`确是将`dash`作为默认的`/bin/sh`，这样一来什么都搞清楚了，因为`dash shell`中标准的echo不支持转义参数-e，也就是说-e是`bash shell`上`echo`带的一个可选参数，既然这样，那么解决办法就是将`Ubuntu`默认的`/bin/sh`改为`bash shell`只需要下面这样一条命令就可以了：
-&lt;pre&gt;`sudo dpkg-reconfigure dash`&lt;/pre&gt;
-然后在弹出的选项中选择否(No)，就搞定了，此时再次执行ls -l /bin/sh命令就发现已经指向/bin/bash了，重新编译代码，发现此时生成的`build_cfg.ini`文件中每行前面已经没有-e了，问题顺利解决了。
-
-**补充一**：@echo是关闭命令在屏幕上回显的意思
-我们知道shell脚本会依次执行脚本中的的每条命令，并且会在显示器上显示，如果你不想让它们显示，可以加一个“echo off”，当然，“echo off”也是命令，它本身也会显示，如果连这条也不显示，就在前面加个“@”。
-
-**补充二**：echo 命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的，这里举两个例子
-例子1.
-&lt;pre&gt;`echo -e &quot;\n Project1: \n\n\tplan \n\twrite \n\ttest\n&quot; &amp;gt; project1`&lt;/pre&gt;
-&lt;div id=&quot;crayon-549999236c74e297491827&quot; class=&quot;crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate&quot; data-settings=&quot; minimize scroll-mouseover&quot;&gt;&lt;/div&gt;
-输出格式化内容到project1中
-例子2.
-&lt;pre&gt;`echo -e The gif files are *.gif
-</code></pre><p><div id="crayon-549999236c756037362532" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover"></div><br>输出当前目录下所有名字以.gif后缀的图片文件</p>
-<p><strong>补充三</strong>：附上dash和bash的简单介绍<br>bash shell是几乎所有Linux发行版的默认shell。作为标准Unix shell——Bourne shell（沿用创建者的名字）的替代，bash shell由GNU工程开发。bash shell的名称就是针对这个Bourne shell的文字游戏，全称为“Bourne again shell”。 bash有很灵活和强大的编程接口，同时又有很友好的用户界面。功能包括命令补齐、通配符、命令历史记录、别名等。<br>dash shell是作为Debian Linux发行版的一部分开发的，主要出现在Ubuntu Linux发行版中。它是Bourne shell的精简版，支持的功能不像bash shell支持的那样多，这可能会给脚本编程带来一些问题。<br>dash shell的历史很有趣，它是ash shell的直系后代，而ash shell是Unix系统上原来的Bourne shell的简化版本。令人不解的是，实际上dash shell在许多基于Debian的Linux发行版中并不是默认的shell。由于bash shell在Linux中的流行，大多数基于Debian的Linux发行版将bash shell用作普通登录shell，只将dash shell用作安装脚本的快速启动shell来安装发行版文件。而流行的Ubuntu发行版是一个例外。Ubuntu Linux发行版将bash shell用作默认的交互shell，但将dash shell用作默认的/bin/sh shell。这通常会让shell脚本程序员很困惑，并给在Linux环境中运行shell脚本带来了很多问题。</p>
+        <p>今天自己在新服务器上编译的时候突然发现无法生成备份包了，同样的源代码在之前用的服务器上编译就很正常的可以生成备份包，于是觉得很好奇，为什么会这样呢？</p>
+<p>根据错误信息提示发现，由于生成的一个ini配置文件每一行的前面出现了无法识别的-e，打开配置文件一看还真的是每行前面都多出来了一个-e，还以为是之前新服务器没有配置好造成的，把编译生成的ini文件删除之后，重新编译一遍发现新生成的ini文件一样还是每行前面都有一个-e，我就很纳闷了，然后我就看了一下MakeFile中生成这个配置文件的这一段代码，基本都是这样的：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">output_config_file: BUILD_CFG:=<span class="variable">$&#123;SAVE_FOLDER&#125;</span>/cfg_build.ini</span><br><span class="line">output_config_file:</span><br><span class="line">    @<span class="built_in">echo</span> -e <span class="string">"[CFG_BUILD]"</span> &gt; <span class="variable">$&#123;BUILD_CFG&#125;</span></span><br><span class="line">    @<span class="built_in">echo</span> -e <span class="string">"BOARD = <span class="variable">$(BOARD_ID)</span>"</span> &gt;&gt; <span class="variable">$&#123;BUILD_CFG&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>上面这段代码的内容很简单啊，无非就是在生成的cfg_build.ini中输出一些需要的内容，为什么会在cfg_build.ini的每行前面多处一个-e，实在搞不明白之后就找负责服务器的同事问了一下，他说也不太清楚要问一下这个Makefile脚本的作者，于是又找到了Makefile脚本的作者，他告诉了我一句bash和dash的区别，自己也不太清楚，就Google了一下，慢慢地就搞清楚了，惊叹原来是这样的<br><a id="more"></a><br>这个是因为Ubuntu在从6.10开始，就将先前默认的<code>bash shell</code>更换成了<code>dash shell</code>，据说是因为<code>bash</code>更小巧，运行更快，还与POSIX标准相兼容，也就是将<code>/bin/sh</code>链接到了<code>/bin/dash</code>而不是<code>/bin/bash</code>。我们可以验证一下是不是这样的，首先在打开一个Ubuntu的Terminal，我们输入如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l /bin/sh`</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看到输出是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/sh -&gt; dash</span><br></pre></td></tr></table></figure></p>
+<p>这就证实了<code>Ubuntu</code>确是将<code>dash</code>作为默认的<code>/bin/sh</code>，这样一来什么都搞清楚了，因为<code>dash shell</code>中标准的echo不支持转义参数-e，也就是说-e是<code>bash shell</code>上<code>echo</code>带的一个可选参数，既然这样，那么解决办法就是将<code>Ubuntu</code>默认的<code>/bin/sh</code>改为<code>bash shell</code>只需要下面这样一条命令就可以了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg-reconfigure dash</span><br></pre></td></tr></table></figure></p>
+<p>然后在弹出的选项中选择否(No)，就搞定了，此时再次执行ls -l /bin/sh命令就发现已经指向/bin/bash了，重新编译代码，发现此时生成的<code>build_cfg.ini</code>文件中每行前面已经没有-e了，问题顺利解决了</p>
+<h2 id="补充一：-echo是关闭命令在屏幕上回显的意思"><a href="#补充一：-echo是关闭命令在屏幕上回显的意思" class="headerlink" title="补充一：@echo是关闭命令在屏幕上回显的意思"></a>补充一：@echo是关闭命令在屏幕上回显的意思</h2><p>我们知道shell脚本会依次执行脚本中的的每条命令，并且会在显示器上显示，如果你不想让它们显示，可以加一个“echo off”，当然，“echo off”也是命令，它本身也会显示，如果连这条也不显示，就在前面加个“@”。</p>
+<h2 id="补充二：echo-命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的"><a href="#补充二：echo-命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的" class="headerlink" title="补充二：echo 命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的"></a>补充二：echo 命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的</h2><p>这里举两个例子，例子1：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e &quot;\n Project1: \n\n\tplan \n\twrite \n\ttest\n&quot; &gt; project1</span><br></pre></td></tr></table></figure></p>
+<p>输出格式化内容到project1中<br>例子2：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo -e The gif files are *.gif</span><br></pre></td></tr></table></figure></p>
+<p>输出当前目录下所有名字以.gif后缀的图片文件</p>
+<h2 id="补充三-附上dash和bash的简单介绍"><a href="#补充三-附上dash和bash的简单介绍" class="headerlink" title="补充三 附上dash和bash的简单介绍"></a>补充三 附上dash和bash的简单介绍</h2><p>bash shell是几乎所有Linux发行版的默认shell。作为标准Unix shell——Bourne shell（沿用创建者的名字）的替代，bash shell由GNU工程开发。bash shell的名称就是针对这个Bourne shell的文字游戏，全称为“Bourne again shell”。 bash有很灵活和强大的编程接口，同时又有很友好的用户界面。功能包括命令补齐、通配符、命令历史记录、别名等</p>
+<p>dash shell是作为Debian Linux发行版的一部分开发的，主要出现在Ubuntu Linux发行版中。它是Bourne shell的精简版，支持的功能不像bash shell支持的那样多，这可能会给脚本编程带来一些问题</p>
+<p>dash shell的历史很有趣，它是ash shell的直系后代，而ash shell是Unix系统上原来的Bourne shell的简化版本。令人不解的是，实际上dash shell在许多基于Debian的Linux发行版中并不是默认的shell。由于bash shell在Linux中的流行，大多数基于Debian的Linux发行版将bash shell用作普通登录shell，只将dash shell用作安装脚本的快速启动shell来安装发行版文件。而流行的Ubuntu发行版是一个例外。Ubuntu Linux发行版将bash shell用作默认的交互shell，但将dash shell用作默认的/bin/sh shell。这通常会让shell脚本程序员很困惑，并给在Linux环境中运行shell脚本带来了很多问题</p>
 
       
     </div>
@@ -484,8 +479,17 @@ output_config_file:
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -556,6 +560,22 @@ output_config_file:
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#补充一：-echo是关闭命令在屏幕上回显的意思"><span class="nav-number">1.</span> <span class="nav-text">补充一：@echo是关闭命令在屏幕上回显的意思</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充二：echo-命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的"><span class="nav-number">2.</span> <span class="nav-text">补充二：echo 命令基本的功能是输出，通过选项和参数组合，是能够产生很多功能的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充三-附上dash和bash的简单介绍"><span class="nav-number">3.</span> <span class="nav-text">补充三 附上dash和bash的简单介绍</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

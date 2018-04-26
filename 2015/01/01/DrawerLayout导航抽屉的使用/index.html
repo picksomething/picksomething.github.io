@@ -81,20 +81,20 @@
 
 
 
-<meta name="description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用. 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知">
+<meta name="description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知道">
 <meta name="keywords" content="Android,ActionBar,DrawerLayout,Fragment">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DrawerLayout导航抽屉的使用">
 <meta property="og:url" content="http://picksomething.cn/2015/01/01/DrawerLayout导航抽屉的使用/index.html">
 <meta property="og:site_name" content="一路追梦想">
-<meta property="og:description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用. 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知">
+<meta property="og:description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知道">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.425Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/demo.png">
+<meta property="og:updated_time" content="2018-04-26T01:55:39.550Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DrawerLayout导航抽屉的使用">
-<meta name="twitter:description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用. 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png">
+<meta name="twitter:description" content="现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合ActionBarShelock(Github地址,官网地址)使用的SlidingMenu(Github地址),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用 今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图： 根据Google官方文档可以知道">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/demo.png">
 
 
 
@@ -221,6 +221,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -356,208 +366,29 @@
       
 
       
-        <p>现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合<code>ActionBarShelock</code>(<a href="https://github.com/JakeWharton/ActionBarSherlock" target="_blank" rel="noopener">Github地址</a>,<a href="http://actionbarsherlock.com/" target="_blank" rel="noopener">官网地址</a>)使用的<code>SlidingMenu</code>(<a href="https://github.com/jfeinstein10/SlidingMenu" target="_blank" rel="noopener">Github地址</a>),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用.</p>
-<p>今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图：<br><a href="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2015/01/demo.png" alt=""></a></p>
-<p>根据Google官方文档可以知道，使用DrawerLayout控件一般需要5大步：</p>
-<ol>
-<li><p>创建一个DrawerLayout布局<br>这个比较简单，要求DrawerLayout为根布局，第一个子布局代表没有打开抽屉时候的主视图(这个视图的宽度必须为match_parent)，第二个子布局就代表抽屉布局了，一般抽屉中放入的都是一些设置选项，以ListView为常见布局.代码如下：</p>
-<p>&lt;android.support.v4.widget.DrawerLayout</p>
-<pre><code>xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-android:id=&quot;@+id/drawer_layout&quot;
-android:layout_width=&quot;match_parent&quot;
-android:layout_height=&quot;match_parent&quot;&amp;gt;
-&amp;lt;!-- 主视图布局，必须是DrawerLayout的第一个子布局，且宽度要充满父级容器 --&amp;gt;
-</code></pre><a id="more"></a>
-<pre><code>&amp;lt;FrameLayout
-    android:id=&quot;@+id/content_frame&quot;
-    android:layout_width=&quot;match_parent&quot;
-    android:layout_height=&quot;match_parent&quot; /&amp;gt;
-&amp;lt;!-- 抽屉视图布局 --&amp;gt;
-&amp;lt;ListView android:id=&quot;@+id/left_drawer&quot;
-          android:layout_width=&quot;240dp&quot;
-          android:layout_height=&quot;match_parent&quot;
-          android:layout_gravity=&quot;start&quot;
-          android:choiceMode=&quot;singleChoice&quot;
-          android:divider=&quot;@android:color/transparent&quot;
-          android:dividerHeight=&quot;0dp&quot;
-          android:background=&quot;#c2e&quot;/&amp;gt;
-</code></pre><p>&lt;/android.support.v4.widget.DrawerLayout&gt;<br>`<br>需要特别说明的是抽屉视图中的layout_gravity属性代表抽屉的打开方向，start代表从左边打开，end代表从右边打开，当然如果你的sdk api小于17的话，可以使用left和right可以达到同样的效果.</p>
-</li>
-<li><p>初始化抽屉布局列表<br>抽屉列表的布局和内容取决于你自己实现的App的需求，但是一般都是以ListView配合Adapter来实现，这里我们用一个String数组来填充抽屉列表，部分代码如下：<br><pre>`public class MainActivity extends Activity {</pre></p>
-<pre><code>private String[] mPlanetTitles;
-private DrawerLayout mDrawerLayout;
-private ListView mDrawerList;
-
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    findViews();
-    setListener();
-}
-
-private void setListener() {
-    mDrawerList.setAdapter(new ArrayAdapter&amp;lt;&amp;gt;(this, R.layout.drawer_list_item, mPlanetTitles));
-    mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-}
-
-private void findViews() {
-    mPlanetTitles = getResources().getStringArray(R.array.planets_array);
-    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-    mDrawerList = (ListView) findViewById(R.id.left_drawer);
-}
-</code></pre><p>}<br>`<br>这一步很简单，就是一些初始化抽屉列表，填充数据，设置一下点击事件。</p>
-</li>
-<li><p>处理抽屉栏里面不同选项的点击事件<br>我们知道，打开抽屉之后点击不同的选项要执行什么动作是取决于自己如何实现的，我这里是点击不同的选项就插入一个不同的fragment到主视图中，根据点击的不同行星名字我们在不同的fragment中显示对应行星的一张图片。</p>
-<p>首先看一下点击事件的实现代码：<br><pre>`    private class DrawerItemClickListener implements ListView.OnItemClickListener {</pre></p>
-<pre><code>    @Override
-    public void onItemClick(AdapterView&amp;lt;?&amp;gt; parent, View view, int position, long id) {
-        selectItem(position);
-    }
-}
-
-private void selectItem(int position) {
-    Fragment fragment = new PlanetFragment();
-    Bundle args = new Bundle();
-    args.putInt(PlanetFragment.ARG_PLANET_NUMBER,position);
-    fragment.setArguments(args);
-
-    // 通过替换已经存在的fragment来插入新的fragment
-    FragmentManager fragmentManager = getFragmentManager();
-    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
-
-    // 高亮选中的item, 更新Title, 关闭抽屉视图
-    mDrawerList.setItemChecked(position,true);
-    setTitle(mPlanetTitles[position]);
-    mDrawerLayout.closeDrawer(mDrawerList);
-}
-</code></pre><p>…<br><code>&lt;/pre&gt;
-然后就是自定义的PlanetFragment的代码：
-&lt;pre&gt;</code>public class PlanetFragment extends Fragment {</p>
-<pre><code>public static final String ARG_PLANET_NUMBER = &quot;planet_number&quot;;
-
-public PlanetFragment() {
-}
-
-@Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_planet, container, false);
-    int i = getArguments().getInt(ARG_PLANET_NUMBER);
-    String planet = getResources().getStringArray(R.array.planets_array)[i];
-    int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()), &quot;drawable&quot;, getActivity().getPackageName());
-    ((ImageView)view.findViewById(R.id.image)).setImageResource(imageId);
-    getActivity().setTitle(planet);
-    return view;
-}
-</code></pre><p>}<br>`<br>Fragment主要就是根据传递进来的不同的position来确定对应的行星的名字，然后通过名字来确定对应的imageId，从而在Fragment中展示出对应行星的图片。</p>
-</li>
-<li><p>监听抽屉视图的打开和关闭事件<br>为了监听抽屉的打开和关闭事件，我们可以调用<code>DrawerLayout</code>的setDrawerListener()传一个<code>DrawerLayout.DrawerListener</code>接口的实例对象进去，该接口提供回调事件像onDrawerOpened()和onDrawerClosed().<br>然后，与其实现<code>DrawerListener</code>接口，我们可以使用继承<code>ActionBarDrawerToggle</code>类的实例对象来代替，<code>ActionBarDrawerToggle</code>也实现了<code>Drawer.DrawerListener</code>，所以任然可以重写那些DrawerListener接口的回调方法，而且该类也有利于操作栏图标和导航抽屉之间的一些适当的相互作用行为，我们看一下代码：<br><pre>`    private class CustomActionBarDrawerToggle extends ActionBarDrawerToggle{</pre></p>
-<pre><code>    public CustomActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
-        super(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);
-    }
-
-    @Override
-    public void onDrawerOpened(View drawerView) {
-        super.onDrawerOpened(drawerView);
-        getActionBar().setTitle(mDrawerTitle);
-        //刷新菜单，调用onPrepareOptionsMenu()
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-        super.onDrawerClosed(drawerView);
-        getActionBar().setTitle(mTitle);
-        invalidateOptionsMenu();
-    }
-}
-
-@Override
-public boolean onPrepareOptionsMenu(Menu menu) {
-    boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-    return super.onPrepareOptionsMenu(menu);
-}
-</code></pre><p>…<br><code>&lt;/pre&gt;
-然后设置监听
-&lt;pre&gt;</code>mDrawerToggle = new CustomActionBarDrawerToggle(</p>
-<pre><code>this,
-mDrawerLayout,
-R.string.drawer_open,
-R.string.drawer_close
-</code></pre><p>);<br>mDrawerLayout.setDrawerListener(mDrawerToggle);<br><code>&lt;/pre&gt;
-这里需要说明的是如果使用support.v4包中的ActionBarDrawerToggle(已经不建议使用了),构造方法是这样的
-&lt;pre&gt;</code>new ActionBarDrawerToggle(</p>
-<pre><code>this,                  /* host Activity */
-mDrawerLayout,         /* DrawerLayout object */
-R.drawable.ic_drawer,  /* nav drawer image to replace &apos;Up&apos; caret */
-R.string.drawer_open,  /* &quot;open drawer&quot; description for accessibility */
-R.string.drawer_close  /* &quot;close drawer&quot; description for accessibility */
-</code></pre><p>)<br><code>&lt;/pre&gt;
-需要传递一个R.drawable.ic_drawer导航抽屉图标来替换&quot;上&quot;符号
-但是因为support.v4中的这个类已经不推荐使用了
-&lt;pre&gt;</code>This class is deprecated.<br>Please use ActionBarDrawerToggle in support-v7-appcompat.<br><code>&lt;/pre&gt;
-推荐使用support.v7中的这个类，v7中该类有两个构造方法，如下所示：
-&lt;pre&gt;</code>//Construct a new ActionBarDrawerToggle.<br>ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, int openDrawerContentDescRes, int closeDrawerContentDescRes)</p>
-<p>//Construct a new ActionBarDrawerToggle with a Toolbar.<br>ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes)<br>`<br>使用第一个就可以了，v7类中已经实现好很酷的抽屉按钮和动画.</p>
-</li>
-<li><p>通过app icon打开和关闭抽屉视图<br><pre><code>//使ActionBar上的应用图标可以随着切换导航抽屉而改变    
-getActionBar().setDisplayHomeAsUpEnabled(true);
-getActionBar().setHomeButtonEnabled(true);</code></pre><br>然后重写下面这些方法<br><pre>`    @Override</pre></p>
-<pre><code>protected void onPostCreate(Bundle savedInstanceState) {
-    super.onPostCreate(savedInstanceState);
-    mDrawerToggle.syncState();
-}
-
-@Override
-public void onConfigurationChanged(Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    mDrawerToggle.onConfigurationChanged(newConfig);
-}
-
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.menu_main,menu);
-    return super.onCreateOptionsMenu(menu);
-}
-
-@Override
-public boolean onPrepareOptionsMenu(Menu menu) {
-    boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-    return super.onPrepareOptionsMenu(menu);
-}
-
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
-    // The action bar home/up action should open or close the drawer.
-    // ActionBarDrawerToggle will take care of this.
-    if (mDrawerToggle.onOptionsItemSelected(item)) {
-        return true;
-    }
-    // Handle action buttons
-    switch(item.getItemId()) {
-        case R.id.action_websearch:
-            // create intent to perform web search for this planet
-            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-            // catch event that there&apos;s no activity to handle intent
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-            }
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-    }
-}
-</code></pre><p>…<br>`<br>就这样就好了，其实还是挺简单的，但是到具体的app中根据需求怎么灵活运用就是另一回事了.</p>
-<p><strong>补充：有些时候你可能会发现执行下面这两行代码会报空指针</strong><br><pre><code>getActionBar().setDisplayHomeAsUpEnabled(true);
-getActionBar().setHomeButtonEnabled(true);</code></pre><br>这个和配置中android:theme有关系，改成下面这样类似的就可以了<br><pre>`android:theme=”@android:style/Theme.Holo.Light.DarkActionBar”</pre></p>
-</li>
-</ol>
+        <p>现在很多移动APP都支持那种左划或者右划调出抽屉选项的操作，目前第三方库比较知名的是配合<code>ActionBarShelock</code>(<a href="https://github.com/JakeWharton/ActionBarSherlock" target="_blank" rel="noopener">Github地址</a>,<a href="http://actionbarsherlock.com/" target="_blank" rel="noopener">官网地址</a>)使用的<code>SlidingMenu</code>(<a href="https://github.com/jfeinstein10/SlidingMenu" target="_blank" rel="noopener">Github地址</a>),这个开源库很强大,也有很多APP都在使用,经过测试和验证过的，大家都可以放心使用</p>
+<p>今天要说的是google官方出的DrawerLayout控件的使用，先看两张效果图：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2015/01/demo.png"></p>
+<p>根据Google官方文档可以知道，使用DrawerLayout控件一般需要下面这些步骤：</p>
+<h2 id="创建一个DrawerLayout布局"><a href="#创建一个DrawerLayout布局" class="headerlink" title="创建一个DrawerLayout布局"></a>创建一个DrawerLayout布局</h2><p>这个比较简单，要求DrawerLayout为根布局，第一个子布局代表没有打开抽屉时候的主视图(这个视图的宽度必须为match_parent)，第二个子布局就代表抽屉布局了，一般抽屉中放入的都是一些设置选项，以ListView为常见布局.代码如下：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 主视图布局，必须是DrawerLayout的第一个子布局，且宽度要充满父级容器 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">FrameLayout</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/content_frame"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> /&amp;<span class="attr">gt</span>;</span></span><br><span class="line">        &lt;!-- 抽屉视图布局 --&gt;</span><br><span class="line">        <span class="tag">&lt;<span class="name">ListView</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:id</span>=<span class="string">"@+id/left_drawer"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_width</span>=<span class="string">"240dp"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:choiceMode</span>=<span class="string">"singleChoice"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:divider</span>=<span class="string">"@android:color/transparent"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:dividerHeight</span>=<span class="string">"0dp"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">android:background</span>=<span class="string">"#c2e"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>需要特别说明的是抽屉视图中的layout_gravity属性代表抽屉的打开方向，start代表从左边打开，end代表从右边打开，当然如果你的sdk api小于17的话，可以使用left和right可以达到同样的效果</p>
+<h2 id="初始化抽屉布局列表"><a href="#初始化抽屉布局列表" class="headerlink" title="初始化抽屉布局列表"></a>初始化抽屉布局列表</h2><p>抽屉列表的布局和内容取决于你自己实现的App的需求，但是一般都是以ListView配合Adapter来实现，这里我们用一个String数组来填充抽屉列表，部分代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String[] mPlanetTitles;</span><br><span class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</span><br><span class="line">    <span class="keyword">private</span> ListView mDrawerList;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        findViews();</span><br><span class="line">        setListener();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setListener</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mDrawerList.setAdapter(<span class="keyword">new</span> ArrayAdapter&amp;lt;&amp;gt;(<span class="keyword">this</span>, R.layout.drawer_list_item, mPlanetTitles));</span><br><span class="line">        mDrawerList.setOnItemClickListener(<span class="keyword">new</span> DrawerItemClickListener());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">findViews</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mPlanetTitles = getResources().getStringArray(R.array.planets_array);</span><br><span class="line">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);</span><br><span class="line">        mDrawerList = (ListView) findViewById(R.id.left_drawer);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这一步很简单，就是一些初始化抽屉列表，填充数据，设置一下点击事件<br><a id="more"></a></p>
+<h2 id="处理抽屉栏里面不同选项的点击事件"><a href="#处理抽屉栏里面不同选项的点击事件" class="headerlink" title="处理抽屉栏里面不同选项的点击事件"></a>处理抽屉栏里面不同选项的点击事件</h2><p>我们知道，打开抽屉之后点击不同的选项要执行什么动作是取决于自己如何实现的，我这里是点击不同的选项就插入一个不同的fragment到主视图中，根据点击的不同行星名字我们在不同的fragment中显示对应行星的一张图片，首先看一下点击事件的实现代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">DrawerItemClickListener</span> <span class="keyword">implements</span> <span class="title">ListView</span>.<span class="title">OnItemClickListener</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onItemClick</span><span class="params">(AdapterView&amp;lt;?&amp;gt; parent, View view, <span class="keyword">int</span> position, <span class="keyword">long</span> id)</span> </span>&#123;</span><br><span class="line">        selectItem(position);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">selectItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">    Fragment fragment = <span class="keyword">new</span> PlanetFragment();</span><br><span class="line">    Bundle args = <span class="keyword">new</span> Bundle();</span><br><span class="line">    args.putInt(PlanetFragment.ARG_PLANET_NUMBER,position);</span><br><span class="line">    fragment.setArguments(args);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过替换已经存在的fragment来插入新的fragment</span></span><br><span class="line">    FragmentManager fragmentManager = getFragmentManager();</span><br><span class="line">    fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 高亮选中的item, 更新Title, 关闭抽屉视图</span></span><br><span class="line">    mDrawerList.setItemChecked(position,<span class="keyword">true</span>);</span><br><span class="line">    setTitle(mPlanetTitles[position]);</span><br><span class="line">    mDrawerLayout.closeDrawer(mDrawerList);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>然后就是自定义的PlanetFragment的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PlanetFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ARG_PLANET_NUMBER = <span class="string">"planet_number"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PlanetFragment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        View view = inflater.inflate(R.layout.fragment_planet, container, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">int</span> i = getArguments().getInt(ARG_PLANET_NUMBER);</span><br><span class="line">        String planet = getResources().getStringArray(R.array.planets_array)[i];</span><br><span class="line">        <span class="keyword">int</span> imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()), <span class="string">"drawable"</span>, getActivity().getPackageName());</span><br><span class="line">        ((ImageView)view.findViewById(R.id.image)).setImageResource(imageId);</span><br><span class="line">        getActivity().setTitle(planet);</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Fragment主要就是根据传递进来的不同的position来确定对应的行星的名字，然后通过名字来确定对应的imageId，从而在Fragment中展示出对应行星的图片。</p>
+<h2 id="监听抽屉视图的打开和关闭事件"><a href="#监听抽屉视图的打开和关闭事件" class="headerlink" title="监听抽屉视图的打开和关闭事件"></a>监听抽屉视图的打开和关闭事件</h2><p>为了监听抽屉的打开和关闭事件，我们可以调用<code>DrawerLayout</code>的setDrawerListener()传一个<code>DrawerLayout.DrawerListener</code>接口的实例对象进去，该接口提供回调事件像onDrawerOpened()和onDrawerClosed()</p>
+<p>然后，与其实现<code>DrawerListener</code>接口，我们可以使用继承<code>ActionBarDrawerToggle</code>类的实例对象来代替，<code>ActionBarDrawerToggle</code>也实现了<code>Drawer.DrawerListener</code>，所以任然可以重写那些DrawerListener接口的回调方法，而且该类也有利于操作栏图标和导航抽屉之间的一些适当的相互作用行为，我们看下面代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomActionBarDrawerToggle</span> <span class="keyword">extends</span> <span class="title">ActionBarDrawerToggle</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomActionBarDrawerToggle</span><span class="params">(Activity activity, DrawerLayout drawerLayout, <span class="keyword">int</span> openDrawerContentDescRes, <span class="keyword">int</span> closeDrawerContentDescRes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(activity, drawerLayout, openDrawerContentDescRes, closeDrawerContentDescRes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawerOpened</span><span class="params">(View drawerView)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDrawerOpened(drawerView);</span><br><span class="line">        getActionBar().setTitle(mDrawerTitle);</span><br><span class="line">        <span class="comment">//刷新菜单，调用onPrepareOptionsMenu()</span></span><br><span class="line">        invalidateOptionsMenu();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDrawerClosed</span><span class="params">(View drawerView)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDrawerClosed(drawerView);</span><br><span class="line">        getActionBar().setTitle(mTitle);</span><br><span class="line">        invalidateOptionsMenu();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onPrepareOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);</span><br><span class="line">    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onPrepareOptionsMenu(menu);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>然后设置监听<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mDrawerToggle = <span class="keyword">new</span> CustomActionBarDrawerToggle(</span><br><span class="line">    <span class="keyword">this</span>,</span><br><span class="line">    mDrawerLayout,</span><br><span class="line">    R.string.drawer_open,</span><br><span class="line">    R.string.drawer_close</span><br><span class="line">);</span><br><span class="line">mDrawerLayout.setDrawerListener(mDrawerToggle);</span><br></pre></td></tr></table></figure></p>
+<p>这里需要说明的是如果使用support.v4包中的ActionBarDrawerToggle(已经不建议使用了),构造方法是这样的：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> ActionBarDrawerToggle(</span><br><span class="line">    <span class="keyword">this</span>,                  <span class="comment">/* host Activity */</span></span><br><span class="line">    mDrawerLayout,         <span class="comment">/* DrawerLayout object */</span></span><br><span class="line">    R.drawable.ic_drawer,  <span class="comment">/* nav drawer image to replace 'Up' caret */</span></span><br><span class="line">    R.string.drawer_open,  <span class="comment">/* "open drawer" description for accessibility */</span></span><br><span class="line">    R.string.drawer_close  <span class="comment">/* "close drawer" description for accessibility */</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>需要传递一个R.drawable.ic_drawer导航抽屉图标来替换”上”符号，但是因为support.v4中的这个类已经不推荐使用了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">This <span class="class"><span class="keyword">class</span> <span class="title">is</span> <span class="title">deprecated</span>.</span></span><br><span class="line"><span class="class"><span class="title">Please</span> <span class="title">use</span> <span class="title">ActionBarDrawerToggle</span> <span class="title">in</span> <span class="title">support</span>-<span class="title">v7</span>-<span class="title">appcompat</span>.</span></span><br></pre></td></tr></table></figure></p>
+<p>推荐使用support.v7中的这个类，v7中该类有两个构造方法，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Construct a new ActionBarDrawerToggle.</span></span><br><span class="line">ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, <span class="keyword">int</span> openDrawerContentDescRes, <span class="keyword">int</span> closeDrawerContentDescRes)</span><br><span class="line"></span><br><span class="line"><span class="comment">//Construct a new ActionBarDrawerToggle with a Toolbar.</span></span><br><span class="line">ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, <span class="keyword">int</span> openDrawerContentDescRes, <span class="keyword">int</span> closeDrawerContentDescRes)</span><br></pre></td></tr></table></figure>
+<p>使用第一个就可以了，v7类中已经实现好很酷的抽屉按钮和动画.</p>
+<h2 id="通过app-icon打开和关闭抽屉视图"><a href="#通过app-icon打开和关闭抽屉视图" class="headerlink" title="通过app icon打开和关闭抽屉视图"></a>通过app icon打开和关闭抽屉视图</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使ActionBar上的应用图标可以随着切换导航抽屉而改变    </span></span><br><span class="line">getActionBar().setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</span><br><span class="line">getActionBar().setHomeButtonEnabled(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+<p>然后重写下面这些方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onPostCreate(savedInstanceState);</span><br><span class="line">    mDrawerToggle.syncState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onConfigurationChanged</span><span class="params">(Configuration newConfig)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onConfigurationChanged(newConfig);</span><br><span class="line">    mDrawerToggle.onConfigurationChanged(newConfig);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">    MenuInflater inflater = getMenuInflater();</span><br><span class="line">    inflater.inflate(R.menu.menu_main,menu);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onCreateOptionsMenu(menu);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onPrepareOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);</span><br><span class="line">    menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">super</span>.onPrepareOptionsMenu(menu);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// The action bar home/up action should open or close the drawer.</span></span><br><span class="line">    <span class="comment">// ActionBarDrawerToggle will take care of this.</span></span><br><span class="line">    <span class="keyword">if</span> (mDrawerToggle.onOptionsItemSelected(item)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Handle action buttons</span></span><br><span class="line">    <span class="keyword">switch</span>(item.getItemId()) &#123;</span><br><span class="line">        <span class="keyword">case</span> R.id.action_websearch:</span><br><span class="line">            <span class="comment">// create intent to perform web search for this planet</span></span><br><span class="line">            Intent intent = <span class="keyword">new</span> Intent(Intent.ACTION_WEB_SEARCH);</span><br><span class="line">            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());</span><br><span class="line">            <span class="comment">// catch event that there's no activity to handle intent</span></span><br><span class="line">            <span class="keyword">if</span> (intent.resolveActivity(getPackageManager()) != <span class="keyword">null</span>) &#123;</span><br><span class="line">                startActivity(intent);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Toast.makeText(<span class="keyword">this</span>, R.string.app_not_available, Toast.LENGTH_LONG).show();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">super</span>.onOptionsItemSelected(item);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>就这样就好了，其实还是挺简单的，但是到具体的app中根据需求怎么灵活运用就是另一回事了.</p>
+<p><strong> 补充：有些时候你可能会发现执行下面这两行代码会报空指针 </strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">getActionBar().setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</span><br><span class="line">getActionBar().setHomeButtonEnabled(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure></p>
+<p>这个和配置中android:theme有关系，改成下面这样类似的就可以了<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android:theme="@android:style/Theme.Holo.Light.DarkActionBar"</span><br></pre></td></tr></table></figure></p>
 <p>完整代码Github地址：<a href="https://github.com/picksomething/DrawerLayout" target="_blank" rel="noopener">点击这里</a></p>
 
       
@@ -659,8 +490,17 @@ getActionBar().setHomeButtonEnabled(true);</code></pre><br>这个和配置中and
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -731,6 +571,22 @@ getActionBar().setHomeButtonEnabled(true);</code></pre><br>这个和配置中and
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个DrawerLayout布局"><span class="nav-number">1.</span> <span class="nav-text">创建一个DrawerLayout布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化抽屉布局列表"><span class="nav-number">2.</span> <span class="nav-text">初始化抽屉布局列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理抽屉栏里面不同选项的点击事件"><span class="nav-number">3.</span> <span class="nav-text">处理抽屉栏里面不同选项的点击事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听抽屉视图的打开和关闭事件"><span class="nav-number">4.</span> <span class="nav-text">监听抽屉视图的打开和关闭事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过app-icon打开和关闭抽屉视图"><span class="nav-number">5.</span> <span class="nav-text">通过app icon打开和关闭抽屉视图</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

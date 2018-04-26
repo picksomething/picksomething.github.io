@@ -89,13 +89,14 @@
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="之前做平台项目的时候，关于待机这一块真的是出现了很多问题，因为我们开发智能电视的待机流程和Android原生待机又有一些不同，我们在Android原生的基础上增加了一些我们自己的东西，比如待机前会给出警示等。自己没事的时候也研究过Android原生的待机和我们自己的待机流程，最近又有负责SRT待机这一块的一个同事做过一次技术分享，然后就趁五一放假有时间好好整理一下。 PS：以下分析都是基于Andr">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/1-134x300.png">
-<meta property="og:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/3-300x181.png">
-<meta property="og:updated_time" content="2018-04-24T07:46:37.424Z">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/1.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/2.png">
+<meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/3.png">
+<meta property="og:updated_time" content="2018-04-26T02:27:43.421Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android原生待机流程frameworks层分析">
 <meta name="twitter:description" content="之前做平台项目的时候，关于待机这一块真的是出现了很多问题，因为我们开发智能电视的待机流程和Android原生待机又有一些不同，我们在Android原生的基础上增加了一些我们自己的东西，比如待机前会给出警示等。自己没事的时候也研究过Android原生的待机和我们自己的待机流程，最近又有负责SRT待机这一块的一个同事做过一次技术分享，然后就趁五一放假有时间好好整理一下。 PS：以下分析都是基于Andr">
-<meta name="twitter:image" content="http://www.picksomething.cn/wp-content/uploads/2014/12/1-134x300.png">
+<meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/1.png">
 
 
 
@@ -222,6 +223,16 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -359,143 +370,22 @@
       
         <p>之前做平台项目的时候，关于待机这一块真的是出现了很多问题，因为我们开发智能电视的待机流程和Android原生待机又有一些不同，我们在Android原生的基础上增加了一些我们自己的东西，比如待机前会给出警示等。自己没事的时候也研究过Android原生的待机和我们自己的待机流程，最近又有负责SRT待机这一块的一个同事做过一次技术分享，然后就趁五一放假有时间好好整理一下。</p>
 <p>PS：以下分析都是基于Android4.3的</p>
-<p>一、Android原生待机流程</p>
-<p>Android原生待机流程如下图所示：<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/1.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/1-134x300.png" alt="1"></a></p>
-<p>用户在长按Android的电源键的时候会在Android的frameworks层被捕获，具体文件路径是</p>
-<pre><code>frameworks\base\policy\src\com\android\internal\policy\impl`&lt;/pre&gt;
-中的`PhoneWindowManager.java`进行处理。
-&lt;!--more--&gt;
-当按下待机键时会在`PhoneWindowManager`中的`interceptKeyBeforeQueueing`方法中将PowerKey拦下，然后进行判断是一次动作还是长按，是长按的话就会触发mPowerLongPress这个线程，我们来看一下这个线程的代码：
-&lt;pre&gt;`private final Runnable mPowerLongPress = new Runnable() {
-    @Override
-    public void run() {
-        // The context isn&apos;t read
-        if (mLongPressOnPowerBehavior &amp;lt; 0) {
-            mLongPressOnPowerBehavior = mContext.getResources().getInteger(
-               com.android.internal.R.integer.config_longPressOnPowerBehavior);
-        }
-        int resolvedBehavior = mLongPressOnPowerBehavior;
-        if (FactoryTest.isLongPressOnPowerOffEnabled()) {
-            resolvedBehavior = LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM;
-        }
-
-        switch (resolvedBehavior) {
-            case LONG_PRESS_POWER_NOTHING:
-                break;
-            case LONG_PRESS_POWER_GLOBAL_ACTIONS:
-                mPowerKeyHandled = true; 
-                if(!performHapticFeedbackLw(null,HapticFeedbackConstants.LONG_PRESS,
-                false)) {
-                    performAuditoryFeedbackForAccessibilityIfNeed();
-                }
-                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);
-                showGlobalActionsDialog();
-                break;
-            case LONG_PRESS_POWER_SHUT_OFF:
-            case LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM:
-                mPowerKeyHandled = true;
-                performHapticFeedbackLw(null, HapticFeedbackConstants.LONG_PRESS, false);
-                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);
-                mWindowManagerFuncs.shutdown(resolvedBehavior == LONG_PRESS_POWER_SHUT_OFF);
-                break;
-        }
-    }
-};
-`&lt;/pre&gt;
-1.从开头这句`int mLongPressOnPowerBehavior = -1`;我们可以知道`mLongPressOnPowerBehavior`最开始是被初始化成-1的。所以最开的if条件成立，然后`mLongPressOnPowerBehavior`的值会从`config_longPressOnPowerBehavior`配置中读取，然后赋值给`resolvedBehavior`。
-
-2.判断`FactoryTest`中长按关机是否设置了，如果设置了就将`LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM`复制给`resolvedBehavior`，这种模式下不会弹出提示对话框就直接关机。
-
-3.然后判断`resolvedBehavior`的值，根据其值来决定下一步执行什么动作。正常情况下改值等于`LONG_PRESS_POWER_GLOBAL_ACTIONS=1`，这是正常关机的流程，先设置`mPowerKeyHandled`值为true，告诉系统待机键已经处理了。然后开始发送消息告诉系统可以弹出提示对话框让用户选择下一步操作了。最后`showGlobalActionsDialog()`就会show出对话框。
-
-我们可以简单看一下`showGlobalActionDialog()`的代码：
-&lt;pre&gt;`void showGlobalActionsDialog() {
-    if (mGlobalActions == null) {
-        mGlobalActions = new GlobalActions(mContext, mWindowManagerFuncs);
-    }
-    final boolean keyguardShowing = keyguardIsShowingTq();
-    mGlobalActions.showDialog(keyguardShowing, isDeviceProvisioned());
-    if (keyguardShowing) {
-        // since it took two seconds of long press to bring this up,
-        // poke the wake lock so they have some time to see the dialog.
-        mKeyguardMediator.userActivity();
-    }
-}
-`&lt;/pre&gt;
-首先会实例化一个`GlobalActions`对象`mGlobalActions`，通过查看源代码可以看到`GlobalActions`是实现了接口`DialogInterface.OnDismissListener和DialogInterface.OnClickListener`的一个普通类，里面定义的是关于对话框的一些方法和属性。然后`showDialog()`,最后根据`keyguardShowing`的值，该值代表是否在锁屏状态，决定是否要调用`userActivity()`,该方法是保持屏幕常亮。
-
-接下来看一下showDialog这个方法的源代码
-&lt;pre&gt;`/**
-  * Show the global actions dialog (creating if necessary)
-  * @param keyguardShowing True if keyguard is showing
-  */
-public void showDialog(boolean keyguardShowing, boolean isDeviceProvisioned) {
-    mKeyguardShowing = keyguardShowing;
-    mDeviceProvisioned = isDeviceProvisioned;
-    if (mDialog != null) {
-        mDialog.dismiss();
-        mDialog = null;
-        // Show delayed, so that the dismiss of the previous dialog completes
-        mHandler.sendEmptyMessage(MESSAGE_SHOW);
-    } else {
-        handleShow();
-    }
-}
-`&lt;/pre&gt;
-注释已经写的很清楚了，如果该对话框存在就直接show出来，否则调用`handleShow()`,我们可以再看一下`handleShow()`的源代码
-&lt;pre&gt;`private void handleShow() {
-    awakenIfNecessary();
-    mDialog = createDialog();
-    prepareDialog();
-
-    WindowManager.LayoutParams attrs = mDialog.getWindow().getAttributes();
-    attrs.setTitle(&quot;GlobalActions&quot;);
-    mDialog.getWindow().setAttributes(attrs);
-    mDialog.show();
-    mDialog.getWindow().getDecorView().
-      setSystemUiVisibility(View.STATUS_BAR_DISABLE_EXPAND);
-}
-`&lt;/pre&gt;
-看到这一句`mDialog=createDialog()`,我们就应该知道是创建对话框了，`createDialog()`方法主要就是创建提示对话框，将提示框上需要显示的选项显示出来，因为该方法太长，就不贴出来了，有兴趣的可以看源码，路径是
-&lt;pre&gt;`frameworks\base\policy\src\com\android\internal\policy\impl\GlobalActions.java
-`&lt;/pre&gt;
-我们可以看一下关键代码
-&lt;pre&gt;`// first: power off
-mItems.add(new SinglePressAction(
-    com.android.internal.R.drawable.ic_lock_power_off,
-      R.string.global_action_power_off) {
-    public void onPress() {
-        // shutdown by making sure radio and power are handled accordingly.
-        mWindowManagerFuncs.shutdown(true);
-    }
-
-    public boolean onLongPress() {
-        mWindowManagerFuncs.rebootSafeMode(true);
-        return true;
-    }
-
-    public boolean showDuringKeyguard() {
-        return true;
-    }
-
-    public boolean showBeforeProvisioning() {
-        return true;
-    }
-});
-`&lt;/pre&gt;
-从这段代码中可以看出，提示框上会添加Power off试图，点击的话就会调用`shutdown`，顺着分析下去，会在
-&lt;pre&gt;`/frameworks/base/core/java/android/view/WindowManagerPolicy.java
-`&lt;/pre&gt;
-中找到`public void shutdown(boolean confirm)`,但是只有声明，实现并不在这里，grep搜索一下会发现实现是在
-&lt;pre&gt;`/frameworks/base/services/java/com/android/server/wm/WindowManagerService.java
-`&lt;/pre&gt;
-中实现的。
-[![2](http://www.picksomething.cn/wp-content/uploads/2014/12/2-300x19.png)](http://www.picksomething.cn/wp-content/uploads/2014/12/2.png)
-
-在这里就会调用关机线程，关机线程在
-&lt;pre&gt;`\frameworks\base\services\java\com\android\server\power\ShutdownThread.java
-</code></pre><p>中，线程中会调用<code>PowerManagerService.lowLevelShutdown()</code>;再下来就是JNI调用C++层了。<br>整个流程图如下所示：<br><a href="http://www.picksomething.cn/wp-content/uploads/2014/12/3.png" target="_blank" rel="noopener"><img src="http://www.picksomething.cn/wp-content/uploads/2014/12/3-300x181.png" alt="3"></a></p>
-<p>上层的分析就到这里了，这是Android原生的待机流程，下一篇我写一下我们智能电视的SRT待机流程。</p>
+<h2 id="Android原生待机流程"><a href="#Android原生待机流程" class="headerlink" title="Android原生待机流程"></a>Android原生待机流程</h2><p>Android原生待机流程如下图所示：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/1.png"><br>用户在长按Android的电源键的时候会在Android的frameworks层被捕获，具体文件路径是<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks\base\policy\src\com\android\internal\policy\impl</span><br></pre></td></tr></table></figure></p>
+<p>中的<code>PhoneWindowManager.java</code>进行处理，当按下待机键时会在<code>PhoneWindowManager</code>中的<code>interceptKeyBeforeQueueing</code>方法中将PowerKey拦下，然后进行判断是一次动作还是长按，是长按的话就会触发mPowerLongPress这个线程，我们来看一下这个线程的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Runnable mPowerLongPress = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// The context isn't read</span></span><br><span class="line">        <span class="keyword">if</span> (mLongPressOnPowerBehavior &amp;lt; <span class="number">0</span>) &#123;</span><br><span class="line">            mLongPressOnPowerBehavior = mContext.getResources().getInteger(</span><br><span class="line">               com.android.internal.R.integer.config_longPressOnPowerBehavior);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> resolvedBehavior = mLongPressOnPowerBehavior;</span><br><span class="line">        <span class="keyword">if</span> (FactoryTest.isLongPressOnPowerOffEnabled()) &#123;</span><br><span class="line">            resolvedBehavior = LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (resolvedBehavior) &#123;</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_NOTHING:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_GLOBAL_ACTIONS:</span><br><span class="line">                mPowerKeyHandled = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">if</span>(!performHapticFeedbackLw(<span class="keyword">null</span>,HapticFeedbackConstants.LONG_PRESS,<span class="keyword">false</span>)) &#123;</span><br><span class="line">                    performAuditoryFeedbackForAccessibilityIfNeed();</span><br><span class="line">                &#125;</span><br><span class="line">                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);</span><br><span class="line">                showGlobalActionsDialog();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_SHUT_OFF:</span><br><span class="line">            <span class="keyword">case</span> LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM:</span><br><span class="line">                mPowerKeyHandled = <span class="keyword">true</span>;</span><br><span class="line">                performHapticFeedbackLw(<span class="keyword">null</span>, HapticFeedbackConstants.LONG_PRESS, <span class="keyword">false</span>);</span><br><span class="line">                sendCloseSystemWindows(SYSTEM_DIALOG_REASON_GLOBAL_ACTIONS);                    mWindowManagerFuncs.shutdown(resolvedBehavior == LONG_PRESS_POWER_SHUT_OFF);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>从开头这句<code>int mLongPressOnPowerBehavior = -1</code>;我们可以知道<code>mLongPressOnPowerBehavior</code>最开始是被初始化成-1的。所以最开的if条件成立，然后<code>mLongPressOnPowerBehavior</code>的值会从<code>config_longPressOnPowerBehavior</code>配置中读取，然后赋值给<code>resolvedBehavior</code></p>
+<p>判断<code>FactoryTest</code>中长按关机是否设置了，如果设置了就将<code>LONG_PRESS_POWER_SHUT_OFF_NO_CONFIRM</code>复制给<code>resolvedBehavior</code>，这种模式下不会弹出提示对话框就直接关机。</p>
+<p>然后判断<code>resolvedBehavior</code>的值，根据其值来决定下一步执行什么动作。正常情况下改值等于<code>LONG_PRESS_POWER_GLOBAL_ACTIONS=1</code>，这是正常关机的流程，先设置<code>mPowerKeyHandled</code>值为true，告诉系统待机键已经处理了。然后开始发送消息告诉系统可以弹出提示对话框让用户选择下一步操作了。最后<code>showGlobalActionsDialog()</code>就会show出对话框<br>我们可以简单看一下<code>showGlobalActionDialog()</code>的代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">showGlobalActionsDialog</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mGlobalActions == <span class="keyword">null</span>) &#123;</span><br><span class="line">        mGlobalActions = <span class="keyword">new</span> GlobalActions(mContext, mWindowManagerFuncs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">boolean</span> keyguardShowing = keyguardIsShowingTq();</span><br><span class="line">    mGlobalActions.showDialog(keyguardShowing, isDeviceProvisioned());</span><br><span class="line">    <span class="keyword">if</span> (keyguardShowing) &#123;</span><br><span class="line">        <span class="comment">// since it took two seconds of long press to bring this up,</span></span><br><span class="line">        <span class="comment">// poke the wake lock so they have some time to see the dialog.</span></span><br><span class="line">        mKeyguardMediator.userActivity();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先会实例化一个<code>GlobalActions</code>对象<code>mGlobalActions</code>，通过查看源代码可以看到<code>GlobalActions</code>是实现了接口<code>DialogInterface.OnDismissListener和DialogInterface.OnClickListener</code>的一个普通类，里面定义的是关于对话框的一些方法和属性。然后<code>showDialog()</code>,最后根据<code>keyguardShowing</code>的值，该值代表是否在锁屏状态，决定是否要调用<code>userActivity()</code>,该方法是保持屏幕常亮，接下来看一下showDialog这个方法的源代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * Show the global actions dialog (creating if necessary)</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> keyguardShowing True if keyguard is showing</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showDialog</span><span class="params">(<span class="keyword">boolean</span> keyguardShowing, <span class="keyword">boolean</span> isDeviceProvisioned)</span> </span>&#123;</span><br><span class="line">    mKeyguardShowing = keyguardShowing;</span><br><span class="line">    mDeviceProvisioned = isDeviceProvisioned;</span><br><span class="line">    <span class="keyword">if</span> (mDialog != <span class="keyword">null</span>) &#123;</span><br><span class="line">        mDialog.dismiss();</span><br><span class="line">        mDialog = <span class="keyword">null</span>;</span><br><span class="line">        <span class="comment">// Show delayed, so that the dismiss of the previous dialog completes</span></span><br><span class="line">        mHandler.sendEmptyMessage(MESSAGE_SHOW);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        handleShow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注释已经写的很清楚了，如果该对话框存在就直接show出来，否则调用<code>handleShow()</code>,我们可以再看一下<code>handleShow()</code>的源代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleShow</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    awakenIfNecessary();</span><br><span class="line">    mDialog = createDialog();</span><br><span class="line">    prepareDialog();</span><br><span class="line"></span><br><span class="line">    WindowManager.LayoutParams attrs = mDialog.getWindow().getAttributes();</span><br><span class="line">    attrs.setTitle(<span class="string">"GlobalActions"</span>);</span><br><span class="line">    mDialog.getWindow().setAttributes(attrs);</span><br><span class="line">    mDialog.show();</span><br><span class="line">    mDialog.getWindow().getDecorView().</span><br><span class="line">      setSystemUiVisibility(View.STATUS_BAR_DISABLE_EXPAND);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看到这一句<code>mDialog=createDialog()</code>,我们就应该知道是创建对话框了，<code>createDialog()</code>方法主要就是创建提示对话框，将提示框上需要显示的选项显示出来，因为该方法太长，就不贴出来了，有兴趣的可以看源码，路径是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frameworks\base\policy\src\com\android\internal\policy\impl\GlobalActions.java</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看一下关键代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// first: power off</span></span><br><span class="line">mItems.add(<span class="keyword">new</span> SinglePressAction(</span><br><span class="line">    com.android.internal.R.drawable.ic_lock_power_off,</span><br><span class="line">      R.string.global_action_power_off) &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// shutdown by making sure radio and power are handled accordingly.</span></span><br><span class="line">        mWindowManagerFuncs.shutdown(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onLongPress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mWindowManagerFuncs.rebootSafeMode(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">showDuringKeyguard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">showBeforeProvisioning</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>从这段代码中可以看出，提示框上会添加Power off试图，点击的话就会调用<code>shutdown</code>，顺着分析下去，会在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/frameworks/base/core/java/android/view/WindowManagerPolicy.java</span><br></pre></td></tr></table></figure></p>
+<p>中找到<code>public void shutdown(boolean confirm)</code>，但是只有声明，实现并不在这里，grep搜索一下会发现实现是在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/frameworks/base/services/java/com/android/server/wm/WindowManagerService.java</span><br></pre></td></tr></table></figure></p>
+<p>中实现的<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/2.png"></p>
+<p>在这里就会调用关机线程，关机线程在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\frameworks\base\services\java\com\android\server\power\ShutdownThread.java</span><br></pre></td></tr></table></figure></p>
+<p>中，线程中会调用<code>PowerManagerService.lowLevelShutdown()</code>，再下来就是JNI调用C++层了<br>所以梳理一下，整个流程图如下所示：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2014/12/3.png"></p>
+<p>上层的分析就到这里了，这是Android原生的待机流程，下一篇我写一下我们智能电视的SRT待机流程</p>
 
       
     </div>
@@ -594,8 +484,17 @@ mItems.add(new SinglePressAction(
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -666,6 +565,22 @@ mItems.add(new SinglePressAction(
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Android原生待机流程"><span class="nav-number">1.</span> <span class="nav-text">Android原生待机流程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
