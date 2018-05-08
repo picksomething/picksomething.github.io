@@ -264,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2018/04/26/RN中ScrollView和弹出键盘的冲突/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2018/05/08/Android多渠道批量打包，支持友盟和第三方加固/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -283,7 +283,196 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/04/26/RN中ScrollView和弹出键盘的冲突/" itemprop="url">RN中ScrollView和弹出键盘的冲突</a></h1>
+                <a class="post-title-link" href="/2018/05/08/Android多渠道批量打包，支持友盟和第三方加固/" itemprop="url">Android多渠道批量打包，支持友盟和第三方加固</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-08T08:40:58+08:00">
+                2018-05-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>随着应用上线发布以及不断地迭代，Android平台现在发展到了要打20多个渠道包，打完还要使用第三方加固进行加固，所以每次版本一更新，重新打包加固都成了一个挺耗时的工作，个人也感觉这种重复性的工作挺浪费时间的，所以多渠道打包迫在眉睫。其实早在应用第一版上线的时候，自己就打算把多渠道打包这个功能搞一下，但因为公司现在就我一个移动端开发人员，平时事挺多的，加上一开始渠道包并不算多，所以就一直拖着，现在看到要打这么多渠道包，就想着先放下其他工作，优先把这个搞一下。</p>
+<p>看完这篇文章你可以学到的内容大概有：</p>
+<ul>
+<li>如何查看是v1还是v2签名，以及如何进行v2签名</li>
+<li>在v2签名的情况下，怎么通过不重复打包而批量生成多渠道包</li>
+<li>如何实现友盟或者其他第三方统计的多渠道包</li>
+<li>使用第三方加固怎么实现多渠道打包</li>
+</ul>
+<p>好了，现在开始进入正文：</p>
+<h2 id="以前的技术"><a href="#以前的技术" class="headerlink" title="以前的技术"></a>以前的技术</h2><p>Android多渠道打包之前在开发其他应用的时候就已经搞过，那个时候主要用了三种方式来实现多渠道打包：</p>
+<h3 id="通过gradle-flavor或者简单的重复脚本-已弃用"><a href="#通过gradle-flavor或者简单的重复脚本-已弃用" class="headerlink" title="通过gradle flavor或者简单的重复脚本(已弃用)"></a>通过gradle flavor或者简单的重复脚本(已弃用)</h3><p>这个相对简单，但是也因为没个渠道包都相当于要编译一遍，所以自然也耗费时间</p>
+<h3 id="通过apktool反编译，然后替换渠道号"><a href="#通过apktool反编译，然后替换渠道号" class="headerlink" title="通过apktool反编译，然后替换渠道号"></a>通过apktool反编译，然后替换渠道号</h3><p>首先，我们先打出一个基准渠道包，然后通过apktool命令反编译基准包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar apktool -f d app.apk</span><br></pre></td></tr></table></figure></p>
+<p>接着在<code>AndroidManifest.xml</code>里面找出<code>&lt;meta-data&gt;</code>，根据特征找出你要修改的umeng或者是takingdata字段的渠道号，然后根据规则替换成你想打的渠道号，<br>替换完成之后通过apktool重新打包成apk文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -jar apktool b app/</span><br></pre></td></tr></table></figure></p>
+<p>最后重新签名就ok了，当然这些步骤都是通过脚本执行的，因为只需要打一个包，剩下的都是脚本来做反编译-替换渠道号-重新打包，所以速度比第一种是有质的提升。而且这种方式还可以解决有些特殊需求，比如有的接入的一些第三方的支付宝会把支付渠道放到<code>assets/config.properties</code>里面，这个时候通过修改一下脚本，<code>AndroidManifest.xml</code>和<code>config.properties</code>里面的都替换，能够很好地解决这种特殊情况，这种需求下第三种方法都是不能处理的</p>
+<h3 id="解压apk修改，修改META-INF信息"><a href="#解压apk修改，修改META-INF信息" class="headerlink" title="解压apk修改，修改META-INF信息"></a>解压apk修改，修改META-INF信息</h3><p>再怎么说，上面那种还是需要反编译，重新编译，重新签名等。这相对来说是有点麻烦而且需要一点时间的，而且因为apktool版本的不同，会导致很多时候反编译失败，总之痛点也还是有的。这个时候自然而然就出现了解决这些痛点的第三种多渠道打包方式。因为实践发现：在apk解压之后的<code>META-INF</code>文件夹中，添加一个空白文件是不会破坏apk的签名的(现在的v2签名针对这种情况做出了调整)，所以可以直接在解压之后的<code>META-INF</code>里面来添加一个自定义的渠道文件，然后在代码中动态去获取添加的渠道号<br>因为这种方式不需要反编译-重新编译-重新签名，所以自然而然比第二种方式会快很多，不过这种对于友盟等等第三方统计的工具的话，就需要在代码中动态获取和注册渠道号了，而不能通过<code>AndroidManifest.xml</code>静态注册了</p>
+<h2 id="现在的情况"><a href="#现在的情况" class="headerlink" title="现在的情况"></a>现在的情况</h2><p>随着Android各方面技术的不断发展，Google官方在Android7.0的时候推出了v2签名方案，关于v2签名不做重点讲解，贴两张官方的简介图，感兴趣的可以到官方查看<a href="https://source.android.com/security/apksigning/v2" target="_blank" rel="noopener">v2签名</a></p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/201804/git-merge.png"></p>
+<p><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/201804/git-merge.png"><br>从上图2我们可以看到，新的v2签名方案中<code>META-INF</code>属于保护区了，直接修改这个肯定是逃不过签名检查的，这样一来就直接导致了之前的最快速的方案3失效，当然了如果不想理会这个新签名v2，可以在gradle文件中的signingConfigs配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v2SigningEnabled false</span><br></pre></td></tr></table></figure></p>
+<p>来继续使用旧的签名方式，如果你打算这样的话，那就不用继续看了，前面的3种方法都还是可行的。但是既然Google推出了v2签名，自然除了补安全漏洞外还是有其他优点的，慢慢地肯定都要普及的，这就好比之前Android 6.0推出权限动态申请一样，虽然当时很多应用还是继续用旧的方案，但是现在不一样慢慢都接收了</p>
+<p>所以既然Google推出了v2签名，那我们就针对v2签名如何快速地实现多渠道打包来讲解，其实原理和之前旧的第三种模式是差不多的，我们从上面的图片中可以看到v2签名会验证区块1，3，4，那就只能从区块2下手了，根据Google官方对于v2的解释，v2区块除了签名信息内容外，安装的时候是不校验其他信息的，所以我们可以在2区块<code>APK signing block</code>部分写入渠道信息，而不影响apk包的签名校验算法的，具体原理大家可以参考美团的新一代的<a href="https://tech.meituan.com/android-apk-v2-signature-scheme.html" target="_blank" rel="noopener">打包工具Walle</a>，目前基于v2多渠道打包的原理和方案就美团的这个Walle和mcxiaoke大神的<a href="https://github.com/mcxiaoke/packer-ng-plugin" target="_blank" rel="noopener">packer-ng-plugin</a></p>
+<p>我用到的就是maxiaoke大神的packer-ng-plugin，maxiaoke大神做Android开发的应该都熟悉的吧，前几年Retrofit还没流行的时候，很多人应该都用过maxiaoke大神的镜像版的volley库了吧</p>
+<p>开始介绍packer-ng-plugin的使用和遇到的一些问题：</p>
+<h2 id="packer-ng-plugin"><a href="#packer-ng-plugin" class="headerlink" title="packer-ng-plugin"></a>packer-ng-plugin</h2><p>这个库的引入和基本配置就不用多说了吧，官方文档里面写的很清楚了，配置和基本使用中遇到什么问题多看几遍官方文档基本都能解决了，需要注意的一点就是在gradle中配置签名信息的时候：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">signingConfigs &#123;</span><br><span class="line">    release &#123;</span><br><span class="line">        storeFile file(<span class="string">"keystore.jks"</span>)</span><br><span class="line">        storePassword <span class="string">"xxxxxxxx"</span></span><br><span class="line">        keyAlias <span class="string">"app"</span></span><br><span class="line">        keyPassword <span class="string">"xxxxxxxx"</span></span><br><span class="line">        v2SigningEnabled <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>加上<code>v2SigningEnabled true</code>来开启v2签名，要不然就没有必要了解基于v2签名的多渠道打包工具了<br>下面就介绍几个大家比较常用或者可能遇到的文档中没有具体说明的问题：</p>
+<h3 id="使用umeng统计如何用packer-ng-plugin实现多渠道打包"><a href="#使用umeng统计如何用packer-ng-plugin实现多渠道打包" class="headerlink" title="使用umeng统计如何用packer-ng-plugin实现多渠道打包"></a>使用umeng统计如何用packer-ng-plugin实现多渠道打包</h3><p>因为<code>packer-ng-plugin</code>是讲渠道信息写入到<code>APK signing block</code>中的，那如果你是在<code>AndroidManifest</code>中配置umeng渠道号是无法实现多渠道打包的，所以解决办法就是动态配置umeng渠道号，首先<code>packer-ng-plugin</code>提供了获取渠道号的方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String channel = PackerNg.getChannel(context);</span><br></pre></td></tr></table></figure></p>
+<p>根据umeng官方动态设置渠道号的文档，我们只需要在App入口程序中加入如下代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String channel = PackerNg.getChannel(context);</span><br><span class="line">MobclickAgent.UMAnalyticsConfig config = <span class="keyword">new</span> MobclickAgent.UMAnalyticsConfig(</span><br><span class="line">        context, <span class="string">"umeng id"</span>, channel);</span><br><span class="line">MobclickAgent.startWithConfigure(config);</span><br></pre></td></tr></table></figure></p>
+<p>需要注意一点的是，<code>packer-ng-plugin</code>上面写的如果没有找到渠道信息或者发生错误返回的””，事实上发生错误(v1签名，没有v2的签名区块)默认返回是<code>EMPTY_STRING</code>，但是如果是v2签名了，只是还没有写入渠道信息，这个时候返回的是<code>null</code>，亲测</p>
+<h3 id="使用腾讯或者360加固之后怎么批量打渠道包"><a href="#使用腾讯或者360加固之后怎么批量打渠道包" class="headerlink" title="使用腾讯或者360加固之后怎么批量打渠道包"></a>使用腾讯或者360加固之后怎么批量打渠道包</h3><p>你可能想着简单点的方法大概是先每个渠道包使用<code>packer-ng-plugin</code>打好，然后再用加固工具一个个加固，事实证明这个是行不通的<br>首先，腾讯或者360加固之后如果使用他们的自动签名工具的话，默认都是v1签名，那这个时候你基于v2签名的工具去获取签名的时候自然会出现如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error: No APK Signing Block before ZIP Central Directory</span><br></pre></td></tr></table></figure></p>
+<p>也就是没有v2签名方案中的<code>APK Signing Block</code>，这样一来渠道信息自然也就没有了，所以你通过<code>packer</code>的<code>getChannel</code>获取的渠道信息都是””</p>
+<p>那你肯定想着那我不用第三方加固的自动签名，加固成功后自己手动签名，首先加固成功之后手动签名也是要签v2签名，如何签v2签名呢?，</p>
+<h4 id="引入另一个知识点，apksigner来进行v2签名："><a href="#引入另一个知识点，apksigner来进行v2签名：" class="headerlink" title="引入另一个知识点，apksigner来进行v2签名："></a>引入另一个知识点，apksigner来进行v2签名：</h4><p>这里就需要了解一下apksigner了，这个工具是Google官方在<code>build tool 24.0.3</code>以及更高版本中推出的，不要信网上一些认为v2签名是android 7引入的，所以apksigner工具也要在<code>build tool 25</code>以上的版本才有，并非如此，这个工具只是Google推出用来替代之前的<code>jarsigner</code>的，它即可以做v1签名，也可以做v2签名，默认是取决于你apk的<code>--min-sdk-version</code>和<code>--max-sdk-version</code>的，当然了你也可以通过参数<code>--v1-signing-enabled &lt;true | false&gt;</code>和<code>--v2-signing-enabled &lt;true | false&gt;</code>来去强制指定，具体apksigner的详细介绍大家可以去看官方文档了，建议大家把apksigner的路径添加到环境变量里面，这样每次使用的时候就不用切到对应的build tool目录里面了</p>
+<p>关于apksigner的基础使用方法(更多用法看文档吧)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apksigner sign  --ks keystore.jks  --ks-key-alias app  --ks-pass pass:xxxxxxxx  --key-pass pass:xxxxxxxx input.apk</span><br></pre></td></tr></table></figure></p>
+<p>好了，继续回到刚才说加固之后的问题，你可能认为加固之后不自动签名，使用上面介绍的手动签v2签名就ok了。<strong>理论是这样的，然并卵，实际情况是apksigner直行v2签名之后，会把<code>APK Signing Block</code>里面的内容清除然后重新写入，那之前我们渠道号也是写入到这块里面，自然也被清除了</strong></p>
+<p>所以，到底怎么办？答案很简单，加固之后用v2签名完成之后，再重新使用多渠道打包脚步再次写入一遍对应的渠道号，可以写入单个，可以写入多个，也可以按照文件列出的渠道列表写入，具体的<code>packer-ng-plugin</code>的文档中有介绍</p>
+<p>总结一下就是，如果需要使用加固的话，那就先打一个基础包(前提是你按照文档完成了gradle的基本配置)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew clean apkRelease -Pchannels=init</span><br></pre></td></tr></table></figure></p>
+<p>然后将打出的基础包在第三方加固，加固完成之后使用签名脚本签v2签名，然后执行下面的命令开始批量在加固包的基础上生成渠道包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">packer-ng generate --channels=ch1,ch2,ch3 --output=build/archives app.apk</span><br><span class="line">或者</span><br><span class="line">packer-ng generate --channels=@channels.txt --output=build/archives app.apk</span><br></pre></td></tr></table></figure></p>
+<p>完毕之后，你可以通过下面来验证所打的渠道包的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packer-ng verify app.apk</span><br></pre></td></tr></table></figure></p>
+<p>输出如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">File: app-test-360_sign_v2.apk</span><br><span class="line">Signed: true</span><br><span class="line">Channel: null</span><br></pre></td></tr></table></figure></p>
+<p><strong>最后需要注意的一点是：如果只用v2签名的包，安装到Android 7以下的设备上会提示<code>安装失败，找不到签名证书</code>，最好是使用v1 v2都签的方式。</strong><br>为了安全起见，你最后发包的时候可以使用apksigner验证一下签名信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apksigner verify -v app-test-360_sign_v2.apk</span><br></pre></td></tr></table></figure></p>
+<p>输出是下面这样就是v1,v2都签的，你就不用担心不兼容7.0以下的问题了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Verifies</span><br><span class="line">Verified using v1 scheme (JAR signing): true</span><br><span class="line">Verified using v2 scheme (APK Signature Scheme v2): true</span><br><span class="line">Number of signers: 1</span><br></pre></td></tr></table></figure></p>
+<p>好了，大概就这些了，希望看完之后，你已经学会了开头的四个知识点</p>
+<p><strong>参考文档：</strong></p>
+<ul>
+<li><a href="https://github.com/mcxiaoke/packer-ng-plugin" target="_blank" rel="noopener">packer-ng-plugin</a></li>
+<li><a href="https://source.android.com/security/apksigning/v2" target="_blank" rel="noopener">APK 签名方案 v2</a></li>
+<li><a href="https://developer.android.com/studio/command-line/apksigner" target="_blank" rel="noopener">apksigner</a></li>
+<li><a href="https://tech.meituan.com/android-apk-v2-signature-scheme.html" target="_blank" rel="noopener">新一代开源Android渠道包生成工具Walle</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2018/04/26/ReactNative中ScrollView和弹出键盘的冲突/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/26/ReactNative中ScrollView和弹出键盘的冲突/" itemprop="url">ReactNative中ScrollView和弹出键盘的冲突</a></h1>
         
 
         <div class="post-meta">
@@ -1605,155 +1794,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2016/10/26/Android自定义进度条时padding无效果/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="picksomething">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/favicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一路追梦想">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/26/Android自定义进度条时padding无效果/" itemprop="url">Android自定义进度条时padding无效果?</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-26T23:50:00+08:00">
-                2016-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>标题很简单，自定义带padding的水平进度条，也就是如下效果的进度条：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/uploads/2016/10/progressbar.png"></p>
-<p>其实很简单，但是因为有一个坑还是要提出来，话不多说了，首先看看正常的实现：</p>
-<h2 id="常规方案"><a href="#常规方案" class="headerlink" title="常规方案"></a>常规方案</h2><p>首先是布局文件中放一个ProgressBar控件：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ProgressBar</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/custom_horizontal_progress"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">style</span>=<span class="string">"?android:attr/progressBarStyleHorizontal"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"16dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:progressDrawable</span>=<span class="string">"@drawable/progress_bg_drawable"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>补充：为了更直观，我直接将16dp写到了布局文件中，规范写法这些值要放到dimen资源文件中引用<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/10/26/Android自定义进度条时padding无效果/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1808,7 +1848,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">62</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1830,7 +1870,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">132</span>
+                  <span class="site-state-item-count">135</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
