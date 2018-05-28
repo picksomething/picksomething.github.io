@@ -4,6 +4,47 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2018/05/08/Android%E5%A4%9A%E6%B8%A0%E9%81%93%E6%89%B9%E9%87%8F%E6%89%93%E5%8C%85%EF%BC%8C%E6%94%AF%E6%8C%81%E5%8F%8B%E7%9B%9F%E5%92%8C%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8A%A0%E5%9B%BA/</loc>
+    <lastmod>2018-05-28T02:18:53.759Z</lastmod>
+    <data>
+        <display>
+        <title>Android多渠道批量打包，支持友盟和第三方加固</title>
+        <pubTime>2018-05-08T00:40:58.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Gradle</tag>
+         
+        <tag>友盟</tag>
+         
+        <tag>加固</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2018/05/28/%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98%E5%A4%8D%E4%B9%A0JavaScript-Array%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2018-05-28T02:14:41.368Z</lastmod>
+    <data>
+        <display>
+        <title>一个小问题复习JavaScript Array常用方法</title>
+        <pubTime>2018-05-28T02:14:41.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2015/02/01/%E6%97%A5%E5%B8%B8%E5%B7%A5%E4%BD%9C%E4%B8%ADGit%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4(%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0)/</loc>
     <lastmod>2018-05-08T08:38:50.350Z</lastmod>
     <data>
@@ -29,32 +70,6 @@
            
              
               <breadCrumb title="Git" url="http://picksomething.cn/categories/Git/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2018/05/08/Android%E5%A4%9A%E6%B8%A0%E9%81%93%E6%89%B9%E9%87%8F%E6%89%93%E5%8C%85%EF%BC%8C%E6%94%AF%E6%8C%81%E5%8F%8B%E7%9B%9F%E5%92%8C%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8A%A0%E5%9B%BA/</loc>
-    <lastmod>2018-05-08T08:38:41.004Z</lastmod>
-    <data>
-        <display>
-        <title>Android多渠道批量打包，支持友盟和第三方加固</title>
-        <pubTime>2018-05-08T00:40:58.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-        <tag>Gradle</tag>
-         
-        <tag>友盟</tag>
-         
-        <tag>加固</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="http://picksomething.cn/categories/Android/"/>
           
         </display>
     </data>
@@ -322,9 +337,9 @@
          
         <tag>ActionBar</tag>
          
-        <tag>Fragment</tag>
-         
         <tag>DrawerLayout</tag>
+         
+        <tag>Fragment</tag>
          
          
            
@@ -1201,9 +1216,9 @@
         <title>Android Studio ADB not responding</title>
         <pubTime>2014-12-29T17:15:41.000Z</pubTime>
         
-        <tag>Android</tag>
-         
         <tag>ADB</tag>
+         
+        <tag>Android</tag>
          
         <tag>Eclipse</tag>
          
@@ -1301,9 +1316,9 @@
         <title>Activity进入和退出时动画的一致性</title>
         <pubTime>2015-07-08T18:41:04.000Z</pubTime>
         
-        <tag>Activity</tag>
-         
         <tag>Android</tag>
+         
+        <tag>Activity</tag>
          
          
            

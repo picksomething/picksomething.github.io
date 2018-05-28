@@ -264,6 +264,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/02/01/日常工作中Git常用命令(持续更新)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="picksomething">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/favicon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一路追梦想">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/02/01/日常工作中Git常用命令(持续更新)/" itemprop="url">日常工作中Git常用命令(持续更新)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-02-01T01:40:11+08:00">
+                2015-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>因为之前工作中一直用的控制版本都是svn，现在改为用git了，不得不说git是非常强大的，自然而然功能多了，命令也就多了，有些常用的命令不是忘记就是和svn搞混淆，索性记录一下常用到的命令，用到什么了就记录一下，方便以后查看</p>
+<h2 id="恢复本地删除的文件"><a href="#恢复本地删除的文件" class="headerlink" title="恢复本地删除的文件"></a>恢复本地删除的文件</h2><p>直接从本地把文件checkout出来就可以了，用不着从远程服务器上pull下来，因为，所以的历史版本你的本地都有的</p>
+<h2 id="处理冲突"><a href="#处理冲突" class="headerlink" title="处理冲突"></a>处理冲突</h2><p>如果系统中有一些配置文件在服务器上做了配置修改，然后后续开发又新添加一些配置项的时候，在发布这个配置文件的时候,会发生代码冲突:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">error: Your local changes to the following files would be</span><br><span class="line">overwritten by merge:protected/config/main.php.Please,commit your</span><br><span class="line">changes or stash them before you can merge.</span><br></pre></td></tr></table></figure></p>
+<h3 id="如果希望保留生产服务器上所做的改动-仅仅并入新配置项"><a href="#如果希望保留生产服务器上所做的改动-仅仅并入新配置项" class="headerlink" title="如果希望保留生产服务器上所做的改动,仅仅并入新配置项"></a>如果希望保留生产服务器上所做的改动,仅仅并入新配置项</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash</span><br><span class="line">git pull</span><br><span class="line">git stash pop</span><br></pre></td></tr></table></figure>
+<p>然后可以使用git diff -w +文件名 来确认代码自动合并的情况.</p>
+<h3 id="如果希望用代码库中的文件完全覆盖本地工作版本"><a href="#如果希望用代码库中的文件完全覆盖本地工作版本" class="headerlink" title="如果希望用代码库中的文件完全覆盖本地工作版本"></a>如果希望用代码库中的文件完全覆盖本地工作版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+<p>其中git reset是针对版本,如果想针对文件回退本地修改,使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout HEAD file_to_restore</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/02/01/日常工作中Git常用命令(持续更新)/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2015/01/31/Python之列表/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1606,163 +1758,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="picksomething">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/favicon.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一路追梦想">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/" itemprop="url">Android4.0以上版本自定义Titlebar遇到的坑</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-11-02T22:34:34+08:00">
-                2014-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>虽然Android原生的控件是越来越完善和强大，但是很多时候还是需要我们自定义一些控件来让我们开发的app看起来很好看，让人舒服，比如<code>android4.0</code>以上默认的edittext我就觉得不好看，没有边角，还是喜欢那种四周有边角的看起来让人舒服，当然这个不同主题下显示效果是不一样的。题外话就扯到这里吧，现在进入正题：</p>
-<p><code>Titlebar</code>就是Activity最上面显示app name的那个东东，今天在coding的时候遇到一个需要自定义titlebar的，当然这个很简单了，就是自己根据需要写一个布局然后替换掉默认的titlebar就可以了，替换代码baidu一下有很多，简单的说就是在activity的onCreate方法中加入下面两句：</p>
-<ol>
-<li><p>告诉activity我要使用自己定义的titlebar，不用你默认的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>让activity加载自己定义的titlebar的布局</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>然后在<code>manifest</code>中自定义titlebar的那个activity中加入自定义的theme，贴上我自定义theme的代码，我使用的是4.4的版本<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"HomePage"</span> <span class="attr">parent</span>=<span class="string">"AppTheme"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTitleSize"</span>&gt;</span>60dp<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowTitleBackgroundStyle"</span>&gt;</span>@style/WindowTitleBackground<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"WindowTitleBackground"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:background"</span>&gt;</span>@color/blue<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="第一个坑，报如下错误："><a href="#第一个坑，报如下错误：" class="headerlink" title="第一个坑，报如下错误："></a>第一个坑，报如下错误：</h3>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/11/02/Android4.0以上版本自定义Titlebar遇到的坑/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1817,7 +1812,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">62</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
