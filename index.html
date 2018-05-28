@@ -306,6 +306,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ReactNative/" itemprop="url" rel="index">
+                    <span itemprop="name">ReactNative</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -334,9 +356,18 @@
 
       
         
-          
-            
-          
+          <p>最近项目上要做一个点击星星评价的效果，大致设计图如下：<br><img src="http://p7ohyql3p.bkt.clouddn.com/static/images/201805/ratingbar-sample.png"><br>其实看到这个设计图，自己就想GitHub上肯定有挺多基于ReactNative的RatingBar相关的库，Google了一下确实很多，不过想着这么简单的一个东西，完全也没必要用第三方库，自己实现也应该很容易的。虽然我也没看第三方库是怎么实现的，但是自己对于在ReactNative上实现这个RatingBar还是有思路的</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>最开始是想着新建一个包含有5个初始状态的list，然后通过map函数来绘制出5个没有评级的默认状态，然后用户点击某个星星的时候，通过list下标index来将list里面的index之前的星星替换成评级过的黄色星星，但是这里需要注意的一点就是，因为评级在提交之前是可以随意更改的，所以不能说点击了某个星星之后就把对应index之前的变为黄色的已评价的，毕竟如果用户一开始选择了4颗星，后面又点击选择2颗星，这个时候一方面是把2之前的星星换成黄色，另一方面是把2-4之前的黄色变为默认的白色星星</p>
+<h2 id="splice-amp-amp-slice实现"><a href="#splice-amp-amp-slice实现" class="headerlink" title="splice&amp;&amp;slice实现"></a>splice&amp;&amp;slice实现</h2><p>在说第一种实现方式之前，先了解一下splice和slice的基本用法</p>
+<h3 id="splice基本用法"><a href="#splice基本用法" class="headerlink" title="splice基本用法"></a>splice基本用法</h3><p>splice主要功能是通过删除现有元素和/或添加新元素来更改一个数组的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array.splice(start[, deleteCount[, item1[, item2[, ...]]]])</span><br></pre></td></tr></table></figure></p>
+<p>start是指定修改的开始位置（从0计数）。如果超出了数组的长度，则从数组末尾开始添加内容；如果是负值，则表示从数组末位开始的第几位（从-1计数）；若只使用start参数而不使用deleteCount、item，如：array.splice(start) ，表示删除[start，end]的元素。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/05/28/一个小问题复习JavaScript-Array常用方法/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1813,7 +1844,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">139</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
