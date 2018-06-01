@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JavaScript,Array,slice,fill,RatingBar," />
+  <meta name="keywords" content="JavaScript,Array,slice,splice,fill,RatingBar," />
 
 
 
@@ -82,17 +82,17 @@
 
 
 <meta name="description" content="最近项目上要做一个点击星星评价的效果，大致设计图如下：其实看到这个设计图，自己就想GitHub上肯定有挺多基于ReactNative的RatingBar相关的库，Google了一下确实很多，不过想着这么简单的一个东西，完全也没必要用第三方库，自己实现也应该很容易的。虽然我也没看第三方库是怎么实现的，但是自己对于在ReactNative上实现这个RatingBar还是有思路的 思路最开始是想着新建一">
-<meta name="keywords" content="JavaScript,Array,slice,fill,RatingBar">
+<meta name="keywords" content="JavaScript,Array,slice,splice,fill,RatingBar">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一个小问题复习JavaScript Array常用方法">
-<meta property="og:url" content="http://picksomething.cn/2018/05/28/一个小问题复习JavaScript-Array常用方法/index.html">
+<meta property="og:title" content="使用JavaScripts的Array操作实现RatingBar评分效果">
+<meta property="og:url" content="http://picksomething.cn/2018/05/28/使用JavaScripts的Array操作实现RatingBar评分效果/index.html">
 <meta property="og:site_name" content="一路追梦想">
 <meta property="og:description" content="最近项目上要做一个点击星星评价的效果，大致设计图如下：其实看到这个设计图，自己就想GitHub上肯定有挺多基于ReactNative的RatingBar相关的库，Google了一下确实很多，不过想着这么简单的一个东西，完全也没必要用第三方库，自己实现也应该很容易的。虽然我也没看第三方库是怎么实现的，但是自己对于在ReactNative上实现这个RatingBar还是有思路的 思路最开始是想着新建一">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/201805/ratingbar-sample.png">
-<meta property="og:updated_time" content="2018-05-28T11:54:06.795Z">
+<meta property="og:updated_time" content="2018-06-01T04:04:50.449Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个小问题复习JavaScript Array常用方法">
+<meta name="twitter:title" content="使用JavaScripts的Array操作实现RatingBar评分效果">
 <meta name="twitter:description" content="最近项目上要做一个点击星星评价的效果，大致设计图如下：其实看到这个设计图，自己就想GitHub上肯定有挺多基于ReactNative的RatingBar相关的库，Google了一下确实很多，不过想着这么简单的一个东西，完全也没必要用第三方库，自己实现也应该很容易的。虽然我也没看第三方库是怎么实现的，但是自己对于在ReactNative上实现这个RatingBar还是有思路的 思路最开始是想着新建一">
 <meta name="twitter:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/201805/ratingbar-sample.png">
 
@@ -124,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://picksomething.cn/2018/05/28/一个小问题复习JavaScript-Array常用方法/"/>
+  <link rel="canonical" href="http://picksomething.cn/2018/05/28/使用JavaScripts的Array操作实现RatingBar评分效果/"/>
 
 
 
 
 
-  <title>一个小问题复习JavaScript Array常用方法 | 一路追梦想</title>
+  <title>使用JavaScripts的Array操作实现RatingBar评分效果 | 一路追梦想</title>
   
 
 
@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2018/05/28/一个小问题复习JavaScript-Array常用方法/">
+    <link itemprop="mainEntityOfPage" href="http://picksomething.cn/2018/05/28/使用JavaScripts的Array操作实现RatingBar评分效果/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="picksomething">
@@ -284,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">一个小问题复习JavaScript Array常用方法</h1>
+          <h1 class="post-title" itemprop="name headline">使用JavaScripts的Array操作实现RatingBar评分效果</h1>
         
 
         <div class="post-meta">
@@ -400,6 +400,8 @@
             <a href="/tags/Array/" rel="tag"># Array</a>
           
             <a href="/tags/slice/" rel="tag"># slice</a>
+          
+            <a href="/tags/splice/" rel="tag"># splice</a>
           
             <a href="/tags/fill/" rel="tag"># fill</a>
           
@@ -527,7 +529,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -91,7 +91,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/201805/v2-desc.png">
 <meta property="og:image" content="http://p7ohyql3p.bkt.clouddn.com/static/images/201805/v2-protected.png">
-<meta property="og:updated_time" content="2018-05-28T02:18:53.759Z">
+<meta property="og:updated_time" content="2018-06-01T04:06:18.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Android多渠道批量打包，支持友盟和第三方加固">
 <meta name="twitter:description" content="随着应用上线发布以及不断地迭代，Android平台现在发展到了要打20多个渠道包，打完还要使用第三方加固进行加固，所以每次版本一更新，重新打包加固都成了一个挺耗时的工作，个人也感觉这种重复性的工作挺浪费时间的，所以多渠道打包迫在眉睫。其实早在应用第一版上线的时候，自己就打算把多渠道打包这个功能搞一下，但因为公司现在就我一个移动端开发人员，平时事挺多的，加上一开始渠道包并不算多，所以就一直拖着，现在">
@@ -395,10 +395,9 @@
 <ul>
 <li><p>先打一个基础包(前提是你按照文档完成了gradle的基本配置)：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./gradlew clean apkRelease -Pchannels=init</span><br></pre></td></tr></table></figure>
-<ul>
-<li>然后将打出的基础包在第三方加固<br>加固完成之后使用签名脚本签v2签名，然后执行下面的命令开始批量在加固包的基础上生成渠道包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">packer-ng generate --channels=ch1,ch2,ch3 --output=build/archives app.apk</span><br><span class="line">或者</span><br><span class="line">packer-ng generate --channels=@channels.txt --output=build/archives app.apk</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
+<li><p>然后将打出的基础包在第三方加固<br>加固完成之后使用签名脚本签v2签名，然后执行下面的命令开始批量在加固包的基础上生成渠道包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">packer-ng generate --channels=ch1,ch2,ch3 --output=build/archives app.apk</span><br><span class="line">或者</span><br><span class="line">packer-ng generate --channels=@channels.txt --output=build/archives app.apk</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>完毕之后，你可以通过下面来验证所打的渠道包的信息</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">packer-ng verify app.apk</span><br></pre></td></tr></table></figure>
@@ -462,8 +461,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/05/28/一个小问题复习JavaScript-Array常用方法/" rel="prev" title="一个小问题复习JavaScript Array常用方法">
-                一个小问题复习JavaScript Array常用方法 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/05/28/使用JavaScripts的Array操作实现RatingBar评分效果/" rel="prev" title="使用JavaScripts的Array操作实现RatingBar评分效果">
+                使用JavaScripts的Array操作实现RatingBar评分效果 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -567,7 +566,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">139</span>
+                  <span class="site-state-item-count">140</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
