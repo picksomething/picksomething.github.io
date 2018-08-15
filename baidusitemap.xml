@@ -4,6 +4,54 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2018/08/13/React%20Native%E6%8E%A5%E5%85%A5%E8%85%BE%E8%AE%AF%E5%90%90%E4%B8%AA%E6%A7%BD/</loc>
+    <lastmod>2018-08-15T02:42:14.643Z</lastmod>
+    <data>
+        <display>
+        <title>React Native接入腾讯吐个槽</title>
+        <pubTime>2018-08-13T10:59:50.000Z</pubTime>
+        
+        <tag>React Native</tag>
+         
+        <tag>吐个槽</tag>
+         
+        <tag>腾讯</tag>
+         
+         
+           
+             
+              <breadCrumb title="ReactNative" url="http://picksomething.cn/categories/ReactNative/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2018/04/26/React%20Native%E4%B8%ADScrollView%E5%92%8C%E5%BC%B9%E5%87%BA%E9%94%AE%E7%9B%98%E7%9A%84%E5%86%B2%E7%AA%81/</loc>
+    <lastmod>2018-08-13T11:03:42.844Z</lastmod>
+    <data>
+        <display>
+        <title>React Native中ScrollView和弹出键盘的冲突</title>
+        <pubTime>2018-04-26T10:10:58.000Z</pubTime>
+        
+        <tag>ReactNative</tag>
+         
+        <tag>ScrollView</tag>
+         
+        <tag>软键盘</tag>
+         
+         
+           
+             
+              <breadCrumb title="ReactNative" url="http://picksomething.cn/categories/ReactNative/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2018/05/08/Android%E5%A4%9A%E6%B8%A0%E9%81%93%E6%89%B9%E9%87%8F%E6%89%93%E5%8C%85%EF%BC%8C%E6%94%AF%E6%8C%81%E5%8F%8B%E7%9B%9F%E5%92%8C%E7%AC%AC%E4%B8%89%E6%96%B9%E5%8A%A0%E5%9B%BA/</loc>
     <lastmod>2018-06-01T04:06:18.866Z</lastmod>
     <data>
@@ -85,30 +133,6 @@
            
              
               <breadCrumb title="Git" url="http://picksomething.cn/categories/Git/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2018/04/26/ReactNative%E4%B8%ADScrollView%E5%92%8C%E5%BC%B9%E5%87%BA%E9%94%AE%E7%9B%98%E7%9A%84%E5%86%B2%E7%AA%81/</loc>
-    <lastmod>2018-05-08T00:43:21.170Z</lastmod>
-    <data>
-        <display>
-        <title>ReactNative中ScrollView和弹出键盘的冲突</title>
-        <pubTime>2018-04-26T10:10:58.000Z</pubTime>
-        
-        <tag>ReactNative</tag>
-         
-        <tag>ScrollView</tag>
-         
-        <tag>软键盘</tag>
-         
-         
-           
-             
-              <breadCrumb title="ReactNative" url="http://picksomething.cn/categories/ReactNative/"/>
           
         </display>
     </data>
@@ -426,9 +450,9 @@
         <title>OpenSuSE13.2添加Android Studio到应用程序列表</title>
         <pubTime>2014-12-14T14:42:25.000Z</pubTime>
         
-        <tag>Linux</tag>
-         
         <tag>Android Studio</tag>
+         
+        <tag>Linux</tag>
          
         <tag>快捷方式</tag>
          
@@ -472,9 +496,9 @@
         <title>Linux下开机自动挂载samba目录，且可以正常读写</title>
         <pubTime>2014-10-30T02:02:36.000Z</pubTime>
         
-        <tag>fstab</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>fstab</tag>
          
         <tag>mount</tag>
          
