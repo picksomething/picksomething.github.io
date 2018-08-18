@@ -4,8 +4,40 @@
 
     
   <url>
+    <loc>http://picksomething.cn/2018/08/16/React%20Native%E6%8E%A5%E5%85%A5%E5%B0%8F%E7%B1%B3%E6%8E%A8%E9%80%81/</loc>
+    <lastmod>2018-08-18T16:37:08.679Z</lastmod>
+    <data>
+        <display>
+        <title>React Native接入小米推送</title>
+        <pubTime>2018-08-16T09:27:09.000Z</pubTime>
+        
+        <tag>React Native</tag>
+         
+        <tag>小米推送</tag>
+         
+        <tag>消息</tag>
+         
+        <tag>通信</tag>
+         
+         
+           
+             
+              <breadCrumb title="ReactNative" url="http://picksomething.cn/categories/ReactNative/"/>
+          
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/ReactNative/Android/"/>
+          
+             
+              <breadCrumb title="iOS" url="http://picksomething.cn/categories/ReactNative/Android/iOS/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://picksomething.cn/2018/08/13/React%20Native%E6%8E%A5%E5%85%A5%E8%85%BE%E8%AE%AF%E5%90%90%E4%B8%AA%E6%A7%BD/</loc>
-    <lastmod>2018-08-15T02:51:48.525Z</lastmod>
+    <lastmod>2018-08-16T09:29:11.382Z</lastmod>
     <data>
         <display>
         <title>React Native接入腾讯吐个槽</title>
@@ -21,6 +53,34 @@
            
              
               <breadCrumb title="ReactNative" url="http://picksomething.cn/categories/ReactNative/"/>
+          
+             
+              <breadCrumb title="Android" url="http://picksomething.cn/categories/ReactNative/Android/"/>
+          
+             
+              <breadCrumb title="iOS" url="http://picksomething.cn/categories/ReactNative/Android/iOS/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://picksomething.cn/2018/03/06/iOS%E4%B8%8D%E6%98%BE%E7%A4%BALaunchScreen%E4%B8%8A%E7%9A%84%E5%9B%BE%E7%89%87/</loc>
+    <lastmod>2018-08-16T09:29:01.860Z</lastmod>
+    <data>
+        <display>
+        <title>iOS不显示LaunchScreen上的图片</title>
+        <pubTime>2018-03-06T03:38:27.000Z</pubTime>
+        
+        <tag>LaunchScreen</tag>
+         
+        <tag>启动屏</tag>
+         
+         
+           
+             
+              <breadCrumb title="iOS" url="http://picksomething.cn/categories/iOS/"/>
           
         </display>
     </data>
@@ -319,11 +379,11 @@
         <title>Ubuntu下git的配置和使用</title>
         <pubTime>2013-08-25T15:08:20.000Z</pubTime>
         
-        <tag>Ubuntu</tag>
-         
         <tag>git</tag>
          
         <tag>github</tag>
+         
+        <tag>Ubuntu</tag>
          
          
            
@@ -805,9 +865,9 @@
         
         <tag>Linux</tag>
          
-        <tag>Gnome</tag>
-         
         <tag>Ubuntu</tag>
+         
+        <tag>Gnome</tag>
          
         <tag>截屏</tag>
          
@@ -1255,9 +1315,9 @@
         <title>Android Studio ADB not responding</title>
         <pubTime>2014-12-29T17:15:41.000Z</pubTime>
         
-        <tag>Android</tag>
-         
         <tag>ADB</tag>
+         
+        <tag>Android</tag>
          
         <tag>Eclipse</tag>
          
@@ -1355,9 +1415,9 @@
         <title>Activity进入和退出时动画的一致性</title>
         <pubTime>2015-07-08T18:41:04.000Z</pubTime>
         
-        <tag>Activity</tag>
-         
         <tag>Android</tag>
+         
+        <tag>Activity</tag>
          
          
            
@@ -1487,24 +1547,6 @@
            
              
               <breadCrumb title="JavaScript" url="http://picksomething.cn/categories/JavaScript/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://picksomething.cn/2018/03/06/iOS%E4%B8%8D%E6%98%BE%E7%A4%BALaunchScreen%E4%B8%8A%E7%9A%84%E5%9B%BE%E7%89%87/</loc>
-    <lastmod>2018-04-25T03:32:36.249Z</lastmod>
-    <data>
-        <display>
-        <title>iOS不显示LaunchScreen上的图片</title>
-        <pubTime>2018-03-06T03:38:27.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="iOS" url="http://picksomething.cn/categories/iOS/"/>
           
         </display>
     </data>
